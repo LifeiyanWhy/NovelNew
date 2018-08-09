@@ -109,6 +109,8 @@
 		C4C8906B206BF5F000BED312 /* SJViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C8906A206BF5F000BED312 /* SJViewController.m */; };
 		C4C8906E206BF60600BED312 /* FindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C8906D206BF60600BED312 /* FindViewController.m */; };
 		C4C89071206BF61E00BED312 /* MYViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C89070206BF61E00BED312 /* MYViewController.m */; };
+		C4C8B3A9211C6EA00068C2CD /* NOVSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C8B3A8211C6EA00068C2CD /* NOVSignUpViewController.m */; };
+		C4C8B3AC211C6ED10068C2CD /* NOVSignUpNextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C8B3AB211C6ED10068C2CD /* NOVSignUpNextViewController.m */; };
 		C4C9ED0620BAD89C00DEE54D /* NOVSignModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C9ED0520BAD89C00DEE54D /* NOVSignModel.m */; };
 		C4CA78C7207CAD24007357B4 /* NOVBookModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CA78C6207CAD24007357B4 /* NOVBookModel.m */; };
 		C4CA78D3207D0375007357B4 /* NOVView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CA78D2207D0375007357B4 /* NOVView.m */; };
@@ -336,6 +338,10 @@
 		C4C8906D206BF60600BED312 /* FindViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindViewController.m; sourceTree = "<group>"; };
 		C4C8906F206BF61E00BED312 /* MYViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYViewController.h; sourceTree = "<group>"; };
 		C4C89070206BF61E00BED312 /* MYViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYViewController.m; sourceTree = "<group>"; };
+		C4C8B3A7211C6EA00068C2CD /* NOVSignUpViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVSignUpViewController.h; sourceTree = "<group>"; };
+		C4C8B3A8211C6EA00068C2CD /* NOVSignUpViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVSignUpViewController.m; sourceTree = "<group>"; };
+		C4C8B3AA211C6ED10068C2CD /* NOVSignUpNextViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVSignUpNextViewController.h; sourceTree = "<group>"; };
+		C4C8B3AB211C6ED10068C2CD /* NOVSignUpNextViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVSignUpNextViewController.m; sourceTree = "<group>"; };
 		C4C9ED0420BAD89C00DEE54D /* NOVSignModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVSignModel.h; sourceTree = "<group>"; };
 		C4C9ED0520BAD89C00DEE54D /* NOVSignModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVSignModel.m; sourceTree = "<group>"; };
 		C4CA78C5207CAD24007357B4 /* NOVBookModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVBookModel.h; sourceTree = "<group>"; };
@@ -780,6 +786,10 @@
 			children = (
 				C4C8903C206BF5CD00BED312 /* ViewController.h */,
 				C4C8903D206BF5CD00BED312 /* ViewController.m */,
+				C4C8B3A7211C6EA00068C2CD /* NOVSignUpViewController.h */,
+				C4C8B3A8211C6EA00068C2CD /* NOVSignUpViewController.m */,
+				C4C8B3AA211C6ED10068C2CD /* NOVSignUpNextViewController.h */,
+				C4C8B3AB211C6ED10068C2CD /* NOVSignUpNextViewController.m */,
 			);
 			path = SignInViewController;
 			sourceTree = "<group>";
@@ -1187,8 +1197,6 @@
 				C4C8902F206BF5CD00BED312 /* Sources */,
 				C4C89030206BF5CD00BED312 /* Frameworks */,
 				C4C89031206BF5CD00BED312 /* Resources */,
-				B6B41FF7EAF6BA2C0E3687EB /* [CP] Embed Pods Frameworks */,
-				B01FABB62788B2798411BBEF /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1366,36 +1374,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B01FABB62788B2798411BBEF /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-小说/Pods-小说-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B6B41FF7EAF6BA2C0E3687EB /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-小说/Pods-小说-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1435,6 +1413,7 @@
 				C4B09CBE2089AE3B00756467 /* NOVMessageTableViewCell.m in Sources */,
 				C4C4732520AD7F4700E3E508 /* NOVLongpressCellView.m in Sources */,
 				C4B0DB77209DA30B006E1998 /* NOVChatroomReceiveTableViewCell.m in Sources */,
+				C4C8B3AC211C6ED10068C2CD /* NOVSignUpNextViewController.m in Sources */,
 				C4ADC1E8211563D10085BA78 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				C4960D7621198AAF00132C43 /* NOVAccountManageViewController.m in Sources */,
 				C4D81DB8208C7ED60014431A /* NOVWriteView.m in Sources */,
@@ -1479,6 +1458,7 @@
 				C4B7CFDC2102DF8700C2F9BE /* NOVSignUpNextView.m in Sources */,
 				C4ADC1E7211563D10085BA78 /* NSArray+MASAdditions.m in Sources */,
 				C4C89038206BF5CD00BED312 /* main.m in Sources */,
+				C4C8B3A9211C6EA00068C2CD /* NOVSignUpViewController.m in Sources */,
 				C4D9EBAA207FE0F900365B10 /* NOVFindTableViewCell.m in Sources */,
 				C4960D6C2119886C00132C43 /* NOVSecurityCenterViewController.m in Sources */,
 				C4C343AB211A9A9900C4C8ED /* NOVReadEndView.m in Sources */,

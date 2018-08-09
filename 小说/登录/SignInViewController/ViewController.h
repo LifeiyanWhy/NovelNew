@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class NOVSigninView;
 @interface ViewController : UIViewController
-
-
+@property(nonatomic,strong) NOVSigninView *signView ;
 @end
 

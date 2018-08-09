@@ -14,11 +14,13 @@ typedef void(^failBlock)(NSError * _Nonnull error);
 
 @interface NOVSignModel : NSObject
 
+-(void)getVeritysuccess:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
+
 //账号密码注册
 -(void)signUpWithAccount:(NSString *_Nonnull)account username:(NSString *_Nonnull)username passward:(NSString *_Nullable)password success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
 
 //账号密码登录
--(void)loginWithAccount:(NSString *_Nonnull)account password:(NSString *_Nonnull)password success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
+-(void)loginWithAccount:(NSString *_Nonnull)account password:(NSString *_Nonnull)password verity:(NSString *)verity success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
 
 //获取关注列表
 -(void)obtainFollowList;

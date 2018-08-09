@@ -14,6 +14,10 @@
 
 @property(nonatomic,strong) UITextField *passwardTextField;
 
+@property(nonatomic,strong) UITextField *verityTextField;
+
+@property(nonatomic,strong) UIButton *verityButton;
+
 @property(nonatomic,strong) UIButton *signinButton;
 
 @property(nonatomic,strong) UIButton *signupButton;

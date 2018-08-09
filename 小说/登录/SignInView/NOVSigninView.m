@@ -20,6 +20,12 @@
         _passwardTextField = [[UITextField alloc] init];
         [self addSubview:_passwardTextField];
         
+        _verityTextField = [[UITextField alloc] init];
+        [self addSubview:_verityTextField];
+        
+        _verityButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self addSubview:_verityButton];
+        
         _showPassword = [UIButton buttonWithType:UIButtonTypeCustom];
         [self addSubview:_showPassword];
    
@@ -64,7 +70,6 @@
     _label.textColor = [UIColor whiteColor];
     _label.textAlignment = NSTextAlignmentCenter;
     
-    _accountTextField.backgroundColor = [UIColor whiteColor];
     [_accountTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(self.frame.size.height*0.36);
         make.height.equalTo(self).multipliedBy(0.06);
@@ -73,8 +78,7 @@
     }];
     _accountTextField.placeholder = @"请求输入账号";
     [self setTextField:_accountTextField];
-    
-    _passwardTextField.backgroundColor = [UIColor whiteColor];
+
     [_passwardTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_accountTextField.mas_bottom).offset(self.frame.size.height*0.02);
         make.height.equalTo(_accountTextField);
@@ -95,9 +99,24 @@
     [_showPassword setImage:[UIImage imageNamed:@"眼睛2.png"] forState:UIControlStateSelected];
     [_showPassword addTarget:self action:@selector(showPasswordChange:) forControlEvents:UIControlEventTouchUpInside];
     
+    [_verityTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_passwardTextField.mas_bottom).offset(self.frame.size.height*0.02);
+        make.height.equalTo(_accountTextField);
+        make.left.and.right.equalTo(_accountTextField);
+    }];
+    _verityTextField.placeholder = @"请输入验证码";
+    [self setTextField:_passwardTextField];
+    
+    _verityButton.backgroundColor = [UIColor whiteColor];
+    [_verityButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.and.height.equalTo(_verityTextField);
+        make.right.equalTo(self).offset(self.frame.size.width*0.15*-1);
+        make.width.equalTo(self).multipliedBy(0.22);
+    }];
+    
     _signinButton.backgroundColor = [UIColor colorWithRed:0.15 green:0.65 blue:0.6 alpha:1.00];
     [_signinButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_passwardTextField.mas_bottom).offset(self.frame.size.height*0.05);
+        make.top.equalTo(_verityTextField.mas_bottom).offset(self.frame.size.height*0.05);
         make.height.equalTo(_accountTextField).multipliedBy(0.9);
         make.width.equalTo(self).multipliedBy(0.65);
         make.centerX.equalTo(self);
@@ -138,6 +157,7 @@
 - (void)setTextField:(UITextField *)textField{
     textField.backgroundColor = [UIColor clearColor];
     [textField setFont:[UIFont systemFontOfSize:15]];
+    textField.textColor = [UIColor grayColor];
 }
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
@@ -164,7 +184,7 @@
     UIColor *color1 = [UIColor lightGrayColor];
     [color1 set];
     UIBezierPath *path1 = [UIBezierPath bezierPath];
-    path1.lineWidth = 2.0;
+    path1.lineWidth = 0.7 ;
     path1.lineJoinStyle = kCGLineCapButt;
     [path1 moveToPoint:CGPointMake(width*0.15, height*0.42)];
     [path1 addLineToPoint:CGPointMake(width*0.85, height*0.42)];
@@ -172,6 +192,10 @@
     
     [path1 moveToPoint:CGPointMake(width*0.15, height*0.50)];
     [path1 addLineToPoint:CGPointMake(width*0.85, height*0.50)];
+    [path1 stroke];
+    
+    [path1 moveToPoint:CGPointMake(width*0.15, height*0.58)];
+    [path1 addLineToPoint:CGPointMake(width*0.6, height*0.58)];
     [path1 stroke];
 }
 

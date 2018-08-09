@@ -8,18 +8,10 @@
 
 #import "ViewController.h"
 #import "NOVSigninView.h"
-#import "NOVSignupView.h"
 #import "NOVSignModel.h"
-#import "NOVSignUpNextView.h"
+#import "NOVSignUpViewController.h"
 
 @interface ViewController ()<UITextFieldDelegate>
-
-@property(nonatomic,strong) NOVSigninView *signView ;
-
-@property(nonatomic,strong) NOVSignupView *signUpView;
-
-@property(nonatomic,strong) NOVSignUpNextView *signUpNextView;
-
 @end
 
 @implementation ViewController
@@ -27,13 +19,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    self.navigationController.navigationBar.hidden = YES;
+    [self.view addSubview:self.signView];
+  
+    [self getVerity];
+}
 
-    _signView = [[NOVSigninView alloc] initWithFrame:self.view.frame];
-    [self.view addSubview:_signView];
-    _signView.accountTextField.delegate = self;
-    _signView.passwardTextField.delegate = self;
-    [_signView.signinButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
-    [_signView.signupButton addTarget:self action:@selector(willSignUp) forControlEvents:UIControlEventTouchUpInside];
+-(void)getVerity{
+    NOVSignModel *model = [[NOVSignModel alloc] init];
+    [model getVeritysuccess:^(id  _Nullable responseObject) {
+        [_signView.verityButton setImage:[UIImage imageWithData:responseObject] forState:UIControlStateNormal];
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+    }];
 }
 
 - (void)login{
@@ -41,8 +39,12 @@
         [self showAlertActionWithTitle:@"账号密码不能为空"];
         return;
     }
+    if (_signView.verityTextField.text.length <= 0) {
+        [self showAlertActionWithTitle:@"请输入验证码!!!"];
+        return;
+    }
     NOVSignModel *loginModel = [[NOVSignModel alloc] init];
-    [loginModel loginWithAccount:_signView.accountTextField.text  password:_signView.passwardTextField.text success:^(id  _Nullable responseObject) {
+    [loginModel loginWithAccount:_signView.accountTextField.text  password:_signView.passwardTextField.text verity:_signView.verityTextField.text success:^(id  _Nullable responseObject) {
         NSLog(@"%@",responseObject);
         //登录成功
         [[NSNotificationCenter defaultCenter] postNotificationName:@"signinSucceed" object:nil];
@@ -52,89 +54,30 @@
         if (error.code == -1009) {
             [self showAlertActionWithTitle:@"网络不可用,请重试！"];
         }
-        if (error.code == -1011) {
-            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
             //status为1代表登录失败，账号或密码错误。
-            if ([[NSString stringWithFormat:@"%@",dict[@"status"]] isEqualToString:@"1"]) {
-                [self showAlertActionWithTitle:@"账号或密码错误"];
-            }
+        if ([[NSString stringWithFormat:@"%@",dict[@"status"]] isEqualToString:@"1"]) {
+            [self showAlertActionWithTitle:[NSString stringWithFormat:@"%@!!!",dict[@"message"]]];
         }
     }];
 }
-
-
 
 //点击注册button后进入注册页面（在登录界面点击注册时执行）
--(void)willSignUp{
-    self.signUpView.hidden = NO;
-}
-
-//获取验证码
--(void)obtainVerify{
-    if (_signUpView.accountTextField.text.length != 11) {
-        [self showAlertActionWithTitle:@"手机号为十一位数字"];
-        return;
-    }
-}
-
-//退出注册界面
--(void)quit{
-    _signUpView.hidden = YES;
-}
-
--(NOVSignupView *)signUpView{
-    if (!_signUpView) {
-        _signUpView = [[NOVSignupView alloc] initWithFrame:self.view.frame];
-        _signUpView.accountTextField.delegate = self;
-        _signUpView.verifyTextfield.delegate = self;
-        _signUpView.hidden = YES;
-        [self.view addSubview:_signUpView];
-        [_signUpView.verifyeButton addTarget:self action:@selector(obtainVerify) forControlEvents:UIControlEventTouchUpInside];
-        [_signUpView.nextButton addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
-        [_signUpView.quit addTarget:self action:@selector(quit) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _signUpView;
-}
-
--(void)next{
-    //检测验证码是否正确
-    if (_signUpView.accountTextField.text.length != 11) {
-        [self showAlertActionWithTitle:@"手机号为十一位数字"];
-        return;
-    }
-    _signUpView.hidden = YES;
-    self.signUpNextView = [[NOVSignUpNextView alloc] initWithFrame:self.view.frame];
-    [self.view addSubview:_signUpNextView];
-    [_signUpNextView.signUpButton addTarget:self action:@selector(signUp) forControlEvents:UIControlEventTouchUpInside];
-    [_signUpNextView.quitButton addTarget:self action:@selector(quitInNext) forControlEvents:UIControlEventTouchUpInside];
-}
-
--(void)quitInNext{
-    _signUpNextView.hidden = YES;
-}
-
 -(void)signUp{
-    if (_signUpNextView.usernameTextField.text.length < 2 || _signUpNextView.usernameTextField.text.length > 20) {
-        [self showAlertActionWithTitle:@"用户名为2～20位"];
-        return;
-    }else if (_signUpNextView.passwardTextField.text.length < 6 || _signUpNextView.passwardTextField.text.length > 30){
-        [self showAlertActionWithTitle:@"密码为6～30位"];
-        return;
-    }else if (_signUpNextView.passwardTextField.text != _signUpNextView.inputPswdAgain.text){
-        [self showAlertActionWithTitle:@"输入密码不一致"];
-        return;
+    NOVSignUpViewController *signUpViewController = [[NOVSignUpViewController alloc] init];
+    [self.navigationController pushViewController:signUpViewController animated:NO];
+}
+
+-(NOVSigninView *)signView{
+    if (!_signView) {
+        _signView = [[NOVSigninView alloc] initWithFrame:self.view.frame];
+        _signView.accountTextField.delegate = self;
+        _signView.passwardTextField.delegate = self;
+        [_signView.signinButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
+        [_signView.signupButton addTarget:self action:@selector(signUp) forControlEvents:UIControlEventTouchUpInside];
+        [_signView.verityButton addTarget:self action:@selector(getVerity) forControlEvents:UIControlEventTouchUpInside];
     }
-    //输入成功之后注册
-    __block ViewController *tempself = self;
-    NOVSignModel *signupModel = [[NOVSignModel alloc] init];
-    [signupModel signUpWithAccount:_signUpView.accountTextField.text username:_signUpNextView.usernameTextField.text passward:_signUpNextView.passwardTextField.text success:^(id  _Nullable responseObject) {
-        if ([[NSString stringWithFormat:@"%@", responseObject[@"status"]] isEqualToString:@"0"]) {
-            //0 注册成功返回登录界面
-            [tempself showAlertActionWithTitle:@"注册成功，请登录！"];
-            _signUpNextView.hidden = YES;
-        }
-    } failure:^(NSError * _Nonnull error) {
-    }];
+    return _signView;
 }
 
 - (void)showAlertActionWithTitle:(NSString *)title{
@@ -151,9 +94,11 @@
     return YES;
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField{
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [_signView.accountTextField resignFirstResponder];
+    [_signView.passwardTextField resignFirstResponder];
+    [_signView.verityTextField resignFirstResponder];
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

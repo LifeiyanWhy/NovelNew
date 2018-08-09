@@ -64,7 +64,8 @@
     tabBar.selectedViewController = findNavigation;
     
     ViewController *viewController = [[ViewController alloc] init];
-    self.window.rootViewController = viewController;
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
+    self.window.rootViewController = nav;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(signsucceed) name:@"signinSucceed" object:nil];
     return YES;

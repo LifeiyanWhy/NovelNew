@@ -22,6 +22,46 @@
 
 @implementation NOVSignModel
 
+-(void)getVeritysuccess:(successBlock)successBlock failure:(failBlock)failBlock{
+    NSString *url = @"http://47.95.207.40/branch/code/image";
+    NSString *identifierForVendor = [[UIDevice currentDevice].identifierForVendor UUIDString];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    [manager.requestSerializer setValue:identifierForVendor forHTTPHeaderField:@"deviceId"];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [manager GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        successBlock(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failBlock(error);
+    }];
+    
+}
+
+-(void)loginWithAccount:(NSString *_Nonnull)account password:(NSString *_Nonnull)password verity:(NSString *)verity success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock{
+    NSString *identifierForVendor = [[UIDevice currentDevice].identifierForVendor UUIDString];
+    NSDictionary *parameters = @{@"account":account,
+                                 @"password":password
+                                 };
+    NSString *urlString = @"http://47.95.207.40/branch/login";
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setValue:@"Basic YnJhbmNoOnhpeW91M2c=" forHTTPHeaderField:@"Authorization"];
+    [manager.requestSerializer setValue:identifierForVendor forHTTPHeaderField:@"deviceId"];
+    [manager.requestSerializer setValue:verity forHTTPHeaderField:@"validateCode"];
+    [manager POST:urlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [NOVDataModel updateLoginMessageAccount:account passward:password];
+        NOVDataModel *datamodel = [NOVDataModel shareInstance];
+        //将登录成功后获取到的token存储到沙盒中
+        [datamodel updateToken:responseObject[@"access_token"] refreshToken:responseObject[@"refresh_token"]];
+        [self updateToken];
+        successBlock(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failBlock(error);
+    }];
+    //    NSLog(@"=====HTTPRequestHeaders:%@",manager.requestSerializer.HTTPRequestHeaders);
+}
+
 -(void)signUpWithAccount:(NSString *)account username:(NSString *)username passward:(NSString *)password success:(successBlock)successBlock failure:(failBlock)failBlock{
     NSDictionary *parameters = @{@"username":username,
                                  @"account":account,
@@ -39,28 +79,6 @@
         NSLog(@"注册:%@",string);
         failBlock(error);
     }];
-}
-
--(void)loginWithAccount:(NSString *_Nonnull)account password:(NSString *_Nonnull)password success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock{
-    NSDictionary *parameters = @{@"account":account,
-                                 @"password":password
-                                 };
-    NSString *urlString = @"http://47.95.207.40/branch/login";
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    [manager.requestSerializer setValue:@"Basic YnJhbmNoOnhpeW91M2c=" forHTTPHeaderField:@"Authorization"];
-    [manager POST:urlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [NOVDataModel updateLoginMessageAccount:account passward:password];
-        NOVDataModel *datamodel = [NOVDataModel shareInstance];
-        //将登录成功后获取到的token存储到沙盒中
-        [datamodel updateToken:responseObject[@"access_token"] refreshToken:responseObject[@"refresh_token"]];
-        [self updateToken];
-        successBlock(responseObject);
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-       failBlock(error);
-    }];
-//    NSLog(@"=====HTTPRequestHeaders:%@",manager.requestSerializer.HTTPRequestHeaders);
 }
 
 -(void)updateToken{
