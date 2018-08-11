@@ -67,7 +67,8 @@
     if (page == 0) {    //获取关注列表
         [model obtainFollowBookListSucceed:^(id  _Nullable responseObject) {
             NOVAllBookMesssage *allFindModel = [[NOVAllBookMesssage alloc] initWithDictionary:responseObject error:nil];
-            NSMutableArray *array = [NSMutableArray arrayWithArray:allFindModel.data];
+            NSMutableArray *array = [NSMutableArray arrayWithArray:allFindModel.list
+                                     ];
             for (int i = 0; i < array.count; i++) {
                 NOVbookMessage *model = [[NOVbookMessage alloc] initWithDictionary:array[i] error:nil];
                 [self.followModelArray addObject:model];

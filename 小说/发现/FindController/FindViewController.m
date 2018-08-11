@@ -60,15 +60,14 @@
     NSLog(@"obtainBookList");
     NOVObtainBookList *obtainBookList = [[NOVObtainBookList alloc] init];
     [obtainBookList obtainBookListWithType:listType succeed:^(id responseObject) {
-        NOVAllBookMesssage *allFindModel = [[NOVAllBookMesssage alloc] initWithDictionary:responseObject error:nil];
-        NSMutableArray *array = [NSMutableArray arrayWithArray:allFindModel.data];
-        NSLog(@"%lu",(unsigned long)array.count);
+        NOVAllBookMesssage *allFindModel = [[NOVAllBookMesssage alloc] initWithDictionary:responseObject[@"data"] error:nil];
+        NSMutableArray *array = [NSMutableArray arrayWithArray:allFindModel.list];
         for (int i = 0; i < array.count; i++) {
             [judge addObject:@NO];
             NOVbookMessage *model = [[NOVbookMessage alloc] initWithDictionary:array[i] error:nil];
-            model.createUser = [[NOVBookStartUser alloc] initWithDictionary:array[i][@"createUser"] error:nil];
+            model.author = [[NOVBookStartUser alloc] initWithDictionary:array[i][@"author"] error:nil];
+            NSLog(@"name:%@ bookID:%ld username:%@",model.bookName,(long)model.bookId,model.author.username);
             [_bookArray addObject:model];
-            NSLog(@"name:%@ bookID:%ld",model.bookName,(long)model.bookId);
         }
         [_findView.todayPromotionView.tableView reloadData];
     } fail:^(NSError *error) {

@@ -6,12 +6,10 @@
 //  Copyright © 2018年 李飞艳. All rights reserved.
 //
 
-#import "NOVSignupView.h"
+#import "NOVRegisterView.h"
 #import "Masonry.h"
 
-@implementation NOVSignupView{
-    UITextField *editingTextField;
-}
+@implementation NOVRegisterView
 
 -(instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
@@ -25,8 +23,8 @@
         _verifyeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self addSubview:_verifyeButton];
         
-        _nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self addSubview:_nextButton];
+        _nextStepButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self addSubview:_nextStepButton];
         
         _quit = [UIButton buttonWithType:UIButtonTypeCustom];
         [self addSubview:_quit];
@@ -71,8 +69,8 @@
     [_accountTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(self.frame.size.height*0.36);
         make.height.equalTo(self).multipliedBy(0.06);
-        make.width.equalTo(self).multipliedBy(0.7);
-        make.centerX.equalTo(self);
+        make.width.equalTo(self).multipliedBy(0.43);
+        make.left.equalTo(_verifyTextfield);
     }];
     _accountTextField.placeholder = @"请输入手机号";
     [self setTextField:_accountTextField];
@@ -80,31 +78,34 @@
     [_verifyeButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(_accountTextField);
         make.height.equalTo(_accountTextField).multipliedBy(0.8);
-        make.right.equalTo(_accountTextField);
-        make.width.equalTo(_accountTextField).multipliedBy(0.25);
+        make.right.equalTo(self).offset(self.frame.size.width*0.15*-1);
+        make.width.equalTo(self).multipliedBy(0.2);
     }];
     [_verifyeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
     [_verifyeButton.titleLabel setFont:[UIFont systemFontOfSize:11]];
     [_verifyeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    _verifyeButton.titleLabel.textAlignment = NSTextAlignmentRight;
+    _verifyeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     _verifyeButton.backgroundColor = [UIColor clearColor];
     
     [_verifyTextfield mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_accountTextField.mas_bottom).offset(self.frame.size.height*0.02);
         make.height.equalTo(_accountTextField);
-        make.left.and.right.equalTo(_accountTextField);
+        make.width.equalTo(self).multipliedBy(0.67);
+        make.centerX.equalTo(self);
     }];
     _verifyTextfield.placeholder = @"请输入验证码";
     [self setTextField:_verifyTextfield];
 
-    _nextButton.backgroundColor = [UIColor colorWithRed:0.15 green:0.65 blue:0.6 alpha:1.00];
-    [_nextButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    _nextStepButton.backgroundColor = [UIColor colorWithRed:0.15 green:0.65 blue:0.6 alpha:1.00];
+    [_nextStepButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.verifyTextfield.mas_bottom).offset(self.frame.size.height*0.025);
         make.height.equalTo(_accountTextField);
         make.width.equalTo(self).multipliedBy(0.65);
         make.centerX.equalTo(self);
     }];
-    [_nextButton setTitle:@"下一步" forState:UIControlStateNormal];
-    [_nextButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
+    [_nextStepButton setTitle:@"下一步" forState:UIControlStateNormal];
+    [_nextStepButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
 }
 
 - (void)setTextField:(UITextField *)textField{
@@ -112,8 +113,10 @@
     [textField setFont:[UIFont systemFontOfSize:15]];
 }
 
+
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    [editingTextField resignFirstResponder];
+    [_accountTextField resignFirstResponder];
+    [_verifyTextfield resignFirstResponder];
 }
 
 - (void)drawRect:(CGRect)rect{
@@ -135,7 +138,7 @@
     UIColor *color1 = [UIColor lightGrayColor];
     [color1 set];
     UIBezierPath *path1 = [UIBezierPath bezierPath];
-    path1.lineWidth = 2.0;
+    path1.lineWidth = 0.7;
     path1.lineJoinStyle = kCGLineCapButt;
     [path1 moveToPoint:CGPointMake(width*0.15, height*0.42)];
     [path1 addLineToPoint:CGPointMake(width*0.85, height*0.42)];
@@ -148,10 +151,10 @@
     UIColor *color2 = [UIColor lightGrayColor];
     [color2 set];
     UIBezierPath *path2 = [UIBezierPath bezierPath];
-    path2.lineWidth = 1.0;
+    path2.lineWidth = 0.5;
     path2.lineJoinStyle = kCGLineCapButt;
-    [path2 moveToPoint:CGPointMake(width*(0.85-0.7*0.26), height*0.37)];
-    [path2 addLineToPoint:CGPointMake(width*(0.85-0.7*0.26), height*0.41)];
+    [path2 moveToPoint:CGPointMake(width*0.65, height*0.37)];
+    [path2 addLineToPoint:CGPointMake(width*0.65, height*0.41)];
     [path2 stroke];
 }
 

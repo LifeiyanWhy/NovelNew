@@ -204,9 +204,8 @@
 - (void)updateCellWithModel:(NOVbookMessage*)model{
     _titleLabel.text = model.bookName;
     _contentLabel.text = model.content;
-    _authorLabel.text = model.createUser.username;
-//    _writeNumber.text = [NSString stringWithFormat:@"已参与人数:%ld人",(long)model.writeNum];
-    _writeNumber.text = [NSString stringWithFormat:@"13人"];
+    _authorLabel.text = model.author.username;
+    _writeNumber.text = [NSString stringWithFormat:@"已参与人数:%ld人",(long)model.branchNum];
     _startContentLabel.text = @"startXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
     _updateContentLabel.text = @"updateXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
     [_leftImageView setImage:[UIImage imageNamed:@"bookimage.jpg"]];

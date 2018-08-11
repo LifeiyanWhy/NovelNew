@@ -12,8 +12,13 @@
 -(instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
-        _tableView = [[UITableView alloc] initWithFrame:frame];
+        _tableView = [[UITableView alloc] init];
         [self addSubview:_tableView];
+        [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.and.bottom.equalTo(self);
+            make.width.equalTo(self).multipliedBy(0.92);
+            make.centerX.equalTo(self);
+        }];
         _tableView.backgroundColor = [UIColor clearColor];
     }
     return self;

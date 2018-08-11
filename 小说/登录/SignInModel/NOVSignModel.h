@@ -7,27 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
-
 typedef void(^successBlock)(id  _Nullable responseObject);
-
 typedef void(^failBlock)(NSError * _Nonnull error);
-
 @interface NOVSignModel : NSObject
-
+//获取图形验证码
 -(void)getVeritysuccess:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
-
 //账号密码注册
--(void)signUpWithAccount:(NSString *_Nonnull)account username:(NSString *_Nonnull)username passward:(NSString *_Nullable)password success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
-
+-(void)signUpWithAccount:(NSString *_Nonnull)account username:(NSString *_Nonnull)username passward:(NSString *_Nullable)password verity:(NSString *)verity success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
 //账号密码登录
 -(void)loginWithAccount:(NSString *_Nonnull)account password:(NSString *_Nonnull)password verity:(NSString *)verity success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
-
 //获取关注列表
 -(void)obtainFollowList;
-
 //获取用户信息
 -(void)getUserMessageSuccess:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
-
 +(void)changeUserSignText:(NSString *_Nonnull)signText success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
-
+//获取短信验证码
+-(void)getPhoneVerityWithPhoneNum:(NSString *_Nonnull)phoneNum success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
 @end

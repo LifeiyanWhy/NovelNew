@@ -12,7 +12,7 @@
 @class NOVChapterModel;
 
 @interface NOVChapterReadModel : NSObject<NSCoding>
-@property(nonatomic,strong) NSString *chapterTitle; //章节名称
+@property(nonatomic,copy) NSString *chapterTitle; //章节名称
 @property(nonatomic,assign) NSInteger chapterId;    //章节ID
 @property(nonatomic,assign) NSInteger chapterNumber;    //章节次序
 @end

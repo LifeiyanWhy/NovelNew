@@ -12,18 +12,23 @@
 
 @interface NOVChapterAuthor : JSONModel<NSCopying,NSCoding>
 @property(nonatomic,assign) NSInteger userId;
-@property(nonatomic,strong) NSString *username;
-@property(nonatomic,strong) NSString *account;
+@property(nonatomic,copy) NSString *username;
+@property(nonatomic,copy) NSString *account;
 @end
 
 @interface NOVChapterModel : JSONModel<NSCopying,NSCoding>
 @property(nonatomic,assign) NSInteger branchId;
-@property(nonatomic,strong) NSString *title;
+@property(nonatomic,copy) NSString *title;
 @property(nonatomic,strong) NOVChapterAuthor *author;
-@property(nonatomic,strong) NSString *content;
+@property(nonatomic,copy) NSString *createTime;
+@property(nonatomic,copy) NSString *summary;
+@property(nonatomic,assign) NSInteger likeNum;
+@property(nonatomic,assign) NSInteger dislikeNum;
+@property(nonatomic,assign) NSInteger parentId;
+@property(nonatomic,copy) NSString *content;
 @end
 
 @interface NOVObtainChapterModel : JSONModel
 @property(nonatomic,assign) NSInteger status;
-@property(nonatomic,strong) NOVChapterModel *data;
+@property(nonatomic,copy) NOVChapterModel *data;
 @end

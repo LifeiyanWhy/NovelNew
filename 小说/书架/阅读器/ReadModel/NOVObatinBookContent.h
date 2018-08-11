@@ -13,11 +13,8 @@ typedef void(^failBlock)(NSError* error);
 
 @interface NOVObatinBookContent : NSObject
 
-//获取书的内容
--(void)ObtainBookContenWithBranchId:(NSInteger)branchId succeed:(succeedBlock)succeedBlock fail:(failBlock)failBlock;
-
-//获取章节信息
--(void)ObtainChapterWithBookId:(NSInteger)bookId ParentId:(NSInteger)parentId succeed:(succeedBlock)succeedBlock fail:(failBlock)failBlock;
+//获取章节内容
+-(void)getChapterModelWithBranchId:(NSInteger)branchId succeed:(succeedBlock _Nullable)succeedBlock fail:(failBlock _Nullable)failBlock;
 
 //关注一本书
 -(void)followBookWithBookId:(NSInteger)bookId succeed:(succeedBlock)succeedBlock fail:(failBlock)failBlock;
@@ -26,5 +23,7 @@ typedef void(^failBlock)(NSError* error);
 
 //获取首段ID
 -(void)getBookFirstChapterIdWithBookID:(NSInteger)bookId succeed:(succeedBlock)succeedBlock fail:(failBlock)failBlock;
+//根据段落ID获取本段续写列表
+-(void)getRenewListWithBookId:(NSInteger)bookId ParentId:(NSInteger)parentId succeed:(succeedBlock _Nullable)succeedBlock fail:(failBlock _Nullable)failBlock;
 
 @end

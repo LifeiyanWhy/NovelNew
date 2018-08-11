@@ -18,6 +18,7 @@
 #import "NOVWriteViewController.h"
 #import "NOVRenewModel.h"
 #import "NOVStartManager.h"
+#import "NOVNextChapterViewController.h"
 
 @interface NOVReadNovelViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate,UIGestureRecognizerDelegate>
 @property(nonatomic,strong) UIPageViewController *pageViewController;
@@ -50,6 +51,7 @@
         _recordModel = [NOVRecordModel getRecordModelFromLocalWithBookId:_bookMessage.bookId];
         if (!_recordModel) {
             obatinBookContent = [[NOVObatinBookContent alloc] init];
+            //获取首段ID
             [obatinBookContent getBookFirstChapterIdWithBookID:_bookMessage.bookId succeed:^(id responseObject) {
                 NSNumber *number = responseObject[@"data"][0][@"branchId"];
                 [self obtainChapterContentWithBranchId:[number integerValue]];
@@ -69,8 +71,8 @@
 }
 
 //获取章节内容
--(void)obtainChapterContentWithBranchId:(NSInteger)branch{
-    [obatinBookContent ObtainBookContenWithBranchId:branch succeed:^(id responseObject) {
+-(void)obtainChapterContentWithBranchId:(NSInteger)branchId{
+    [obatinBookContent getChapterModelWithBranchId:branchId succeed:^(id responseObject) {
         //当前阅读章节
         [self.recordModel updateChapterModel:[[NOVChapterModel alloc] initWithDictionary:responseObject[@"data"] error:nil]];
         currentPage = 0;
@@ -240,9 +242,9 @@
         renewModel.content = content;
         NOVStartManager *startManager = [[NOVStartManager alloc] init];
         [startManager publishRenewWithRenewModel:renewModel success:^(id  _Nonnull responseObject) {
-            
+            NSLog(@"%@",responseObject);
         } fail:^(NSError * _Nonnull error) {
-            
+            NSLog(@"%@",error);
         }];
     };
     [self.navigationController pushViewController:writeViewController animated:NO];
@@ -253,7 +255,10 @@
 }
 
 -(void)nextChapter{
-    
+    NOVNextChapterViewController *nextChapterViewControler = [[NOVNextChapterViewController alloc] init];
+    nextChapterViewControler.parentId = _recordModel.chapterModel.branchId;
+    nextChapterViewControler.bookId = _bookMessage.bookId;
+    [self.navigationController pushViewController:nextChapterViewControler animated:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated{

@@ -1,15 +1,14 @@
 //
-//  NOVSignUpNextView.m
+//  NOVRegisterNextStepView.m
 //  小说
 //
-//  Created by 李飞艳 on 2018/7/21.
+//  Created by 李飞艳 on 2018/8/10.
 //  Copyright © 2018年 李飞艳. All rights reserved.
 //
 
-#import "NOVSignUpNextView.h"
-#import "Masonry.h"
+#import "NOVRegisterNextStepView.h"
 
-@implementation NOVSignUpNextView
+@implementation NOVRegisterNextStepView
 - (instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
@@ -25,8 +24,8 @@
         _inputPswdAgain = [[UITextField alloc] init];
         [self addSubview:_inputPswdAgain];
         
-        _signUpButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self addSubview:_signUpButton];
+        _registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self addSubview:_registerButton];
         
         _imageView = [[UIImageView alloc] init];
         [self addSubview:_imageView];
@@ -75,7 +74,7 @@
     }];
     _usernameTextField.placeholder = @"请输入用户名";
     [self setTextField:_usernameTextField];
-
+    
     [_passwardTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_usernameTextField.mas_bottom).offset(self.frame.size.height*0.02);
         make.height.equalTo(_usernameTextField);
@@ -92,17 +91,18 @@
         make.left.and.right.equalTo(_usernameTextField);
     }];
     _inputPswdAgain.placeholder = @"请再次输入密码";
+    _inputPswdAgain.secureTextEntry = YES;
     [self setTextField:_inputPswdAgain];
     
-    _signUpButton.backgroundColor = [UIColor colorWithRed:0.15 green:0.65 blue:0.6 alpha:1.00];
-    [_signUpButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    _registerButton.backgroundColor = [UIColor colorWithRed:0.15 green:0.65 blue:0.6 alpha:1.00];
+    [_registerButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_inputPswdAgain.mas_bottom).offset(self.frame.size.height*0.05);
         make.height.equalTo(_usernameTextField).multipliedBy(0.9);
         make.width.equalTo(self).multipliedBy(0.65);
         make.centerX.equalTo(self);
     }];
-    [_signUpButton setTitle:@"注册" forState:UIControlStateNormal];
-    [_signUpButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
+    [_registerButton setTitle:@"注册" forState:UIControlStateNormal];
+    [_registerButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
 }
 
 - (void)setTextField:(UITextField *)textField{
@@ -111,8 +111,9 @@
 }
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    [_passwardTextField resignFirstResponder];
     [_usernameTextField resignFirstResponder];
+    [_passwardTextField resignFirstResponder];
+    [_inputPswdAgain resignFirstResponder];
 }
 
 - (void)drawRect:(CGRect)rect{
@@ -134,7 +135,7 @@
     UIColor *color1 = [UIColor lightGrayColor];
     [color1 set];
     UIBezierPath *path1 = [UIBezierPath bezierPath];
-    path1.lineWidth = 2.0;
+    path1.lineWidth = 0.7;
     path1.lineJoinStyle = kCGLineCapButt;
     [path1 moveToPoint:CGPointMake(width*0.15, height*0.42)];
     [path1 addLineToPoint:CGPointMake(width*0.85, height*0.42)];

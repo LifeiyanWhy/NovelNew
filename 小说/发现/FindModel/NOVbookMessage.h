@@ -9,31 +9,27 @@
 #import <JSONModel/JSONModel.h>
 //书的发起人
 @interface NOVBookStartUser :JSONModel
-
-@property(nonatomic,strong) NSString *username;
-
-@property(nonatomic,strong) NSString *account;
-
+@property(nonatomic,copy) NSString *account;
+@property(nonatomic,copy) NSString *username;
 @end
 
 @interface NOVbookMessage : JSONModel
-
+@property(nonatomic,strong) NOVBookStartUser *author;
 @property(nonatomic,assign) NSInteger bookId;
-
-@property(nonatomic,strong) NSString *bookName;
-
-@property(nonatomic,strong) NSString *content;
-
-@property(nonatomic,strong) NOVBookStartUser *createUser;
-
-//@property(nonatomic,assign) NSInteger writeNum;
-
+//@property(nonatomic,strong) UIImage *bookImage;
+@property(nonatomic,copy) NSString *bookName;
+@property(nonatomic,assign) NSInteger bookType;
+@property(nonatomic,assign) NSInteger branchNum;
+@property(nonatomic,copy) NSString *content;
+@property(nonatomic,copy) NSString *createTime;
+@property(nonatomic,assign) NSInteger readNum;
 @end
 
 @interface NOVAllBookMesssage : JSONModel
+@property(nonatomic,copy) NSArray <NOVbookMessage *>*list;
+@end
 
+@interface NOVbookData :JSONModel
 @property(nonatomic,assign) NSInteger status;
-
-@property(nonatomic,strong) NSArray<NOVbookMessage *>* data;
-
+@property(nonatomic,copy) NSDictionary *data;
 @end

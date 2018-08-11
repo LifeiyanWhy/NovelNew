@@ -107,12 +107,14 @@
     _verityTextField.placeholder = @"请输入验证码";
     [self setTextField:_passwardTextField];
     
-    _verityButton.backgroundColor = [UIColor whiteColor];
+    _verityButton.backgroundColor = [UIColor clearColor];
     [_verityButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.and.height.equalTo(_verityTextField);
         make.right.equalTo(self).offset(self.frame.size.width*0.15*-1);
         make.width.equalTo(self).multipliedBy(0.22);
     }];
+    _verityButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    _verityButton.layer.borderWidth = 0.5;
     
     _signinButton.backgroundColor = [UIColor colorWithRed:0.15 green:0.65 blue:0.6 alpha:1.00];
     [_signinButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -157,12 +159,13 @@
 - (void)setTextField:(UITextField *)textField{
     textField.backgroundColor = [UIColor clearColor];
     [textField setFont:[UIFont systemFontOfSize:15]];
-    textField.textColor = [UIColor grayColor];
+    textField.textColor = [UIColor blackColor];
 }
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     [_passwardTextField resignFirstResponder];
     [_accountTextField resignFirstResponder];
+    [_verityTextField resignFirstResponder];
 }
 
 - (void)drawRect:(CGRect)rect{

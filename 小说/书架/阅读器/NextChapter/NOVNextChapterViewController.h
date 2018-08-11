@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface NOVNextChapterViewController : UIViewController
-
+@property(nonatomic,assign) NSInteger bookId;
+@property(nonatomic,assign) NSInteger parentId;
 @end

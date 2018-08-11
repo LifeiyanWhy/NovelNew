@@ -9,8 +9,7 @@
 #import "ViewController.h"
 #import "NOVSigninView.h"
 #import "NOVSignModel.h"
-#import "NOVSignUpViewController.h"
-
+#import "NOVRegisterViewController.h"
 @interface ViewController ()<UITextFieldDelegate>
 @end
 
@@ -21,7 +20,6 @@
     // Do any additional setup after loading the view, typically from a nib.
     self.navigationController.navigationBar.hidden = YES;
     [self.view addSubview:self.signView];
-  
     [self getVerity];
 }
 
@@ -51,7 +49,7 @@
         [loginModel obtainFollowList];//获取关注列表
     } failure:^(NSError * _Nonnull error) {
         NSLog(@"登录失败===%@",error);
-        if (error.code == -1009) {
+        if (error.code == -1009 || error.code == 1005 || error.code == 1001) {
             [self showAlertActionWithTitle:@"网络不可用,请重试！"];
         }
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
@@ -59,13 +57,14 @@
         if ([[NSString stringWithFormat:@"%@",dict[@"status"]] isEqualToString:@"1"]) {
             [self showAlertActionWithTitle:[NSString stringWithFormat:@"%@!!!",dict[@"message"]]];
         }
+        [self getVerity];
     }];
 }
 
 //点击注册button后进入注册页面（在登录界面点击注册时执行）
 -(void)signUp{
-    NOVSignUpViewController *signUpViewController = [[NOVSignUpViewController alloc] init];
-    [self.navigationController pushViewController:signUpViewController animated:NO];
+    NOVRegisterViewController *registerViewcontroller = [[NOVRegisterViewController alloc] init];
+    [self.navigationController pushViewController:registerViewcontroller animated:NO];
 }
 
 -(NOVSigninView *)signView{
@@ -73,6 +72,7 @@
         _signView = [[NOVSigninView alloc] initWithFrame:self.view.frame];
         _signView.accountTextField.delegate = self;
         _signView.passwardTextField.delegate = self;
+        _signView.verityTextField.delegate = self;
         [_signView.signinButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
         [_signView.signupButton addTarget:self action:@selector(signUp) forControlEvents:UIControlEventTouchUpInside];
         [_signView.verityButton addTarget:self action:@selector(getVerity) forControlEvents:UIControlEventTouchUpInside];
@@ -92,12 +92,6 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
     return YES;
-}
-
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    [_signView.accountTextField resignFirstResponder];
-    [_signView.passwardTextField resignFirstResponder];
-    [_signView.verityTextField resignFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning {

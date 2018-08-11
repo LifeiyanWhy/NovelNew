@@ -8,7 +8,6 @@
 
 #import "NOVMyheadView.h"
 #import "Masonry.h"
-#import "NOVHeadView.h"
 
 @implementation NOVMyheadView{
     CGSize selfSize;

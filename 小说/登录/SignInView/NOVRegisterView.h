@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NOVSignupView : UIView
+@interface NOVRegisterView : UIView
 
 @property(nonatomic,strong) UITextField *accountTextField;
 
@@ -16,7 +16,7 @@
 
 @property(nonatomic,strong) UITextField *verifyTextfield;
 
-@property(nonatomic,strong) UIButton *nextButton;
+@property(nonatomic,strong) UIButton *nextStepButton;
 
 @property(nonatomic,strong) UIButton *quit;
 

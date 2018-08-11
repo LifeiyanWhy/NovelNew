@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 @class NOVUserMessage;
-
+@class NOVUserLoginMessageModel;
 @interface NOVDataModel : NSObject
 
 +(NOVDataModel *)shareInstance;
@@ -26,7 +26,13 @@
 +(void)updateLoginMessageAccount:(NSString *)account passward:(NSString *)passward;
 //获取用户账号
 +(NSString *)getUserAccount;
-//跟新用户信息
+//更新用户信息
 +(void)updateUserMessage:(NOVUserMessage *)userMessage;
+//获取用户信息
 +(NOVUserMessage *)getUserMessage;
+//+(void)updateCurrentUserMessageWithAccount:(NSString *)account password:(NSString *)password;
+////获取最近一次登录的用户
+//+(NOVUserLoginMessageModel *_Nullable)getLastUserMessage;
+////当用户退出登录时删除用户信息，若用户记住密码不删除账号密码信息
+//+(void)deleteLastUserLoginMessage;
 @end

@@ -62,14 +62,17 @@
     //    NSLog(@"=====HTTPRequestHeaders:%@",manager.requestSerializer.HTTPRequestHeaders);
 }
 
--(void)signUpWithAccount:(NSString *)account username:(NSString *)username passward:(NSString *)password success:(successBlock)successBlock failure:(failBlock)failBlock{
+-(void)signUpWithAccount:(NSString *_Nonnull)account username:(NSString *_Nonnull)username passward:(NSString *_Nullable)password verity:(NSString *)verity success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock{
     NSDictionary *parameters = @{@"username":username,
                                  @"account":account,
                                  @"password":password
                                  };
     NSString *urlString = @"http://47.95.207.40/branch/user/register";
+    NSString *deviceId = [[UIDevice currentDevice].identifierForVendor UUIDString];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:verity forHTTPHeaderField:@"validateCode"];
+    [manager.requestSerializer setValue:deviceId forHTTPHeaderField:@"deviceId"];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     [manager POST:urlString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -153,6 +156,21 @@
         failBlock(error);
     }];
 }
+
+-(void)getPhoneVerityWithPhoneNum:(NSString *_Nonnull)phoneNum success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock{
+    NSString *deviceId = [[UIDevice currentDevice].identifierForVendor UUIDString];
+    NSString *url = [NSString stringWithFormat:@"http://47.95.207.40/branch/code/phone?phoneNum=%@",phoneNum];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    [manager.requestSerializer setValue:deviceId forHTTPHeaderField:@"deviceId"];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [manager GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        successBlock(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failBlock(error);
+    }];
+}
+
 //修改用户信息
 +(void)changeUserSignText:(NSString *_Nonnull)signText success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock{
     NOVDataModel *datamodel = [NOVDataModel shareInstance];
@@ -173,7 +191,6 @@
         failBlock(error);
     }];
 }
-
 @end
 
 

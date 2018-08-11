@@ -20,3 +20,7 @@
 @implementation NOVAllBookMesssage
 
 @end
+
+@implementation NOVbookData
+
+@end
