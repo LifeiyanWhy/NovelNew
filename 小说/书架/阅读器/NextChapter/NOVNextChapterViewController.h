@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class NOVbookMessage;
 @interface NOVNextChapterViewController : UIViewController
-@property(nonatomic,assign) NSInteger bookId;
+@property(nonatomic,assign) NOVbookMessage *bookMessage;
 @property(nonatomic,assign) NSInteger parentId;
 @end

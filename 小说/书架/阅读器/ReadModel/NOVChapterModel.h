@@ -21,7 +21,7 @@
 @property(nonatomic,copy) NSString *title;
 @property(nonatomic,strong) NOVChapterAuthor *author;
 @property(nonatomic,copy) NSString *createTime;
-@property(nonatomic,copy) NSString *summary;
+//@property(nonatomic,copy) NSString *summary;
 @property(nonatomic,assign) NSInteger likeNum;
 @property(nonatomic,assign) NSInteger dislikeNum;
 @property(nonatomic,assign) NSInteger parentId;

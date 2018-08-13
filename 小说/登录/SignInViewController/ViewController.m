@@ -10,6 +10,8 @@
 #import "NOVSigninView.h"
 #import "NOVSignModel.h"
 #import "NOVRegisterViewController.h"
+#import "NOVDataModel.h"
+#import "NOVUserLoginMessageModel.h"
 @interface ViewController ()<UITextFieldDelegate>
 @end
 
@@ -20,6 +22,22 @@
     // Do any additional setup after loading the view, typically from a nib.
     self.navigationController.navigationBar.hidden = YES;
     [self.view addSubview:self.signView];
+    
+    NOVUserLoginMessageModel *model = [NOVDataModel getLastUserMessage];
+    if (model) {
+        if (model.isLogin) {//当前用户是登录状态
+            [NOVSignModel token];
+            //开始更新token
+            [NOVSignModel updateToken];
+            [self loginSucceed];
+            return;
+        }else{
+            _signView.accountTextField.text = model.account;
+            if (model.password) {
+                _signView.passwardTextField.text = model.password;
+            }
+        }
+    }
     [self getVerity];
 }
 
@@ -44,9 +62,7 @@
     NOVSignModel *loginModel = [[NOVSignModel alloc] init];
     [loginModel loginWithAccount:_signView.accountTextField.text  password:_signView.passwardTextField.text verity:_signView.verityTextField.text success:^(id  _Nullable responseObject) {
         NSLog(@"%@",responseObject);
-        //登录成功
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"signinSucceed" object:nil];
-        [loginModel obtainFollowList];//获取关注列表
+        [self loginSucceed];
     } failure:^(NSError * _Nonnull error) {
         NSLog(@"登录失败===%@",error);
         if (error.code == -1009 || error.code == 1005 || error.code == 1001) {
@@ -59,6 +75,12 @@
         }
         [self getVerity];
     }];
+}
+
+-(void)loginSucceed{
+    //登录成功
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"signinSucceed" object:nil];
+    [NOVSignModel obtainFollowList];//获取关注列表
 }
 
 //点击注册button后进入注册页面（在登录界面点击注册时执行）
@@ -81,9 +103,7 @@
 }
 
 - (void)showAlertActionWithTitle:(NSString *)title{
-    UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *messageAlert = [UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:nil];
-    [alertControl addAction:messageAlert];
+    UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *alert = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:nil];
     [alertControl addAction:alert];
     [self presentViewController:alertControl animated:YES completion:nil];

@@ -19,23 +19,9 @@
 #import "NOVSignModel.h"
 #import <AFNetworking.h>
 #import "NOVDataModel.h"
+#import "NOVUserLoginMessageModel.h"
 
 @implementation NOVSignModel
-
--(void)getVeritysuccess:(successBlock)successBlock failure:(failBlock)failBlock{
-    NSString *url = @"http://47.95.207.40/branch/code/image";
-    NSString *identifierForVendor = [[UIDevice currentDevice].identifierForVendor UUIDString];
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    [manager.requestSerializer setValue:identifierForVendor forHTTPHeaderField:@"deviceId"];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    [manager GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        successBlock(responseObject);
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        failBlock(error);
-    }];
-    
-}
 
 -(void)loginWithAccount:(NSString *_Nonnull)account password:(NSString *_Nonnull)password verity:(NSString *)verity success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock{
     NSString *identifierForVendor = [[UIDevice currentDevice].identifierForVendor UUIDString];
@@ -50,16 +36,48 @@
     [manager.requestSerializer setValue:identifierForVendor forHTTPHeaderField:@"deviceId"];
     [manager.requestSerializer setValue:verity forHTTPHeaderField:@"validateCode"];
     [manager POST:urlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [NOVDataModel updateLoginMessageAccount:account passward:password];
+        NOVUserLoginMessageModel *model = [[NOVUserLoginMessageModel alloc] initWithAccount:account password:password isLogin:YES];
+        [NOVDataModel updateCurrentUserWithLoginMessage:model];
         NOVDataModel *datamodel = [NOVDataModel shareInstance];
         //将登录成功后获取到的token存储到沙盒中
         [datamodel updateToken:responseObject[@"access_token"] refreshToken:responseObject[@"refresh_token"]];
-        [self updateToken];
+        [NOVSignModel updateToken];
         successBlock(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         failBlock(error);
     }];
     //    NSLog(@"=====HTTPRequestHeaders:%@",manager.requestSerializer.HTTPRequestHeaders);
+}
+
++(void)updateToken{
+    //每两个小时重新获取一次token
+    NSTimer *timer = [NSTimer timerWithTimeInterval:7199.0 target:self selector:@selector(token) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+}
+
+//获取token
++(void)token{
+    NOVDataModel *datamodel = [NOVDataModel shareInstance];
+    NSString *refresh_token = [datamodel getRefreshToken];
+    NSData *refreshData = [refresh_token dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *url = @"http://47.95.207.40/branch/oauth/token";
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"Basic YnJhbmNoOnhpeW91M2c=" forHTTPHeaderField:@"Authorization"];
+    [manager POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        [formData appendPartWithFormData:[@"refresh_token" dataUsingEncoding:NSUTF8StringEncoding] name:@"grant_type"];
+        [formData appendPartWithFormData:refreshData name:@"refresh_token"];
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        NSLog(@"%@",dict);
+        NOVDataModel *datamodel = [NOVDataModel shareInstance];
+        //获取到token后更新沙盒中的数据
+        [datamodel updateToken:dict[@"access_token"] refreshToken:dict[@"refresh_token"]];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"获取token失败:%@",error);
+    }];
 }
 
 -(void)signUpWithAccount:(NSString *_Nonnull)account username:(NSString *_Nonnull)username passward:(NSString *_Nullable)password verity:(NSString *)verity success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock{
@@ -84,39 +102,8 @@
     }];
 }
 
--(void)updateToken{
-    //每两个小时重新获取一次token
-    NSTimer *timer = [NSTimer timerWithTimeInterval:7199.0 target:self selector:@selector(token) userInfo:nil repeats:YES];
-    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
-}
-
-//获取token
--(void)token{
-    NOVDataModel *datamodel = [NOVDataModel shareInstance];
-    NSString *refresh_token = [datamodel getRefreshToken];
-    NSData *refreshData = [refresh_token dataUsingEncoding:NSUTF8StringEncoding];
-    NSString *url = @"http://47.95.207.40/branch/oauth/token";
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    [manager.requestSerializer setValue:@"Basic YnJhbmNoOnhpeW91M2c=" forHTTPHeaderField:@"Authorization"];
-    [manager POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-    [formData appendPartWithFormData:[@"refresh_token" dataUsingEncoding:NSUTF8StringEncoding] name:@"grant_type"];
-    [formData appendPartWithFormData:refreshData name:@"refresh_token"];
-    } progress:^(NSProgress * _Nonnull uploadProgress) {
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-        NSLog(@"%@",dict);
-        NOVDataModel *datamodel = [NOVDataModel shareInstance];
-        //获取到token后更新沙盒中的数据
-        [datamodel updateToken:dict[@"access_token"] refreshToken:dict[@"refresh_token"]];
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"获取token失败:%@",error);
-    }];
-}
-
 //获取关注列表
--(void)obtainFollowList{
++(void)obtainFollowList{
     NOVDataModel *datamodel = [NOVDataModel shareInstance];
     NSString *token = [NSString stringWithFormat:@"Bearer %@",[datamodel getToken]];
     NSString *url = @"http://47.95.207.40/branch/user/focusOn/book";
@@ -139,18 +126,14 @@
     }];
 }
 
-//获取用户信息
--(void)getUserMessageSuccess:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock{
-    NOVDataModel *datamodel = [NOVDataModel shareInstance];
-    NSString *token = [NSString stringWithFormat:@"Bearer %@",[datamodel getToken]];
-    NSString *url = @"http://47.95.207.40/branch/me";
-    
-    AFHTTPSessionManager *manger = [AFHTTPSessionManager manager];
-    manger.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manger.responseSerializer = [AFJSONResponseSerializer serializer];
-    [manger.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
-    [manger GET:url parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+-(void)getVeritysuccess:(successBlock)successBlock failure:(failBlock)failBlock{
+    NSString *url = @"http://47.95.207.40/branch/code/image";
+    NSString *identifierForVendor = [[UIDevice currentDevice].identifierForVendor UUIDString];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    [manager.requestSerializer setValue:identifierForVendor forHTTPHeaderField:@"deviceId"];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [manager GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         successBlock(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         failBlock(error);
@@ -170,7 +153,23 @@
         failBlock(error);
     }];
 }
-
+//获取用户信息
+-(void)getUserMessageSuccess:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock{
+    NOVDataModel *datamodel = [NOVDataModel shareInstance];
+    NSString *token = [NSString stringWithFormat:@"Bearer %@",[datamodel getToken]];
+    NSString *url = @"http://47.95.207.40/branch/me";
+    
+    AFHTTPSessionManager *manger = [AFHTTPSessionManager manager];
+    manger.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manger.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manger.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
+    [manger GET:url parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        successBlock(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failBlock(error);
+    }];
+}
 //修改用户信息
 +(void)changeUserSignText:(NSString *_Nonnull)signText success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock{
     NOVDataModel *datamodel = [NOVDataModel shareInstance];

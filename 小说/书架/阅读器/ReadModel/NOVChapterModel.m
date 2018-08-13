@@ -49,7 +49,7 @@
     [aCoder encodeObject:self.title forKey:@"title"];
     [aCoder encodeObject:self.author forKey:@"author"];
     [aCoder encodeObject:self.createTime forKey:@"createTime"];
-    [aCoder encodeObject:self.summary forKey:@"summary"];
+//    [aCoder encodeObject:self.summary forKey:@"summary"];
     [aCoder encodeInteger:self.likeNum forKey:@"likeNum"];
     [aCoder encodeInteger:self.dislikeNum forKey:@"dislikeNum"];
     [aCoder encodeInteger:self.parentId forKey:@"parentId"];
@@ -61,7 +61,7 @@
     self.title = [aDecoder decodeObjectForKey:@"title"];
     self.author = [aDecoder decodeObjectForKey:@"author"];
     self.createTime = [aDecoder decodeObjectForKey:@"createTime"];
-    self.summary = [aDecoder decodeObjectForKey:@"summary"];
+//    self.summary = [aDecoder decodeObjectForKey:@"summary"];
     self.likeNum = [aDecoder decodeIntegerForKey:@"likeNum"];
     self.dislikeNum = [aDecoder decodeIntegerForKey:@"dislikeNum"];
     self.parentId = [aDecoder decodeIntegerForKey:@"parentId"];

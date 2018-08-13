@@ -66,13 +66,11 @@
     NOVObtainBookshelfModel *model = [[NOVObtainBookshelfModel alloc] init];
     if (page == 0) {    //获取关注列表
         [model obtainFollowBookListSucceed:^(id  _Nullable responseObject) {
-            NOVAllBookMesssage *allFindModel = [[NOVAllBookMesssage alloc] initWithDictionary:responseObject error:nil];
-            NSMutableArray *array = [NSMutableArray arrayWithArray:allFindModel.list
-                                     ];
+            NSMutableArray *array = [NSMutableArray arrayWithArray:responseObject[@"data"]];
             for (int i = 0; i < array.count; i++) {
                 NOVbookMessage *model = [[NOVbookMessage alloc] initWithDictionary:array[i] error:nil];
                 [self.followModelArray addObject:model];
-                NSLog(@"name:%@ bookID:%ld",model.bookName,(long)model.bookId);
+                NSLog(@"关注name:%@ bookID:%ld",model.bookName,(long)model.bookId);
             }
             [_sjview.followView.tableView reloadData];
             isLoadArray[page] = @YES;
@@ -157,6 +155,7 @@
     NOVReadNovelViewController *readNovelViewController = [[NOVReadNovelViewController alloc] init];
     readNovelViewController.hidesBottomBarWhenPushed = YES;
     readNovelViewController.bookMessage = self.followModelArray[indexPath.section];
+    readNovelViewController.readType = NOVReadTypeReadFromHomePage;
     [self.navigationController pushViewController:readNovelViewController animated:NO];
 }
 

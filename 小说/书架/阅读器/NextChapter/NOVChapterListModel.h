@@ -15,6 +15,7 @@
 @end
 
 @interface NOVChapterListModel : JSONModel
+@property(nonatomic,assign) NSInteger branchId;
 @property(nonatomic,copy) NSString *title;
 @property(nonatomic,strong) NSString *createTime;
 @property(nonatomic,copy) NSString *summary;

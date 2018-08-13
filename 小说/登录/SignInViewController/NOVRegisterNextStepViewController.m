@@ -68,9 +68,7 @@
 }
 
 - (void)showAlertActionWithTitle:(NSString *)title{
-    UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *messageAlert = [UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:nil];
-    [alertControl addAction:messageAlert];
+    UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *alert = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:nil];
     [alertControl addAction:alert];
     [self presentViewController:alertControl animated:YES completion:nil];

@@ -25,6 +25,7 @@
 @property(nonatomic,strong) NOVReadPageViewController *readViewController;//当前阅读视图
 @property(nonatomic,strong) NOVReadEditVIew *readEditView;
 @property(nonatomic,strong) NOVReadEndView *readEndView;//当前所在章节阅读结束时显示
+@property(nonatomic,assign) NOVPageChangeType pageChangeType;
 @end
 
 @implementation NOVReadNovelViewController{
@@ -46,38 +47,51 @@
     [self.view addSubview:self.readEditView];
     currentPage = -1;
     
-    if (_bookMessage) {
-        //根据bookId在本地查找是否已有阅读数据
-        _recordModel = [NOVRecordModel getRecordModelFromLocalWithBookId:_bookMessage.bookId];
-        if (!_recordModel) {
-            obatinBookContent = [[NOVObatinBookContent alloc] init];
-            //获取首段ID
-            [obatinBookContent getBookFirstChapterIdWithBookID:_bookMessage.bookId succeed:^(id responseObject) {
-                NSNumber *number = responseObject[@"data"][0][@"branchId"];
-                [self obtainChapterContentWithBranchId:[number integerValue]];
-            } fail:^(NSError *error) {
-            }];
-        }else{
-            currentPage = _recordModel.page;
-            //将获取到的文本self示到当前controller上
-            [_pageViewController setViewControllers:@[[self readViewControllerWithChapter:_recordModel.chapterModel position:currentPage]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
-        }
-        if (currentPage == _recordModel.pageCount -1) {
-            _readEndView.hidden = NO;
-        }
+    if (_readType == NOVReadTypeReadFromSelectRenewChapter) {   //从选择章节界面进入则直接获取该续写章节
+        _recordModel = [NOVRecordModel getRecordModelFromLocalWithBookId:_bookMessage.bookId];//获取到阅读记录
+        _recordModel.chapter++;
+        obatinBookContent = [[NOVObatinBookContent alloc] init];
+        [self obtainChapterContentWithBranchId:_selectChapterId];
     }else{
-        NSLog(@"未获取到作品信息");
+        if (_bookMessage) {
+            //根据bookId在本地查找是否已有阅读数据
+            _recordModel = [NOVRecordModel getRecordModelFromLocalWithBookId:_bookMessage.bookId];
+            if (!_recordModel) {
+                obatinBookContent = [[NOVObatinBookContent alloc] init];
+                self.recordModel.chapter = 1;
+                //获取首段ID
+                [obatinBookContent getBookFirstChapterIdWithBookID:_bookMessage.bookId succeed:^(id responseObject) {
+                    NSNumber *number = responseObject[@"data"][0][@"branchId"];
+                    [self obtainChapterContentWithBranchId:[number integerValue]];
+                } fail:^(NSError *error) {
+                }];
+            }else{
+                currentPage = _recordModel.page;
+                //将获取到的文本self示到当前controller上
+                [_pageViewController setViewControllers:@[[self readViewControllerWithChapter:_recordModel.chapterModel position:currentPage]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+                if (currentPage == _recordModel.pageCount -1) {
+                    _readEndView.hidden = NO;
+                }
+            }
+        }else{
+            NSLog(@"未获取到作品信息");
+        }
     }
 }
 
 //获取章节内容
 -(void)obtainChapterContentWithBranchId:(NSInteger)branchId{
+    NSLog(@"%ld",(long)branchId);
     [obatinBookContent getChapterModelWithBranchId:branchId succeed:^(id responseObject) {
-        //当前阅读章节
+        NSLog(@"%@",responseObject);
+        //当前阅读章节，对获取到的章节内容进行分页
         [self.recordModel updateChapterModel:[[NOVChapterModel alloc] initWithDictionary:responseObject[@"data"] error:nil]];
         currentPage = 0;
         //将获取到的文本self示到当前controller上
         [_pageViewController setViewControllers:@[[self readViewControllerWithChapter:_recordModel.chapterModel position:currentPage]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+        if (currentPage == _recordModel.pageCount -1) {
+            _readEndView.hidden = NO;
+        }
     } fail:^(NSError *error) {
         NSLog(@"%@",error);
     }];
@@ -99,11 +113,9 @@
     _readEndView.hidden = YES;
     if (currentPage == 0) {
         return nil;
-    }else{
-        currentPage--;
-        _recordModel.page = currentPage;
     }
-    return [self readViewControllerWithChapter:_recordModel.chapterModel position:currentPage];
+    _pageChangeType = NOVPageChangeTypeBefore;
+    return [self readViewControllerWithChapter:_recordModel.chapterModel position:currentPage - 1];
 }
 
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController{
@@ -113,14 +125,21 @@
     }
     if (currentPage == _recordModel.pageCount - 1) {//已经到最后一页,不再翻页
         return nil;
-    }else{
-        currentPage++;
-        _recordModel.page = currentPage;
     }
-    return [self readViewControllerWithChapter:_recordModel.chapterModel position:currentPage];
+    _pageChangeType = NOVPageChangeTypeAfter;
+    return [self readViewControllerWithChapter:_recordModel.chapterModel position:currentPage + 1];
 }
 //翻页后执行
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed{
+    if (completed) {
+        if (_pageChangeType == NOVPageChangeTypeAfter && currentPage != _recordModel.pageCount - 1) {//向后翻页
+            currentPage++;
+            _recordModel.page = currentPage;
+        }else if(_pageChangeType == NOVPageChangeTypeBefore && currentPage != 0){  //向前翻页
+            currentPage--;
+            _recordModel.page = currentPage;
+        }
+    }
     if (currentPage == _recordModel.pageCount - 1) {//最后一页
         _readEndView.hidden = NO;
     }
@@ -155,6 +174,7 @@
     [_readEditView.rightButton addTarget:self action:@selector(touchRightButton) forControlEvents:UIControlEventTouchUpInside];
     [_readEditView.collectionButton addTarget:self action:@selector(touchCollectionButton:) forControlEvents:UIControlEventTouchUpInside];
     [_readEditView.followButton addTarget:self action:@selector(touchFollowButton:) forControlEvents:UIControlEventTouchUpInside];
+    [_readEditView.nextChapterButton addTarget:self action:@selector(nextChapter) forControlEvents:UIControlEventTouchUpInside];
     if (_readEditView.hidden) {
         [_readEditView displayMenu:self.view];
     }else{
@@ -226,7 +246,7 @@
         _readEndView.hidden = YES;
         [_readEndView.renewButton addTarget:self action:@selector(renew) forControlEvents:UIControlEventTouchUpInside];
         [_readEndView.likeButton addTarget:self action:@selector(like) forControlEvents:UIControlEventTouchUpInside];
-        [_readEndView.nextChapterButton addTarget:self action:@selector(nextChapter) forControlEvents:UIControlEventTouchUpInside];
+        [_readEndView.disLikeButton addTarget:self action:@selector(disLike) forControlEvents:UIControlEventTouchUpInside];
     }
     return _readEndView;
 }
@@ -242,7 +262,7 @@
         renewModel.content = content;
         NOVStartManager *startManager = [[NOVStartManager alloc] init];
         [startManager publishRenewWithRenewModel:renewModel success:^(id  _Nonnull responseObject) {
-            NSLog(@"%@",responseObject);
+//            NSLog(@"%@",responseObject);
         } fail:^(NSError * _Nonnull error) {
             NSLog(@"%@",error);
         }];
@@ -254,10 +274,18 @@
     
 }
 
+-(void)disLike{
+    
+}
+
 -(void)nextChapter{
+    if (_recordModel) {
+        NSLog(@"保存！");
+        [NOVRecordModel updateLocalRecordModel:_recordModel];//退出前存储本次阅读记录
+    }
     NOVNextChapterViewController *nextChapterViewControler = [[NOVNextChapterViewController alloc] init];
     nextChapterViewControler.parentId = _recordModel.chapterModel.branchId;
-    nextChapterViewControler.bookId = _bookMessage.bookId;
+    nextChapterViewControler.bookMessage = _bookMessage;
     [self.navigationController pushViewController:nextChapterViewControler animated:NO];
 }
 

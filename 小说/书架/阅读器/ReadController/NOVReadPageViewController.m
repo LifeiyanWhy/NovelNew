@@ -26,7 +26,7 @@
 
 -(NOVReadNovelView *)readNovelView{
     if (!_readNovelView) {
-        _readNovelView = [[NOVReadNovelView alloc] initWithFrame:CGRectMake(20, 40, self.view.frame.size.width-40, self.view.frame.size.height - 80)];
+        _readNovelView = [[NOVReadNovelView alloc] initWithFrame:CGRectMake(20, 60, self.view.frame.size.width-40, self.view.frame.size.height - 120)];
         _readNovelView.backgroundColor = [UIColor clearColor];
         NOVReadConfig *config = [NOVReadConfig shareInstance];
         _readNovelView.frameRef = [NOVReadParser loadParserWithContent:_content config:config bounds:CGRectMake(0,0, _readNovelView.frame.size.width, _readNovelView.frame.size.height)];

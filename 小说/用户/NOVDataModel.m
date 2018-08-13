@@ -7,7 +7,7 @@
 //
 
 #import "NOVDataModel.h"
-
+#import "NOVUserLoginMessageModel.h"
 @implementation NOVDataModel
 
 static NOVDataModel *datamodel = nil;
@@ -27,6 +27,33 @@ static NOVDataModel *datamodel = nil;
     return datamodel;
 }
 
++(void)updateCurrentUserWithLoginMessage:(NOVUserLoginMessageModel *)userMessage{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:userMessage.account forKey:@"account"];
+    [userDefaults setObject:userMessage.password forKey:@"password"];
+    [userDefaults setBool:userMessage.isLogin forKey:@"isLogin"];
+    [userDefaults synchronize];
+}
+
++(NOVUserLoginMessageModel *_Nullable)getLastUserMessage{
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSString *account = [userDefault objectForKey:@"account"];
+    if (!account) {
+        return NULL;
+    }
+    NSString *password = [userDefault objectForKey:@"password"];
+    BOOL isLogin = [userDefault boolForKey:@"isLogin"];
+    return [[NOVUserLoginMessageModel alloc] initWithAccount:account password:password isLogin:isLogin];
+}
+
++(NSString *)getUserAccount{
+    NSArray *array = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentPath = [array objectAtIndex:0];
+    NSString *loginMessagePath = [documentPath stringByAppendingPathComponent:@"loginMessage.txt"];
+    NSArray *dataArray = [[NSArray alloc] initWithContentsOfFile:loginMessagePath];
+    return dataArray[0];
+}
+
 -(void)updateToken:(NSString *)token refreshToken:(NSString *)refreshToken{
     //获取到沙盒路径
     NSArray *array = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -39,38 +66,7 @@ static NOVDataModel *datamodel = nil;
     [dataArray writeToFile:tokenPath atomically:YES];
 }
 
-+(void)updateLoginMessageAccount:(NSString *)account passward:(NSString *)passward{
-    NSArray *array = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentPath = [array objectAtIndex:0];
-    NSString *loginMessagePath = [documentPath stringByAppendingPathComponent:@"loginMessage.txt"];
-    NSArray *dataArray = [NSArray arrayWithObjects:account,passward, nil];
-    [dataArray writeToFile:loginMessagePath atomically:YES];
-}
-
-+(NSString *)getUserAccount{
-    NSArray *array = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentPath = [array objectAtIndex:0];
-    NSString *loginMessagePath = [documentPath stringByAppendingPathComponent:@"loginMessage.txt"];
-    NSArray *dataArray = [[NSArray alloc] initWithContentsOfFile:loginMessagePath];
-    return dataArray[0];
-}
-
-+(void)updateUserMessage:(NOVUserMessage *)userMessage{
-    NSArray *array = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentPath = array[0];
-    NSString *userMessagePath = [documentPath stringByAppendingPathComponent:@"userMessage.txt"];
-    NSArray *dataArray = @[[NSKeyedArchiver archivedDataWithRootObject:userMessage]];
-    [dataArray writeToFile:userMessagePath atomically:YES];
-    
-}
-+(NOVUserMessage *)getUserMessage{
-    NSArray *array = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentPath = array[0];
-    NSString *userMessagePath = [documentPath stringByAppendingPathComponent:@"userMessage.txt"];
-    NSArray *dataArray = [[NSArray alloc] initWithContentsOfFile:userMessagePath];
-    return [NSKeyedUnarchiver unarchiveObjectWithData:dataArray[0]];
-}
-
+//从本地获取
 -(NSString *)getToken{
     NSArray *array = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentPath = [array objectAtIndex:0];
@@ -85,6 +81,22 @@ static NOVDataModel *datamodel = nil;
     NSString *tokenPath = [documentPath stringByAppendingPathComponent:@"token.txt"];
     NSArray *dataArray = [[NSArray alloc] initWithContentsOfFile:tokenPath];
     return dataArray[1];
+}
+
++(void)updateUserMessage:(NOVUserMessage *)userMessage{
+    NSArray *array = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentPath = array[0];
+    NSString *userMessagePath = [documentPath stringByAppendingPathComponent:@"userMessage.txt"];
+    NSArray *dataArray = @[[NSKeyedArchiver archivedDataWithRootObject:userMessage]];
+    [dataArray writeToFile:userMessagePath atomically:YES];
+}
+
++(NOVUserMessage *)getUserMessage{
+    NSArray *array = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentPath = array[0];
+    NSString *userMessagePath = [documentPath stringByAppendingPathComponent:@"userMessage.txt"];
+    NSArray *dataArray = [[NSArray alloc] initWithContentsOfFile:userMessagePath];
+    return [NSKeyedUnarchiver unarchiveObjectWithData:dataArray[0]];
 }
 
 -(void)updateFollowBookListWithArray:(NSMutableArray *)followBookList{

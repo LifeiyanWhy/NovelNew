@@ -129,7 +129,6 @@
     CGPathRelease(path);
     CFRelease(frameSetter);
     _pageCount = _pageArray.count;
-//    NSLog(@"pageCount%ld",(long)_pageCount);
 }
 
 //从当前阅读章节(_chapterModel.content)根据页码获取要显示的内容

@@ -74,7 +74,7 @@
     
     [_summaryLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_authorLabel.mas_bottom).offset(5);
-        make.height.mas_equalTo(20);
+//        make.height.mas_equalTo(20);
         make.left.equalTo(self).offset(10);
         make.right.equalTo(self).offset(-10);
     }];

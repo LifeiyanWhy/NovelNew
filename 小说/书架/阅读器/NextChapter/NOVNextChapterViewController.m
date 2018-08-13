@@ -11,6 +11,9 @@
 #import "NOVObatinBookContent.h"
 #import "NOVNextChapterTableViewCell.h"
 #import "NOVChapterListModel.h"
+#import "NOVNextChapterCellHeightModel.h"
+#import "NOVReadNovelViewController.h"
+#import "NOVbookMessage.h"
 @interface NOVNextChapterViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,strong) NOVNextChapterView *nextChapterView;
 @property(nonatomic,strong) NSMutableArray *modelArray;
@@ -22,13 +25,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bookBackground.png"]];
-    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"返回read.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     [self.view addSubview:self.nextChapterView];
     
     NOVObatinBookContent *obtainBookContent = [[NOVObatinBookContent alloc] init];
-    [obtainBookContent getRenewListWithBookId:_bookId ParentId:_parentId succeed:^(id responseObject) {
-        NSLog(@"%@",responseObject);
+    [obtainBookContent getRenewListWithBookId:_bookMessage.bookId ParentId:_parentId succeed:^(id responseObject) {
         NOVAllChapterListModel *allModel = [[NOVAllChapterListModel alloc] initWithDictionary:responseObject error:nil];
         NSMutableArray *array = [NSMutableArray arrayWithArray:allModel.data];
         for (int i = 0; i < array.count; i++) {
@@ -45,8 +45,18 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *identifier = @"chapterCell";
     NOVNextChapterTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-    [cell updateCellModelWithChapterListModel:_modelArray[indexPath.row]];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    [cell updateCellModelWithChapterListModel:_modelArray[indexPath.section]];
     return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NOVChapterListModel *model = _modelArray[indexPath.section];
+    NOVReadNovelViewController *readViewController = [[NOVReadNovelViewController alloc] init];
+    readViewController.bookMessage = _bookMessage;
+    readViewController.readType = NOVReadTypeReadFromSelectRenewChapter;
+    readViewController.selectChapterId = model.branchId;
+    [self.navigationController pushViewController:readViewController animated:NO];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -58,7 +68,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 110;
+    return [NOVNextChapterCellHeightModel getCellHeightWithModel:_modelArray[indexPath.section]];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -98,9 +108,6 @@
     return _nextChapterView;
 }
 
--(void)viewWillAppear:(BOOL)animated{
-    self.navigationController.navigationBar.hidden = NO;
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

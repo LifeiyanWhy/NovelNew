@@ -150,6 +150,7 @@
 		C4E9C5C6209A084B004E7EFF /* NOVChatroomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9C5C5209A084B004E7EFF /* NOVChatroomTableViewCell.m */; };
 		C4EA54DB20E22B2200086979 /* NOVbookMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA54DA20E22B2200086979 /* NOVbookMessage.m */; };
 		C4EA54DE20E2358200086979 /* NOVObtainBookList.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA54DD20E2358200086979 /* NOVObtainBookList.m */; };
+		C4EC833E212113BF007DF270 /* NOVNextChapterCellHeightModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EC833D212113BF007DF270 /* NOVNextChapterCellHeightModel.m */; };
 		C4F2D7D8207BDA170005E889 /* NOVBookTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F2D7D7207BDA170005E889 /* NOVBookTableViewCell.m */; };
 /* End PBXBuildFile section */
 
@@ -420,6 +421,8 @@
 		C4EA54DA20E22B2200086979 /* NOVbookMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVbookMessage.m; sourceTree = "<group>"; };
 		C4EA54DC20E2358200086979 /* NOVObtainBookList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVObtainBookList.h; sourceTree = "<group>"; };
 		C4EA54DD20E2358200086979 /* NOVObtainBookList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVObtainBookList.m; sourceTree = "<group>"; };
+		C4EC833C212113BF007DF270 /* NOVNextChapterCellHeightModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVNextChapterCellHeightModel.h; sourceTree = "<group>"; };
+		C4EC833D212113BF007DF270 /* NOVNextChapterCellHeightModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVNextChapterCellHeightModel.m; sourceTree = "<group>"; };
 		C4F2D7D6207BDA170005E889 /* NOVBookTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVBookTableViewCell.h; sourceTree = "<group>"; };
 		C4F2D7D7207BDA170005E889 /* NOVBookTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVBookTableViewCell.m; sourceTree = "<group>"; };
 		D3F08AF944DF9DE9832F29EB /* Pods-小说.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-小说.debug.xcconfig"; path = "Pods/Target Support Files/Pods-小说/Pods-小说.debug.xcconfig"; sourceTree = "<group>"; };
@@ -963,6 +966,8 @@
 				C426096A211DAE89007F7DD5 /* NOVNextChapterTableViewCell.m */,
 				C426096C211DBDB6007F7DD5 /* NOVChapterListModel.h */,
 				C426096D211DBDB6007F7DD5 /* NOVChapterListModel.m */,
+				C4EC833C212113BF007DF270 /* NOVNextChapterCellHeightModel.h */,
+				C4EC833D212113BF007DF270 /* NOVNextChapterCellHeightModel.m */,
 			);
 			path = NextChapter;
 			sourceTree = "<group>";
@@ -1440,6 +1445,7 @@
 				C426096B211DAE89007F7DD5 /* NOVNextChapterTableViewCell.m in Sources */,
 				C4960D6F211988A000132C43 /* NOVSecurityCenterView.m in Sources */,
 				C4CA78D3207D0375007357B4 /* NOVView.m in Sources */,
+				C4EC833E212113BF007DF270 /* NOVNextChapterCellHeightModel.m in Sources */,
 				C4C89071206BF61E00BED312 /* MYViewController.m in Sources */,
 				C4B09CBE2089AE3B00756467 /* NOVMessageTableViewCell.m in Sources */,
 				C4C4732520AD7F4700E3E508 /* NOVLongpressCellView.m in Sources */,

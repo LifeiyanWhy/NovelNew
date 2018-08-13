@@ -62,11 +62,10 @@
     tabBar.tabBar.barTintColor = [UIColor whiteColor];
     tabBar.tabBar.translucent = NO;
     tabBar.selectedViewController = findNavigation;
-    
+ 
     ViewController *viewController = [[ViewController alloc] init];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
     self.window.rootViewController = nav;
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(signsucceed) name:@"signinSucceed" object:nil];
     return YES;
 }
@@ -100,6 +99,5 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
-
 
 @end

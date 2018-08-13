@@ -12,27 +12,21 @@
 @interface NOVDataModel : NSObject
 
 +(NOVDataModel *)shareInstance;
-
--(void)updateToken:(NSString *)token refreshToken:(NSString *)refreshToken;
-
--(NSString *)getToken;
-
--(NSString *)getRefreshToken;
-
--(void)updateFollowBookListWithArray:(NSMutableArray *)followBookList;
-//获取关注列表
--(NSArray *)getFollowBookList;
-//存储登录信息
-+(void)updateLoginMessageAccount:(NSString *)account passward:(NSString *)passward;
++(void)updateCurrentUserWithLoginMessage:(NOVUserLoginMessageModel *)userMessage;
+//获取最近一次登录的用户
++(NOVUserLoginMessageModel *_Nullable)getLastUserMessage;
 //获取用户账号
 +(NSString *)getUserAccount;
+-(NSString *)getToken;
+-(NSString *)getRefreshToken;
+-(void)updateToken:(NSString *)token refreshToken:(NSString *)refreshToken;
+//获取关注列表
+-(NSArray *)getFollowBookList;
+-(void)updateFollowBookListWithArray:(NSMutableArray *)followBookList;
 //更新用户信息
 +(void)updateUserMessage:(NOVUserMessage *)userMessage;
 //获取用户信息
 +(NOVUserMessage *)getUserMessage;
-//+(void)updateCurrentUserMessageWithAccount:(NSString *)account password:(NSString *)password;
-////获取最近一次登录的用户
-//+(NOVUserLoginMessageModel *_Nullable)getLastUserMessage;
-////当用户退出登录时删除用户信息，若用户记住密码不删除账号密码信息
+//当用户退出登录时删除用户信息，若用户记住密码不删除账号密码信息
 //+(void)deleteLastUserLoginMessage;
 @end

@@ -9,6 +9,9 @@
 #import "NOVAccountManageViewController.h"
 #import "NOVAccountManageView.h"
 #import "NOVAccountManageCell.h"
+#import "ViewController.h"
+#import "NOVUserLoginMessageModel.h"
+#import "NOVDataModel.h"
 @interface NOVAccountManageViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,strong) NOVAccountManageView *accountManageView;
 @end
@@ -29,6 +32,27 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"返回white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     
     [self.view addSubview:self.accountManageView];
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.section == 1) {
+        [self showAlertActionWithTitle:@"确认退出当前账号!"];
+    }
+}
+
+- (void)showAlertActionWithTitle:(NSString *)title{
+    UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *sureAction = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        NOVUserLoginMessageModel *model = [NOVDataModel getLastUserMessage];
+        model.isLogin = NO;
+        [NOVDataModel updateCurrentUserWithLoginMessage:model];
+        ViewController *viewController = [[ViewController alloc] init];
+        [self presentViewController:viewController animated:NO completion:nil];
+    }];
+    [alertControl addAction:cancelAction];
+    [alertControl addAction:sureAction];
+    [self presentViewController:alertControl animated:YES completion:nil];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -98,6 +122,7 @@
 -(void)back{
     [self.navigationController popViewControllerAnimated:NO];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

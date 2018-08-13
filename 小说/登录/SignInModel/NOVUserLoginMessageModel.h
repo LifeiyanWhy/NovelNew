@@ -8,10 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NOVUserLoginMessageModel : NSObject
+@interface NOVUserLoginMessageModel : NSObject<NSCoding>
 @property(nonatomic,copy) NSString *account;
 @property(nonatomic,copy) NSString *password;
-@property(nonatomic,copy) NSString *refreshToken;
-@property(nonatomic,assign) BOOL isPassword;//记录用户是否记住密码
 @property(nonatomic,assign) BOOL isLogin;//记录用户是否登录状态
+-(instancetype)initWithAccount:(NSString *)account password:(NSString *_Nullable)password isLogin:(BOOL)isLogin;
 @end

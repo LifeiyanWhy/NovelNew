@@ -10,6 +10,9 @@
 
 @interface NOVReadEndView : UIView
 @property(nonatomic,strong) UIButton *renewButton;//续写
+@property(nonatomic,strong) UILabel *renewNumber;
 @property(nonatomic,strong) UIButton *likeButton;//点赞
-@property(nonatomic,strong) UIButton *nextChapterButton;//下一章
+@property(nonatomic,strong) UILabel *likeNumber;
+@property(nonatomic,strong) UIButton *disLikeButton;//反对
+@property(nonatomic,strong) UILabel *disLikeNumber;
 @end

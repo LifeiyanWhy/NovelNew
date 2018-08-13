@@ -49,6 +49,7 @@
 //        failBlock(error);
 //    }];
 //}
+
 // 关注一本书
 -(void)followBookWithBookId:(NSInteger)bookId succeed:(succeedBlock)succeedBlock fail:(failBlock)failBlock{
     NOVDataModel *datamodel = [NOVDataModel shareInstance];
