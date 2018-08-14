@@ -9,23 +9,19 @@
 #import <UIKit/UIKit.h>
 
 @class NOVBookSetView;
-
-@class NOVMystartModel;
-
+@class NOVStartBookModel;
+@class NOVGetMyStartModel;
 @protocol NOVMystartViewDategate <NSObject>
-
 @optional
 //点击编辑button时执行
 -(void)touchEditButtonInSetView:(NOVBookSetView *)setView;
-
+-(NOVBookSetView *)viewForPape:(NSInteger)page WithWidth:(CGFloat)width Height:(CGFloat)height;
 @end
 
 @interface NOVMystartView : UIView<UITableViewDelegate>
-
 @property(nonatomic,strong) UIScrollView *scrollView;
-
+@property(nonatomic,readonly,assign) NSInteger viewNumber;
 @property(nonatomic,weak) id <NOVMystartViewDategate>delegate;
-
--(void)addViewWithModel:(NOVMystartModel *)model;
-
+-(instancetype)initWithFrame:(CGRect)frame withViewNumber:(NSInteger)viewNumber;
+-(void)addViewWithModel:(NOVStartBookModel *)model;
 @end

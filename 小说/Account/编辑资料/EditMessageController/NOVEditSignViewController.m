@@ -8,6 +8,7 @@
 
 #import "NOVEditSignViewController.h"
 #import "NOVEditSignView.h"
+#import "NOVEditUserMessageManager.h"
 @interface NOVEditSignViewController ()<UITextViewDelegate>
 @property(nonatomic,strong) NOVEditSignView *editSignView;
 @end
@@ -83,7 +84,7 @@
         return;
     }
     //发送请求修改签名
-    [NOVSignModel changeUserSignText:_editSignView.textView.text success:^(id  _Nullable responseObject) {
+    [NOVEditUserMessageManager changeUserSignText:_editSignView.textView.text success:^(id  _Nullable responseObject) {
         NSLog(@"succeed");
         //修改签名成功
         self.textsignBlock(_editSignView.textView.text);

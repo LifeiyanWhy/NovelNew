@@ -12,8 +12,9 @@
 #import "NOVSelectPhotoManager.h"
 #import "NOVEditUserMessageViewController.h"
 #import "NOVPersonalMessage.h"
-#import "NOVSignModel.h"
+#import "NOVEditUserMessageManager.h"
 #import "NOVUserSetViewController.h"
+#import "NOVMystartViewController.h"
 
 @interface MYViewController ()<NOVSelectPhotoManagerDeleagte,UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,strong) NOVSelectPhotoManager *photoManager;
@@ -46,6 +47,7 @@
 
     [_myView.headview.myImageButton addTarget:self action:@selector(changeMyimage) forControlEvents:UIControlEventTouchUpInside];
     [_myView.headview.profileButton addTarget:self action:@selector(editUserMessage) forControlEvents:UIControlEventTouchUpInside];
+    [_myView.headview.myworkButton addTarget:self action:@selector(myWork) forControlEvents:UIControlEventTouchUpInside];
     _myView.tableView.delegate = self;
     _myView.tableView.dataSource = self;
     [_myView.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
@@ -65,9 +67,9 @@
     [_actionController addAction:albumAction];
     [_actionController addAction:cancelAction];
     
-    NOVSignModel *signModel = [[NOVSignModel alloc] init];
+    
     //获取用户信息
-    [signModel getUserMessageSuccess:^(id  _Nullable responseObject) {
+    [NOVEditUserMessageManager getUserMessageSuccess:^(id  _Nullable responseObject) {
         NSLog(@"%@",responseObject);
         _userMessage = [[NOVUserMessage alloc] initWithDictionary:responseObject[@"data"] error:nil];
         _userMessage.simpleUserMessage = [[NOVSimpleUseMessage alloc] initWithDictionary:responseObject[@"data"][@"simpleUserMessage"] error:nil];
@@ -106,6 +108,15 @@
 -(void)changeImageWithImage:(UIImage *)image{
     NSLog(@"=====%@",image);
     [_myView.headview.myImageButton setImage:image forState:UIControlStateNormal];
+    [NOVEditUserMessageManager uploadMyImageWithImage:image success:^(id  _Nullable responseObject) {
+    } failure:^(NSError * _Nonnull error) {
+    }];
+}
+
+-(void)myWork{
+    NOVMystartViewController *myStartViewController = [[NOVMystartViewController alloc] init];
+    myStartViewController.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:myStartViewController animated:NO];
 }
 
 -(void)editUserMessage{
@@ -186,6 +197,13 @@
         [self.navigationController pushViewController:setViewController animated:NO];
         _userMessage = [NOVDataModel getUserMessage];
         [_myView.headview.profileButton setTitle:[NSString stringWithFormat:@"简介:%@",_userMessage.userMessage.signText] forState:UIControlStateNormal];
+    }else if (indexPath.section == 1 && indexPath.row == 0){
+        UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:@"确认清除缓存" message:@"清除缓存将删除所有阅读记录" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancelAlert = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+        [alertControl addAction:cancelAlert];
+        UIAlertAction *sureAlert = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:nil];
+        [alertControl addAction:sureAlert];
+        [self presentViewController:alertControl animated:YES completion:nil];
     }
 }
 

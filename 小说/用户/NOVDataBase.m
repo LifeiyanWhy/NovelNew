@@ -41,7 +41,7 @@ static NOVDataBase *novDataBase = nil;
 //        NSString *drop = @"DROP TABLE 'userUseInformation'";
 //        [database executeUpdate:drop];
 //        NSLog(@"数据库");
-        
+//        [database close];
         NSString *creatTable = @"CREATE TABLE IF NOT EXISTS'userUseInformation'(\
                                 userAccount NSString PRIMARY KEY,\
                                 readRecordArray NSData\

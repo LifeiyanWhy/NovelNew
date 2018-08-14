@@ -10,7 +10,7 @@
 #import "NOVEditView.h"
 #import "NOVEditViewTableViewCell.h"
 #import "NOVDetailViewController.h"
-#import "NOVMystartModel.h"
+#import "NOVStartBookModel.h"
 #import "NOVSelectPhotoManager.h"
 
 @interface NOVEditViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,NOVSelectPhotoManagerDeleagte>
@@ -119,7 +119,7 @@
         return;
     }
     
-    NOVMystartModel *model = [[NOVMystartModel alloc] init];
+    NOVStartBookModel *model = [[NOVStartBookModel alloc] init];
     model.name = _editView.novelName.text;//作品名称
     
     for (int i = 0; i <= 4; i++) {

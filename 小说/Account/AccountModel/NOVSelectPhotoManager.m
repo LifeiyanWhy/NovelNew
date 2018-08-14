@@ -42,9 +42,8 @@
     imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
     [imagePickerController dismissViewControllerAnimated:YES completion:nil];
 }
-
+//选择完图片后执行
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
-//    NSLog(@"=====%@",info);
     UIImage *image = info[@"UIImagePickerControllerEditedImage"];
     if (!image) {
         image = info[@"UIImagePickerControllerOriginalImage"];

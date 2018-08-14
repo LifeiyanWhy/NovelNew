@@ -8,16 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class NOVMystartModel;
-
-@interface NOVSetbackView : UIView<UITableViewDataSource>
-
+@class NOVGetMyStartModel;
+@class NOVStartBookModel;
+@interface NOVSetbackView : UIView<UITableViewDataSource,UITableViewDelegate>
 @property(nonatomic,strong) UIButton *close;
-
 @property(nonatomic,strong) UIImageView *coverImage;
-
 @property(nonatomic,strong) UITableView *tableview;
-
--(instancetype)initWithFrame:(CGRect)frame model:(NOVMystartModel *)model;
-
+-(instancetype)initWithFrame:(CGRect)frame;
+-(void)updateWithModel:(NOVGetMyStartModel *)model;
+-(void)addBookWithModel:(NOVStartBookModel *)model;
 @end

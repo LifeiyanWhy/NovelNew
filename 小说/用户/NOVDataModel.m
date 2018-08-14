@@ -47,11 +47,9 @@ static NOVDataModel *datamodel = nil;
 }
 
 +(NSString *)getUserAccount{
-    NSArray *array = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentPath = [array objectAtIndex:0];
-    NSString *loginMessagePath = [documentPath stringByAppendingPathComponent:@"loginMessage.txt"];
-    NSArray *dataArray = [[NSArray alloc] initWithContentsOfFile:loginMessagePath];
-    return dataArray[0];
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSString *account = [userDefault objectForKey:@"account"];
+    return account;
 }
 
 -(void)updateToken:(NSString *)token refreshToken:(NSString *)refreshToken{

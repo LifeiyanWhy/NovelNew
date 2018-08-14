@@ -7,14 +7,27 @@
 //
 //发布一个作品
 #import "NOVStartManager.h"
-#import "NOVMystartModel.h"
+#import "NOVStartBookModel.h"
 #import "AFNetworking.h"
 #import "NOVDataModel.h"
 #import "NOVRenewModel.h"
 
 @implementation NOVStartManager
+-(void)getMyStartSuccess:(successBlock _Nonnull)successBlock fail:(failBlock _Nonnull)failBlock{
+    NOVDataModel *dataModel = [NOVDataModel shareInstance];
+    NSString *token = [NSString stringWithFormat:@"Bearer %@",[dataModel getToken]];
+    NSString *url = @"http://47.95.207.40/branch/user/book";
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    [manager.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
+    [manager GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        successBlock(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failBlock(error);
+    }];
+}
 
--(void)startNovelWithModel:(NOVMystartModel *)model success:(successBlock)successBlock fail:(failBlock)failBlock{
+-(void)startNovelWithModel:(NOVStartBookModel *)model success:(successBlock)successBlock fail:(failBlock)failBlock{
     NOVDataModel *datamodel = [NOVDataModel shareInstance];
     NSString *token = [NSString stringWithFormat:@"Bearer %@",[datamodel getToken]];
     NSString *url = @"http://47.95.207.40/branch/book";
@@ -62,5 +75,4 @@
         failBlock(error);
     }];
 }
-
 @end

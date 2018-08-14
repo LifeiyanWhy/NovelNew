@@ -232,7 +232,6 @@
             NSMutableArray *array = [NSMutableArray arrayWithArray:followArray];
             [array removeObject:[NSNumber numberWithInteger:self.bookMessage.bookId]];
             [datamodel updateFollowBookListWithArray:array];
-            
             [_readEditView followButtonChange:button];
         } fail:^(NSError *error) {
             NSLog(@"%@",error);
@@ -262,7 +261,7 @@
         renewModel.content = content;
         NOVStartManager *startManager = [[NOVStartManager alloc] init];
         [startManager publishRenewWithRenewModel:renewModel success:^(id  _Nonnull responseObject) {
-//            NSLog(@"%@",responseObject);
+            NSLog(@"%@",responseObject);
         } fail:^(NSError * _Nonnull error) {
             NSLog(@"%@",error);
         }];

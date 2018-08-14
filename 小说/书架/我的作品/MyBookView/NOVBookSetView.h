@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@class NOVMystartModel;
-
+@class NOVStartBookModel;
 @class NOVSetbackView;
+@class NOVGetMyStartModel;
 
 //小说状态
 typedef NS_OPTIONS(NSInteger, NovelState) {
@@ -21,19 +21,13 @@ typedef NS_OPTIONS(NSInteger, NovelState) {
 };
 
 @interface NOVBookSetView : UIView
-
 @property(nonatomic,strong) UIImageView *coverImage;
-
 @property(nonatomic,strong) UILabel *titleLabel;
-
 @property(nonatomic,strong) UIButton *editButton;
-
 @property(nonatomic,strong) UIButton *detailButton;
-
 @property(nonatomic,strong) NOVSetbackView *backView;
-
 @property(nonatomic,assign) NovelState novelState;
-
--(instancetype)initWithFrame:(CGRect)frame model:(NOVMystartModel *)model;
-
+-(instancetype)initWithFrame:(CGRect)frame;
+-(void)updateWithModel:(NOVGetMyStartModel *)model;
+-(void)addBookWithModel:(NOVStartBookModel *)model;
 @end

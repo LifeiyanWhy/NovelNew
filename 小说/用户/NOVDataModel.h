@@ -17,8 +17,11 @@
 +(NOVUserLoginMessageModel *_Nullable)getLastUserMessage;
 //获取用户账号
 +(NSString *)getUserAccount;
+//获取token
 -(NSString *)getToken;
+//获取refreshToken
 -(NSString *)getRefreshToken;
+//更新token
 -(void)updateToken:(NSString *)token refreshToken:(NSString *)refreshToken;
 //获取关注列表
 -(NSArray *)getFollowBookList;

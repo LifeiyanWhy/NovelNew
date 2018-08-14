@@ -6,8 +6,8 @@
 //  Copyright © 2018年 李飞艳. All rights reserved.
 //
 
-#import "NOVMystartModel.h"
+#import "NOVStartBookModel.h"
 
-@implementation NOVMystartModel
+@implementation NOVStartBookModel
 
 @end

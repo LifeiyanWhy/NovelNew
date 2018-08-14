@@ -67,7 +67,6 @@
 
 +(void)updateLocalRecordModel:(NOVRecordModel *)recordModel{
     NSString *account = [NOVDataModel getUserAccount];
-//    NSLog(@"account%@",account);
     NOVDataBase *dataBase = [[NOVDataBase alloc] init];
     [dataBase updateUserReadRecordWithUserAccount:account record:recordModel];
 }

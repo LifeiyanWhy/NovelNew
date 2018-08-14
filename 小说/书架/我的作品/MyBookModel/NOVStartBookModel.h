@@ -41,7 +41,7 @@ typedef NS_OPTIONS(NSInteger, NOVType) {
     NOVBookTypeTanbiNovel,
 };
 
-@interface NOVMystartModel : NSObject
+@interface NOVStartBookModel : NSObject
 
 //作品名称
 @property(nonatomic,strong) NSString *name;

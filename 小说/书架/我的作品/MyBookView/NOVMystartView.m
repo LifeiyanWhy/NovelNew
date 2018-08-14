@@ -8,57 +8,57 @@
 
 #import "NOVMystartView.h"
 #import "NOVBookSetView.h"
-#import "NOVMystartModel.h"
+#import "NOVStartBookModel.h"
 #import "NOVSetbackView.h"
 
 @implementation NOVMystartView{
-    NOVBookSetView *setView;
-    NSInteger viewNumber;
     CGFloat scrollviewHeight;
-    NSMutableArray *viewArray;
 }
 
--(instancetype)initWithFrame:(CGRect)frame{
+-(instancetype)initWithFrame:(CGRect)frame withViewNumber:(NSInteger)viewNumber{
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.00];
-        _scrollView = [[UIScrollView alloc] init];
+        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 64, frame.size.width, frame.size.height - 64)];
         [self addSubview:_scrollView];
-        viewArray = [NSMutableArray array];
+        _viewNumber = viewNumber;
     }
     return self;
 }
 
 -(void)layoutSubviews{
-    _scrollView.frame = self.frame;
-    _scrollView.contentSize = CGSizeMake(self.frame.size.width, self.frame.size.height - 64);
+    _scrollView.contentSize = CGSizeMake(self.frame.size.width*_viewNumber, self.frame.size.height - 64);
     _scrollView.showsVerticalScrollIndicator = NO;
     _scrollView.showsHorizontalScrollIndicator = NO;
     scrollviewHeight = self.frame.size.height - 64;
     _scrollView.pagingEnabled = YES;
     
-    NOVMystartModel *model = [[NOVMystartModel alloc] init];
-    model.name = @"这个反派不好当";
-    setView = [[NOVBookSetView alloc] initWithFrame:CGRectMake(self.frame.size.width*0.15, scrollviewHeight*0.07, self.frame.size.width*0.7, scrollviewHeight*0.83) model:model];
-    setView.tag = 1;
-    setView.detailButton.tag = 1;
-    setView.backView.tableview.delegate = self;
-    viewNumber = 1;
-    [_scrollView addSubview:setView];
-    [viewArray addObject:setView];
-//    [setView.editButton addTarget:self action:@selector(touchEditButton) forControlEvents:UIControlEventTouchUpInside];
+    for (int i = 0; i < _viewNumber; i++) {
+        NOVBookSetView *bookSetView;
+        if ([_delegate respondsToSelector:@selector(viewForPape:WithWidth:Height:)]) {
+            bookSetView = [self.delegate viewForPape:i WithWidth:self.frame.size.width Height:scrollviewHeight];
+        }else{
+            bookSetView = [[NOVBookSetView alloc] initWithFrame:CGRectMake(self.frame.size.width*(0.15+i), scrollviewHeight*0.07, self.frame.size.width*0.7, scrollviewHeight*0.83)];
+        }
+        bookSetView.tag = i + 1;
+        bookSetView.detailButton.tag = i + 1;
+        [bookSetView.editButton setTitle:@"已发布(不可编辑)" forState:UIControlStateNormal];
+        bookSetView.editButton.userInteractionEnabled = NO;
+        [_scrollView addSubview:bookSetView];
+    }
 }
 
--(void)addViewWithModel:(NOVMystartModel *)model{
-    viewNumber++;
-    _scrollView.contentSize = CGSizeMake(self.frame.size.width*viewNumber, scrollviewHeight);
-    NOVBookSetView *setview = [[NOVBookSetView alloc] initWithFrame:CGRectMake(self.frame.size.width*(viewNumber - 1 + 0.15), scrollviewHeight*0.07, self.frame.size.width*0.7, scrollviewHeight*0.83) model:model];
+-(void)addViewWithModel:(NOVStartBookModel *)model{
+    _viewNumber++;
+    _scrollView.contentSize = CGSizeMake(self.frame.size.width*_viewNumber, scrollviewHeight);
+    NOVBookSetView *setview = [[NOVBookSetView alloc] initWithFrame:CGRectMake(self.frame.size.width*(_viewNumber - 1 + 0.15), scrollviewHeight*0.07, self.frame.size.width*0.7, scrollviewHeight*0.83)];
+    [setview addBookWithModel:model];
     //标记作品
-    setview.tag = viewNumber;
-    setview.detailButton.tag = viewNumber;
+    setview.tag = _viewNumber;
+    setview.detailButton.tag = _viewNumber;
+    [setview.editButton setTitle:@"编辑作品(未发布)" forState:UIControlStateNormal];
     [setview.editButton addTarget:self action:@selector(touchEditButton:) forControlEvents:UIControlEventTouchUpInside];
     [_scrollView addSubview:setview];
-    [viewArray addObject:setview];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -78,7 +78,9 @@
 
 -(void)touchEditButton:(UIButton *)button{
     //参数为所点击的setView(即小说)
-    [self.delegate touchEditButtonInSetView:(NOVBookSetView *)[[button superview] superview]];
+    if ([_delegate respondsToSelector:@selector(touchEditButton:)]) {
+        [self.delegate touchEditButtonInSetView:(NOVBookSetView *)[[button superview] superview]];
+    }
 }
 
 /*

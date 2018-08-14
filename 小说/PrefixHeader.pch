@@ -22,6 +22,7 @@
 #import "NOVDataModel.h"
 #import "NOVSignModel.h"
 #import "NOVNetworkAnomalyView.h"
+#import <AFNetworking.h>
 
 #define TopSpacing 60.0f
 #define BottomSpacing 60.0f

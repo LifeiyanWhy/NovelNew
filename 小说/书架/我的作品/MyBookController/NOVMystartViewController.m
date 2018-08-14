@@ -12,7 +12,8 @@
 #import "NOVWriteViewController.h"
 #import "NOVEditViewController.h"
 #import "NOVStartManager.h"
-#import "NOVMystartModel.h"
+#import "NOVGetMyStartModel.h"
+#import "NOVStartBookModel.h"
 
 @interface NOVMystartViewController ()<NOVMystartViewDategate>
 
@@ -29,6 +30,7 @@
     // Do any additional setup after loading the view.
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithDisplayP3Red:0.15 green:0.65 blue:0.6 alpha:1.00];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     UIView *leftview = [[UIView alloc] initWithFrame:CGRectMake(0, 20, 130, 30)];
     UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
@@ -44,31 +46,33 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(creatStart)];
     
-    _mystartView = [[NOVMystartView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    [self.view addSubview:_mystartView];
-    _mystartView.delegate = self;
-    
     _novelArray = [NSMutableArray array];
-    [_novelArray addObject:[[NOVMystartModel alloc] init]];
     //获取当前用户的所有作品
-}
--(void)viewWillAppear:(BOOL)animated{
-    self.navigationController.navigationBar.hidden = NO;
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithDisplayP3Red:0.15 green:0.65 blue:0.6 alpha:1.00];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    NOVStartManager *startManager = [[NOVStartManager alloc] init];
+    [startManager getMyStartSuccess:^(id  _Nonnull responseObject) {
+        NSLog(@"%@",responseObject[@"data"]);
+        NSArray *array = responseObject[@"data"];
+        for (int i = 0 ; i < array.count; i++) {
+            [_novelArray addObject:[[NOVGetMyStartModel alloc] initWithDictionary:array[i] error:nil]];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{    //在主线程加载UI
+            _mystartView = [[NOVMystartView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) withViewNumber:_novelArray.count];
+            [self.view addSubview:_mystartView];
+            _mystartView.delegate = self;
+        });
+    } fail:^(NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+    }];
 }
 
--(void)viewWillDisappear:(BOOL)animated{
-    self.navigationController.navigationBar.hidden = YES;
+-(NOVBookSetView *)viewForPape:(NSInteger)page WithWidth:(CGFloat)width Height:(CGFloat)height{
+    NOVBookSetView *bookSetView = [[NOVBookSetView alloc] initWithFrame:CGRectMake(width*(0.15+page), height*0.07, width*0.7, height*0.83)];
+    [bookSetView updateWithModel:_novelArray[page]];
+    return bookSetView;
 }
 
--(void)touchEditButtonInSetView:(NOVBookSetView *)setView{
-//    //已发布
-//    if (setView.novelState == 1) {
-//        return;
-//    }
-    
-    NOVMystartModel *model = _novelArray[setView.tag-1];
+-(void)touchEditButtonInSetView:(NOVBookSetView *)setView{    
+    NOVStartBookModel *model = _novelArray[setView.tag-1];
     NOVWriteViewController *writeViewController = [[NOVWriteViewController alloc] init];
     writeViewController.publishNovelBlock = ^(NSString *title, NSString *content) {
         model.firstTitle = title;
@@ -96,13 +100,23 @@
 -(void)creatStart{
     __block NOVMystartViewController *weakSelf = self;
     NOVEditViewController *editViewController = [[NOVEditViewController alloc] init];
-    editViewController.novelTitleBlock = ^(NOVMystartModel *model) {
+    editViewController.novelTitleBlock = ^(NOVStartBookModel *model) {
         //在我的发起界面根据回调的数据添加作品（未发布）
         [weakSelf.mystartView addViewWithModel:model];
         //更新数据源
-        [weakSelf.novelArray addObject:model];
+//        [weakSelf.novelArray addObject:model];
     };
     [self.navigationController pushViewController:editViewController animated:NO];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    self.navigationController.navigationBar.hidden = NO;
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithDisplayP3Red:0.15 green:0.65 blue:0.6 alpha:1.00];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    self.navigationController.navigationBar.hidden = YES;
 }
 
 - (void)didReceiveMemoryWarning {

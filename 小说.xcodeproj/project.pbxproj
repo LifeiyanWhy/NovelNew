@@ -11,7 +11,7 @@
 		C4123FCE211D2832008BC675 /* NOVRegisterNextStepViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4123FCD211D2832008BC675 /* NOVRegisterNextStepViewController.m */; };
 		C4123FD1211D3F43008BC675 /* NOVRegisterNextStepView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4123FD0211D3F43008BC675 /* NOVRegisterNextStepView.m */; };
 		C414C70120A083B500244736 /* NOVMyView.m in Sources */ = {isa = PBXBuildFile; fileRef = C414C70020A083B500244736 /* NOVMyView.m */; };
-		C419D08820B5BAE30016E464 /* NOVMystartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C419D08720B5BAE30016E464 /* NOVMystartModel.m */; };
+		C419D08820B5BAE30016E464 /* NOVStartBookModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C419D08720B5BAE30016E464 /* NOVStartBookModel.m */; };
 		C4221E4D207EC0CB008E7D4E /* NOVFindView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4221E4C207EC0CB008E7D4E /* NOVFindView.m */; };
 		C4260968211D422F007F7DD5 /* NOVRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4260967211D422F007F7DD5 /* NOVRegisterViewController.m */; };
 		C426096B211DAE89007F7DD5 /* NOVNextChapterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C426096A211DAE89007F7DD5 /* NOVNextChapterTableViewCell.m */; };
@@ -68,6 +68,8 @@
 		C4960D7D2119D27D00132C43 /* NOVAccountManageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4960D7C2119D27D00132C43 /* NOVAccountManageCell.m */; };
 		C4960D7F2119D60700132C43 /* cellimage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C4960D7E2119D60700132C43 /* cellimage.jpg */; };
 		C4960D832119D95C00132C43 /* 添加账号.png in Resources */ = {isa = PBXBuildFile; fileRef = C4960D822119D95C00132C43 /* 添加账号.png */; };
+		C49F539F21228E9E00933027 /* NOVGetMyStartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C49F539E21228E9E00933027 /* NOVGetMyStartModel.m */; };
+		C49F53A22122F1BB00933027 /* NOVEditUserMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C49F53A12122F1BB00933027 /* NOVEditUserMessageManager.m */; };
 		C4A49DD620C2A41D00FBEE87 /* NOVSelectPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A49DD520C2A41D00FBEE87 /* NOVSelectPhotoManager.m */; };
 		C4A8107621056980009D2254 /* NOVReadNovelView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A8107521056980009D2254 /* NOVReadNovelView.m */; };
 		C4A81079210578DA009D2254 /* NOVRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A81078210578DA009D2254 /* NOVRecordModel.m */; };
@@ -180,8 +182,8 @@
 		C4123FD0211D3F43008BC675 /* NOVRegisterNextStepView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVRegisterNextStepView.m; sourceTree = "<group>"; };
 		C414C6FF20A083B500244736 /* NOVMyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVMyView.h; sourceTree = "<group>"; };
 		C414C70020A083B500244736 /* NOVMyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVMyView.m; sourceTree = "<group>"; };
-		C419D08620B5BAE30016E464 /* NOVMystartModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVMystartModel.h; sourceTree = "<group>"; };
-		C419D08720B5BAE30016E464 /* NOVMystartModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVMystartModel.m; sourceTree = "<group>"; };
+		C419D08620B5BAE30016E464 /* NOVStartBookModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVStartBookModel.h; sourceTree = "<group>"; };
+		C419D08720B5BAE30016E464 /* NOVStartBookModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVStartBookModel.m; sourceTree = "<group>"; };
 		C4221E4B207EC0CB008E7D4E /* NOVFindView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVFindView.h; sourceTree = "<group>"; };
 		C4221E4C207EC0CB008E7D4E /* NOVFindView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVFindView.m; sourceTree = "<group>"; };
 		C4260966211D422F007F7DD5 /* NOVRegisterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVRegisterViewController.h; sourceTree = "<group>"; };
@@ -256,6 +258,10 @@
 		C4960D7C2119D27D00132C43 /* NOVAccountManageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVAccountManageCell.m; sourceTree = "<group>"; };
 		C4960D7E2119D60700132C43 /* cellimage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cellimage.jpg; sourceTree = "<group>"; };
 		C4960D822119D95C00132C43 /* 添加账号.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "添加账号.png"; sourceTree = "<group>"; };
+		C49F539D21228E9E00933027 /* NOVGetMyStartModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVGetMyStartModel.h; sourceTree = "<group>"; };
+		C49F539E21228E9E00933027 /* NOVGetMyStartModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVGetMyStartModel.m; sourceTree = "<group>"; };
+		C49F53A02122F1BB00933027 /* NOVEditUserMessageManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVEditUserMessageManager.h; sourceTree = "<group>"; };
+		C49F53A12122F1BB00933027 /* NOVEditUserMessageManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVEditUserMessageManager.m; sourceTree = "<group>"; };
 		C4A49DD420C2A41D00FBEE87 /* NOVSelectPhotoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVSelectPhotoManager.h; sourceTree = "<group>"; };
 		C4A49DD520C2A41D00FBEE87 /* NOVSelectPhotoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVSelectPhotoManager.m; sourceTree = "<group>"; };
 		C4A8107421056980009D2254 /* NOVReadNovelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVReadNovelView.h; sourceTree = "<group>"; };
@@ -632,8 +638,10 @@
 				C4BEB6FB20C6CCB0002B1AA4 /* NOVStartManager.m */,
 				C4C343B3211AE12100C4C8ED /* NOVRenewModel.h */,
 				C4C343B4211AE12100C4C8ED /* NOVRenewModel.m */,
-				C419D08620B5BAE30016E464 /* NOVMystartModel.h */,
-				C419D08720B5BAE30016E464 /* NOVMystartModel.m */,
+				C419D08620B5BAE30016E464 /* NOVStartBookModel.h */,
+				C419D08720B5BAE30016E464 /* NOVStartBookModel.m */,
+				C49F539D21228E9E00933027 /* NOVGetMyStartModel.h */,
+				C49F539E21228E9E00933027 /* NOVGetMyStartModel.m */,
 			);
 			path = MyBookModel;
 			sourceTree = "<group>";
@@ -1170,6 +1178,8 @@
 		C4E6272C211565BF008EB105 /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				C49F53A02122F1BB00933027 /* NOVEditUserMessageManager.h */,
+				C49F53A12122F1BB00933027 /* NOVEditUserMessageManager.m */,
 				C4960D7021198A5900132C43 /* AccountManager */,
 				C4960D692119884A00132C43 /* SecurityCenter */,
 				C4960D6821193B3D00132C43 /* SetUp */,
@@ -1436,7 +1446,7 @@
 				C4E8994D20DBD28B00E65AF8 /* NOVKeyboardView.m in Sources */,
 				C4E9C5C32099BE32004E7EFF /* NOVChatroomViewController.m in Sources */,
 				C4960D7321198A9700132C43 /* NOVAccountManageView.m in Sources */,
-				C419D08820B5BAE30016E464 /* NOVMystartModel.m in Sources */,
+				C419D08820B5BAE30016E464 /* NOVStartBookModel.m in Sources */,
 				C4A81079210578DA009D2254 /* NOVRecordModel.m in Sources */,
 				C4D629882109545300D5E283 /* NOVEditUserMessageView.m in Sources */,
 				C4ADC1E5211563D10085BA78 /* MASViewAttribute.m in Sources */,
@@ -1462,6 +1472,7 @@
 				C4D6298E210968FA00D5E283 /* NOVUserMessageTableViewCell.m in Sources */,
 				C492AC76210AA2F5003E0CA3 /* NOVDataBase.m in Sources */,
 				C442C99A20A1BE7D00F742E6 /* NOVMyheadView.m in Sources */,
+				C49F53A22122F1BB00933027 /* NOVEditUserMessageManager.m in Sources */,
 				C4B7CFE2210318A800C2F9BE /* NOVObtainBookshelfModel.m in Sources */,
 				C4E724B220A9CC4D00D22CB1 /* NOVDetailViewController.m in Sources */,
 				C4D29B17208F6FE000020C8D /* NOVSetUpView.m in Sources */,
@@ -1474,6 +1485,7 @@
 				C4221E4D207EC0CB008E7D4E /* NOVFindView.m in Sources */,
 				C4B0DB74209D92B2006E1998 /* NOVChatroomReceiveModel.m in Sources */,
 				C4ADC1E6211563D10085BA78 /* MASViewConstraint.m in Sources */,
+				C49F539F21228E9E00933027 /* NOVGetMyStartModel.m in Sources */,
 				C4D81DAF208C35560014431A /* NOVReadPageViewController.m in Sources */,
 				C4C8906B206BF5F000BED312 /* SJViewController.m in Sources */,
 				C4D629942109C9D600D5E283 /* NOVEditSignViewController.m in Sources */,

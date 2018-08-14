@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@class NOVMystartModel;
+@class NOVStartBookModel;
 
-typedef void(^novelTitleBlock)(NOVMystartModel *model);
+typedef void(^novelTitleBlock)(NOVStartBookModel *model);
 
 @interface NOVEditViewController : UIViewController
 

@@ -8,17 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
-@class NOVMystartModel;
+@class NOVStartBookModel;
 @class NOVRenewModel;
 typedef void(^successBlock)(id _Nonnull responseObject);
 
 typedef void(^failBlock)(NSError *_Nonnull error);
 
 @interface NOVStartManager : NSObject
-
+//获取我的发起
+-(void)getMyStartSuccess:(successBlock _Nonnull)successBlock fail:(failBlock _Nonnull)failBlock;
 //发起一本小说
--(void)startNovelWithModel:(NOVMystartModel *_Nonnull)model success:(successBlock _Nonnull)successBlock fail:(failBlock _Nonnull)failBlock;
+-(void)startNovelWithModel:(NOVStartBookModel *_Nonnull)model success:(successBlock _Nonnull)successBlock fail:(failBlock _Nonnull)failBlock;
 //发布续写
 -(void)publishRenewWithRenewModel:(NOVRenewModel *_Nonnull)renewModel success:(successBlock _Nonnull)successBlock fail:(failBlock _Nonnull)failBlock;
-
 @end

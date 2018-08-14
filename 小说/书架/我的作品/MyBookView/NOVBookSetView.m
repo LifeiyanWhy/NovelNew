@@ -8,14 +8,15 @@
 
 #import "NOVBookSetView.h"
 #import "Masonry.h"
-#import "NOVMystartModel.h"
+#import "NOVStartBookModel.h"
 #import "NOVSetbackView.h"
+#import "NOVGetMyStartModel.h"
 
 @implementation NOVBookSetView{
     UIView *view;
 }
 
--(instancetype)initWithFrame:(CGRect)frame model:(NOVMystartModel *)model{
+-(instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.00];
@@ -27,22 +28,15 @@
         
         _coverImage = [[UIImageView alloc] init];
         [view addSubview:_coverImage];
-        [_coverImage setImage:model.bookImage];
         
         _titleLabel = [[UILabel alloc] init];
         [view addSubview:_titleLabel];
-        _titleLabel.text = model.name;
         
         _editButton = [[UIButton alloc] init];
         [view addSubview:_editButton];
         
         _detailButton = [[UIButton alloc] init];
         [view addSubview:_detailButton];
-        
-        _backView = [[NOVSetbackView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) model:model];
-        [self addSubview:_backView];
-        _backView.hidden = YES;
-        [_backView.close addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
     }
     return self;
 }
@@ -76,7 +70,6 @@
     _editButton.layer.cornerRadius = 20;
     _editButton.layer.masksToBounds = YES;
     _editButton.backgroundColor = [UIColor colorWithRed:0.07 green:0.63 blue:0.58 alpha:1.00];
-    [_editButton setTitle:@"编辑作品(未发布)" forState:UIControlStateNormal];
     _editButton.titleLabel.font = [UIFont systemFontOfSize:14 weight:0.2];
     
     [_detailButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -89,8 +82,29 @@
     [_detailButton addTarget:self action:@selector(changeToDetail) forControlEvents:UIControlEventTouchUpInside];
 }
 
+-(void)updateWithModel:(NOVGetMyStartModel *)model{
+    self.titleLabel.text = model.bookName;
+    [self.backView updateWithModel:model];
+}
+
+-(void)addBookWithModel:(NOVStartBookModel *)model{
+    self.titleLabel.text = model.name;
+    self.coverImage.image = model.bookImage;
+    [self.backView addBookWithModel:model];
+}
+
+-(NOVSetbackView *)backView{
+    if (!_backView) {
+        _backView = [[NOVSetbackView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+        [self addSubview:_backView];
+        [_backView.close addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+        _backView.hidden = YES;
+    }
+    return _backView;
+}
+
 -(void)changeToDetail{
-    _backView.hidden = NO;
+    self.backView.hidden = NO;
     [UIView transitionFromView:view toView:_backView duration:0.3 options:UIViewAnimationOptionTransitionFlipFromRight completion:^(BOOL finished) {
     }];
 }
