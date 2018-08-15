@@ -18,7 +18,6 @@
 
 #import "NOVSignModel.h"
 #import <AFNetworking.h>
-#import "NOVDataModel.h"
 #import "NOVUserLoginMessageModel.h"
 
 @implementation NOVSignModel

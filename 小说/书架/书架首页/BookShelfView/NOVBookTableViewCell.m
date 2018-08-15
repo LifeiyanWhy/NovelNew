@@ -7,8 +7,8 @@
 //
 
 #import "NOVBookTableViewCell.h"
-#import "Masonry.h"
 #import "NOVbookMessage.h"
+#import <UIImageView+WebCache.h>
 
 @implementation NOVBookTableViewCell
 
@@ -18,14 +18,14 @@
         _leftImageView = [[UIImageView alloc] init];
         [self addSubview:_leftImageView];
         
-        _titleLabel = [[UILabel alloc] init];
-        [self addSubview:_titleLabel];
+        _bookName = [[UILabel alloc] init];
+        [self addSubview:_bookName];
         
-        _wordNumberLabel = [[UILabel alloc] init];
-        [self addSubview:_wordNumberLabel];
+        _authorName = [[UILabel alloc] init];
+        [self addSubview:_authorName];
         
-        _lastUpdateTimeLablel = [[UILabel alloc] init];
-        [self addSubview:_lastUpdateTimeLablel];
+        _createTimeLabel = [[UILabel alloc] init];
+        [self addSubview:_createTimeLabel];
         
         _joinNumberLabel = [[UILabel alloc] init];
         [self addSubview:_joinNumberLabel];
@@ -43,7 +43,6 @@
     self.layer.masksToBounds = YES;
     
     //设置cell阴影
-//    self.layer.shadowPath =[UIBezierPath bezierPathWithRect:self.bounds].CGPath;
     self.layer.shadowColor = [UIColor lightGrayColor].CGColor;
     self.layer.shadowOpacity = 0.8f;
     self.layer.shadowOffset = CGSizeMake(-2, 3);
@@ -59,54 +58,52 @@
     }];
     
     
-    [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_bookName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_leftImageView.mas_right).offset(self.frame.size.height*0.05);
         make.width.equalTo(self).multipliedBy(0.5f);
         make.top.equalTo(_leftImageView);
         make.height.equalTo(self).multipliedBy(0.18f);
     }];
-    [_titleLabel setFont:[UIFont systemFontOfSize:15]];
+    [_bookName setFont:[UIFont systemFontOfSize:15]];
     
-    
-    [_wordNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_titleLabel);
+    [_authorName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_bookName);
         make.right.equalTo(self).offset(self.frame.size.height*0.05*-1);
-        make.top.equalTo(_titleLabel.mas_bottom);
+        make.top.equalTo(_bookName.mas_bottom).offset(5);
         make.height.equalTo(self).multipliedBy(0.15f);
     }];
-    [_wordNumberLabel setFont:[UIFont systemFontOfSize:12]];
-    [_wordNumberLabel setTextColor:[UIColor grayColor]];
-    
-    
-    [_lastUpdateTimeLablel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_titleLabel);
-        make.right.equalTo(self).offset(self.frame.size.height*0.05*-1);
-        make.top.equalTo(_wordNumberLabel.mas_bottom);
-        make.height.equalTo(self).multipliedBy(0.15f);
-    }];
-    [_lastUpdateTimeLablel setFont:[UIFont systemFontOfSize:12]];
-    [_lastUpdateTimeLablel setTextColor:[UIColor grayColor]];
-    
+    [_authorName setFont:[UIFont systemFontOfSize:12]];
+    [_authorName setTextColor:[UIColor grayColor]];
 
     [_joinNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_titleLabel);
-        make.right.equalTo(self).offset(self.frame.size.height*0.05*-1);
-        make.top.equalTo(_lastUpdateTimeLablel.mas_bottom);
-        make.height.equalTo(self).multipliedBy(0.15f);
+        make.top.and.bottom.equalTo(_authorName);
+        make.right.equalTo(self).offset(-10);
+        make.width.equalTo(self).multipliedBy(0.15);
     }];
     [_joinNumberLabel setFont:[UIFont systemFontOfSize:12]];
     [_joinNumberLabel setTextColor:[UIColor grayColor]];
-    
+    _joinNumberLabel.textAlignment = NSTextAlignmentRight;
     
     [_contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_titleLabel);
-        make.right.equalTo(self).offset(self.frame.size.height*0.05*-1);
-        make.bottom.equalTo(self).offset(self.frame.size.height*0.05*-1);
+        make.left.equalTo(_bookName);
+        make.right.equalTo(self).offset(-5);
+        make.top.equalTo(_authorName.mas_bottom).offset(5);
         make.height.equalTo(self).multipliedBy(0.3f);
     }];
     _contentLabel.numberOfLines = 0;
     [_contentLabel setFont:[UIFont systemFontOfSize:12]];
     [_contentLabel setTextColor:[UIColor grayColor]];
+    
+    
+    [_createTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_contentLabel);
+        make.width.equalTo(self).multipliedBy(0.5);
+        make.bottom.equalTo(self).offset(-5);
+        make.top.equalTo(_contentLabel.mas_bottom);
+    }];
+    [_createTimeLabel setFont:[UIFont systemFontOfSize:12]];
+    [_createTimeLabel setTextColor:[UIColor grayColor]];
+    _createTimeLabel.textAlignment = NSTextAlignmentLeft;
 }
 
 - (void)setFrame:(CGRect)frame{
@@ -118,11 +115,13 @@
 }
 
 -(void)updateCellModel:(NOVbookMessage *)model{
-    [_titleLabel setText:model.bookName];//书名
-    [_wordNumberLabel setText:@"字数:x万"];
-    [_lastUpdateTimeLablel setText:@"2018.04.10"];
-//    [_joinNumberLabel setText:[NSString stringWithFormat:@"已参与人数:%d",model.writeNum]];//参与人数
+    [_bookName setText:model.bookName];//书名
+    [_authorName setText:model.author.username];
+    [_createTimeLabel setText:[model.createTime substringToIndex:10]];
+    [_joinNumberLabel setText:[NSString stringWithFormat:@"%ld人参与",(long)model.branchNum]];//参与人数
     [_contentLabel setText:model.content];//简介
+    NSLog(@"%@",model.bookImage);
+    [_leftImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BookImageUrl,model.bookImage]] placeholderImage:[UIImage imageNamed:@""]];
 }
 
 - (void)awakeFromNib {

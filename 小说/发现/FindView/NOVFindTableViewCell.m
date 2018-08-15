@@ -8,6 +8,7 @@
 
 #import "NOVFindTableViewCell.h"
 #import "NOVbookMessage.h"
+#import <UIImageView+WebCache.h>
 
 @implementation NOVFindTableViewCell
 
@@ -208,7 +209,7 @@
     _writeNumber.text = [NSString stringWithFormat:@"已参与人数:%ld人",(long)model.branchNum];
     _startContentLabel.text = @"startXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
     _updateContentLabel.text = @"updateXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-    [_leftImageView setImage:[UIImage imageNamed:@"bookimage.jpg"]];
+    [_leftImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BookImageUrl,model.bookImage]] placeholderImage:[UIImage imageNamed:@""]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

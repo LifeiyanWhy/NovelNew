@@ -12,6 +12,7 @@
 @property(nonatomic,strong) NSString <Optional>*signText;
 @property(nonatomic,assign) NSNumber *experience;
 @property(nonatomic,assign) NSNumber *userGrade;
+@property(nonatomic,strong) NSString *icon;
 @property(nonatomic,assign) NSNumber <Optional>*sex;
 @property(nonatomic,strong) NSString <Optional>*location;
 @property(nonatomic,strong) NSString <Optional>*school;

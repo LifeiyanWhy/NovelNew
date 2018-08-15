@@ -1,20 +1,17 @@
 //
-//  NOVObtainBookshelfModel.m
+//  NOVObtainBookShelfManager.m
 //  小说
 //
-//  Created by 李飞艳 on 2018/7/21.
+//  Created by 李飞艳 on 2018/8/15.
 //  Copyright © 2018年 李飞艳. All rights reserved.
 //
 
-#import "NOVObtainBookshelfModel.h"
-#import "NOVDataModel.h"
-#import <AFNetworking.h>
-@implementation NOVObtainBookshelfModel
+#import "NOVObtainBookShelfManager.h"
 
+@implementation NOVObtainBookShelfManager
 -(void)obtainFollowBookListSucceed:(successBlock)succeedBlock failure:(failBlock)failBlock{
     NOVDataModel *datamodel = [NOVDataModel shareInstance];
     NSString *token = [NSString stringWithFormat:@"Bearer %@",[datamodel getToken]];
-    NSLog(@"token=%@",token);
     NSString *url = @"http://47.95.207.40/branch/user/focusOn/book";
     AFHTTPSessionManager *manger = [AFHTTPSessionManager manager];
     manger.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -33,5 +30,4 @@
         }
     }];
 }
-
 @end

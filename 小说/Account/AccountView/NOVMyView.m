@@ -31,7 +31,6 @@
         
         NSLog(@"%f",self.frame.size.height);
         _headview = [[NOVMyheadView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height*0.43) Size:self.frame.size];
-        [_headview.myImageButton setImage:[UIImage imageNamed:@"cellimage.jpg"] forState:UIControlStateNormal];
     }
     return self;
 }

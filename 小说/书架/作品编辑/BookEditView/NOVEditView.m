@@ -11,6 +11,8 @@
 
 @implementation NOVEditView{
     UIView *headView;
+    UILabel *novelNameLabel;
+    UIImageView *imageView;
 }
 
 -(instancetype)initWithFrame:(CGRect)frame{
@@ -22,6 +24,12 @@
         headView = [[UIView alloc] init];
         _tableView.tableHeaderView = headView;
         
+        _novelNameTextfeild = [[UITextField alloc] init];
+        [headView addSubview:_novelNameTextfeild];
+        
+        novelNameLabel = [[UILabel alloc] init];
+        [headView addSubview:novelNameLabel];
+        
         _novelImage = [[UIImageView alloc] init];
         _novelImage.userInteractionEnabled = YES;
         [headView addSubview:_novelImage];
@@ -30,8 +38,8 @@
         //给image添加手势，用于点击更换图像
         [_novelImage addGestureRecognizer:_changeImage];
         
-        _novelName = [[UITextField alloc] init];
-        [headView addSubview:_novelName];
+        imageView = [[UIImageView alloc] init];
+        [self addSubview:imageView];
     }
     return self;
 }
@@ -40,12 +48,13 @@
     self.backgroundColor = [UIColor colorWithRed:0.90 green:0.90 blue:0.90 alpha:1.00];
 
     headView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height*0.15);
-    
+    headView.backgroundColor = [UIColor whiteColor];
     [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self);
     }];
     _tableView.tableFooterView = [[UIView alloc] init];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    _tableView.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.00];
     
     _novelImage.backgroundColor = [UIColor colorWithRed:0.86 green:0.86 blue:0.86 alpha:1.00];
     [_novelImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -56,32 +65,28 @@
     }];
     
     //headView
-    UILabel *novelName = [[UILabel alloc] init];
-    [headView addSubview:novelName];
-    [novelName mas_makeConstraints:^(MASConstraintMaker *make) {
+    [headView addSubview:novelNameLabel];
+    [novelNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_novelImage);
         make.height.equalTo(headView).multipliedBy(0.2);
         make.left.equalTo(_novelImage.mas_right).offset(5);
         make.width.equalTo(headView).multipliedBy(0.25);
     }];
-    novelName.text = @"作品名称:";
-    novelName.textColor = [UIColor blackColor];
+    novelNameLabel.text = @"作品名称:";
+    novelNameLabel.textColor = [UIColor blackColor];
     
-    [_novelName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(novelName.mas_bottom).offset(10);
+    [_novelNameTextfeild mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(novelNameLabel.mas_bottom).offset(10);
         make.height.equalTo(headView).multipliedBy(0.2);
         make.left.equalTo(_novelImage.mas_right).offset(5);
         make.right.equalTo(self).offset(-10);
     }];
-    _novelName.placeholder = @"15字以内";
-    _novelName.font = [UIFont systemFontOfSize:14];
-    
-    UIImageView *imageView = [[UIImageView alloc] init];
-    [self addSubview:imageView];
+    _novelNameTextfeild.placeholder = @"15字以内";
+    _novelNameTextfeild.font = [UIFont systemFontOfSize:14];
     
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_novelName.mas_bottom);
-        make.left.and.right.equalTo(_novelName);
+        make.top.equalTo(_novelNameTextfeild.mas_bottom);
+        make.left.and.right.equalTo(_novelNameTextfeild);
         make.height.mas_equalTo(1.5);
     }];
     imageView.backgroundColor = [UIColor colorWithRed:0.74 green:0.74 blue:0.74 alpha:1.00];

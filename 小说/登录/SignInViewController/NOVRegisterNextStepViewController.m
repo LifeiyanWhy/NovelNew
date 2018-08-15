@@ -10,6 +10,7 @@
 #import "NOVRegisterNextStepView.h"
 #import "ViewController.h"
 #import "NOVSigninView.h"
+#import "NOVSignModel.h"
 
 @interface NOVRegisterNextStepViewController ()<UITextFieldDelegate>
 @end

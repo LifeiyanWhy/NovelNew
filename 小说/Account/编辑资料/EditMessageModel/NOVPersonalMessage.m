@@ -18,6 +18,7 @@
     [aCoder encodeObject:self.location forKey:@"location"];
     [aCoder encodeObject:self.school forKey:@"school"];
     [aCoder encodeObject:self.company forKey:@"company"];
+//    [aCoder encodeObject:self.icon forKey:@"icon"];
 }
 
 -(instancetype)initWithCoder:(NSCoder *)aDecoder{
@@ -28,6 +29,7 @@
     self.location = [aDecoder decodeObjectForKey:@"location"];
     self.school = [aDecoder decodeObjectForKey:@"school"];
     self.company = [aDecoder decodeObjectForKey:@"company"];
+//    self.icon = [aDecoder decodeObjectForKey:@"icon"];
     return self;
 }
 

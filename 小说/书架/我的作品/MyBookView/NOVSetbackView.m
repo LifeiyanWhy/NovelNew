@@ -77,7 +77,7 @@
     modelArray = @[@[model.bookName,@"简介简介!!!",model.bookType,[model.createTime substringToIndex:10]],@[[NSNumber numberWithInteger:model.branchNum],[NSNumber numberWithInteger:model.branchNum],[NSNumber numberWithInteger:model.readNum],@"100"]];
 }
 
--(void)addBookWithModel:(NOVStartBookModel *)model{
+-(void)setBookWithModel:(NOVStartBookModel *)model{
     
 }
 

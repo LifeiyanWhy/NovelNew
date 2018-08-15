@@ -8,13 +8,13 @@
 
 #import "SJViewController.h"
 #import "SJView.h"
+#import "NOVBookTableViewCell.h"
 #import "NOVView.h"
 #import "SJBottomView.h"
-#import "NOVBookTableViewCell.h"
+#import "NOVObtainBookShelfManager.h"
+#import "NOVbookMessage.h"
 #import "NOVReadNovelViewController.h"
 #import "NOVMystartViewController.h"
-#import "NOVObtainBookshelfModel.h"
-#import "NOVbookMessage.h"
 
 #define tabBarHeight self.navigationController.tabBarController.tabBar.frame.size.height //控制器高度
 
@@ -63,7 +63,7 @@
 }
 
 -(void)obtainBookListWithCurrentPage:(NSInteger)page{
-    NOVObtainBookshelfModel *model = [[NOVObtainBookshelfModel alloc] init];
+    NOVObtainBookShelfManager *model = [[NOVObtainBookShelfManager alloc] init];
     if (page == 0) {    //获取关注列表
         [model obtainFollowBookListSucceed:^(id  _Nullable responseObject) {
             NSMutableArray *array = [NSMutableArray arrayWithArray:responseObject[@"data"]];
@@ -79,7 +79,6 @@
             self.networkAnomalyView.hidden = NO;
         }];
     }else if (page == 1){   //获取我的收藏列表
-        
     }else{  //获取我的参与列表
         
     }

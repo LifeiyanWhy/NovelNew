@@ -51,7 +51,7 @@
     [self.view addSubview:_editView];
     _editView.tableView.delegate = self;
     _editView.tableView.dataSource = self;
-    _editView.novelName.delegate = self;
+    _editView.novelNameTextfeild.delegate = self;
     
     [_editView.tableView registerClass:[NOVEditViewTableViewCell class] forCellReuseIdentifier:@"cell"];
     cellTitleArray = @[@"发起形式",@"作品类型",@"指定续写人员",@"指定观看人群"];
@@ -114,13 +114,13 @@
 
 -(void)finishEdit{
     
-    if ([_editView.novelName.text  isEqual: @""]) {
+    if ([_editView.novelNameTextfeild.text  isEqual: @""]) {
         [self addAlertActionWithTitle:@"作品名称不能为空"];
         return;
     }
     
     NOVStartBookModel *model = [[NOVStartBookModel alloc] init];
-    model.name = _editView.novelName.text;//作品名称
+    model.name = _editView.novelNameTextfeild.text;//作品名称
     
     for (int i = 0; i <= 4; i++) {
         NOVEditViewTableViewCell *cell = [_editView.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
@@ -161,6 +161,10 @@
     return 10;
 }
 
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    return [[UIView alloc] init];
+}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return 0.01;
 }
@@ -186,7 +190,7 @@
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [_editView.novelName resignFirstResponder];
+    [_editView.novelNameTextfeild resignFirstResponder];
     return YES;
 }
 

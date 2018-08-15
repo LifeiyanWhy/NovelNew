@@ -52,13 +52,14 @@
     _viewNumber++;
     _scrollView.contentSize = CGSizeMake(self.frame.size.width*_viewNumber, scrollviewHeight);
     NOVBookSetView *setview = [[NOVBookSetView alloc] initWithFrame:CGRectMake(self.frame.size.width*(_viewNumber - 1 + 0.15), scrollviewHeight*0.07, self.frame.size.width*0.7, scrollviewHeight*0.83)];
-    [setview addBookWithModel:model];
     //标记作品
     setview.tag = _viewNumber;
     setview.detailButton.tag = _viewNumber;
     [setview.editButton setTitle:@"编辑作品(未发布)" forState:UIControlStateNormal];
     [setview.editButton addTarget:self action:@selector(touchEditButton:) forControlEvents:UIControlEventTouchUpInside];
     [_scrollView addSubview:setview];
+    [_scrollView setContentOffset:CGPointMake(self.frame.size.width*(_viewNumber - 1), 0) animated:NO];
+    [setview setBookWithModel:model];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -78,7 +79,7 @@
 
 -(void)touchEditButton:(UIButton *)button{
     //参数为所点击的setView(即小说)
-    if ([_delegate respondsToSelector:@selector(touchEditButton:)]) {
+    if ([_delegate respondsToSelector:@selector(touchEditButtonInSetView:)]) {
         [self.delegate touchEditButtonInSetView:(NOVBookSetView *)[[button superview] superview]];
     }
 }

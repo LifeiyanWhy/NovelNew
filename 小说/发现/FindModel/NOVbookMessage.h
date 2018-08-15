@@ -16,7 +16,7 @@
 @interface NOVbookMessage : JSONModel
 @property(nonatomic,strong) NOVBookStartUser *author;
 @property(nonatomic,assign) NSInteger bookId;
-//@property(nonatomic,strong) UIImage *bookImage;
+@property(nonatomic,copy) NSString *bookImage;
 @property(nonatomic,copy) NSString *bookName;
 @property(nonatomic,assign) NSInteger bookType;
 @property(nonatomic,assign) NSInteger branchNum;

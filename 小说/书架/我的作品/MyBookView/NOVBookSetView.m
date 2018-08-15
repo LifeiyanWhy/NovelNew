@@ -7,11 +7,10 @@
 //
 
 #import "NOVBookSetView.h"
-#import "Masonry.h"
 #import "NOVStartBookModel.h"
 #import "NOVSetbackView.h"
 #import "NOVGetMyStartModel.h"
-
+#import <UIImageView+WebCache.h>
 @implementation NOVBookSetView{
     UIView *view;
 }
@@ -84,13 +83,14 @@
 
 -(void)updateWithModel:(NOVGetMyStartModel *)model{
     self.titleLabel.text = model.bookName;
+    [self.coverImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BookImageUrl,model.bookImage]] placeholderImage:[UIImage imageNamed:@""]];
     [self.backView updateWithModel:model];
 }
 
--(void)addBookWithModel:(NOVStartBookModel *)model{
+-(void)setBookWithModel:(NOVStartBookModel *)model{
     self.titleLabel.text = model.name;
     self.coverImage.image = model.bookImage;
-    [self.backView addBookWithModel:model];
+//    [self.backView setBookWithModel:model];
 }
 
 -(NOVSetbackView *)backView{

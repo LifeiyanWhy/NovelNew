@@ -68,6 +68,7 @@
 		C4960D7D2119D27D00132C43 /* NOVAccountManageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4960D7C2119D27D00132C43 /* NOVAccountManageCell.m */; };
 		C4960D7F2119D60700132C43 /* cellimage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C4960D7E2119D60700132C43 /* cellimage.jpg */; };
 		C4960D832119D95C00132C43 /* 添加账号.png in Resources */ = {isa = PBXBuildFile; fileRef = C4960D822119D95C00132C43 /* 添加账号.png */; };
+		C49D9346212414BC0021D6C1 /* NOVObtainBookShelfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C49D9345212414BC0021D6C1 /* NOVObtainBookShelfManager.m */; };
 		C49F539F21228E9E00933027 /* NOVGetMyStartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C49F539E21228E9E00933027 /* NOVGetMyStartModel.m */; };
 		C49F53A22122F1BB00933027 /* NOVEditUserMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C49F53A12122F1BB00933027 /* NOVEditUserMessageManager.m */; };
 		C4A49DD620C2A41D00FBEE87 /* NOVSelectPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A49DD520C2A41D00FBEE87 /* NOVSelectPhotoManager.m */; };
@@ -92,7 +93,6 @@
 		C4B09CC32089DD0400756467 /* NOVMessageCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4B09CC22089DD0400756467 /* NOVMessageCellModel.m */; };
 		C4B0DB74209D92B2006E1998 /* NOVChatroomReceiveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4B0DB73209D92B2006E1998 /* NOVChatroomReceiveModel.m */; };
 		C4B0DB77209DA30B006E1998 /* NOVChatroomReceiveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4B0DB76209DA30B006E1998 /* NOVChatroomReceiveTableViewCell.m */; };
-		C4B7CFE2210318A800C2F9BE /* NOVObtainBookshelfModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4B7CFE1210318A800C2F9BE /* NOVObtainBookshelfModel.m */; };
 		C4B7CFE52103272C00C2F9BE /* NOVNetworkAnomalyView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4B7CFE42103272C00C2F9BE /* NOVNetworkAnomalyView.m */; };
 		C4B7CFE821036C6D00C2F9BE /* NOVReadConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = C4B7CFE721036C6D00C2F9BE /* NOVReadConfig.m */; };
 		C4BEB6FC20C6CCB0002B1AA4 /* NOVStartManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BEB6FB20C6CCB0002B1AA4 /* NOVStartManager.m */; };
@@ -258,6 +258,8 @@
 		C4960D7C2119D27D00132C43 /* NOVAccountManageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVAccountManageCell.m; sourceTree = "<group>"; };
 		C4960D7E2119D60700132C43 /* cellimage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cellimage.jpg; sourceTree = "<group>"; };
 		C4960D822119D95C00132C43 /* 添加账号.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "添加账号.png"; sourceTree = "<group>"; };
+		C49D9344212414BC0021D6C1 /* NOVObtainBookShelfManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVObtainBookShelfManager.h; sourceTree = "<group>"; };
+		C49D9345212414BC0021D6C1 /* NOVObtainBookShelfManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVObtainBookShelfManager.m; sourceTree = "<group>"; };
 		C49F539D21228E9E00933027 /* NOVGetMyStartModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVGetMyStartModel.h; sourceTree = "<group>"; };
 		C49F539E21228E9E00933027 /* NOVGetMyStartModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVGetMyStartModel.m; sourceTree = "<group>"; };
 		C49F53A02122F1BB00933027 /* NOVEditUserMessageManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVEditUserMessageManager.h; sourceTree = "<group>"; };
@@ -311,8 +313,6 @@
 		C4B0DB73209D92B2006E1998 /* NOVChatroomReceiveModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVChatroomReceiveModel.m; sourceTree = "<group>"; };
 		C4B0DB75209DA30B006E1998 /* NOVChatroomReceiveTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVChatroomReceiveTableViewCell.h; sourceTree = "<group>"; };
 		C4B0DB76209DA30B006E1998 /* NOVChatroomReceiveTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVChatroomReceiveTableViewCell.m; sourceTree = "<group>"; };
-		C4B7CFE0210318A800C2F9BE /* NOVObtainBookshelfModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVObtainBookshelfModel.h; sourceTree = "<group>"; };
-		C4B7CFE1210318A800C2F9BE /* NOVObtainBookshelfModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVObtainBookshelfModel.m; sourceTree = "<group>"; };
 		C4B7CFE32103272C00C2F9BE /* NOVNetworkAnomalyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVNetworkAnomalyView.h; sourceTree = "<group>"; };
 		C4B7CFE42103272C00C2F9BE /* NOVNetworkAnomalyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVNetworkAnomalyView.m; sourceTree = "<group>"; };
 		C4B7CFE621036C6D00C2F9BE /* NOVReadConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVReadConfig.h; sourceTree = "<group>"; };
@@ -593,8 +593,8 @@
 			children = (
 				C4CA78C5207CAD24007357B4 /* NOVBookModel.h */,
 				C4CA78C6207CAD24007357B4 /* NOVBookModel.m */,
-				C4B7CFE0210318A800C2F9BE /* NOVObtainBookshelfModel.h */,
-				C4B7CFE1210318A800C2F9BE /* NOVObtainBookshelfModel.m */,
+				C49D9344212414BC0021D6C1 /* NOVObtainBookShelfManager.h */,
+				C49D9345212414BC0021D6C1 /* NOVObtainBookShelfManager.m */,
 			);
 			path = BookShelfModel;
 			sourceTree = "<group>";
@@ -688,12 +688,12 @@
 		C45AB12F2115693C00A28869 /* BookEditView */ = {
 			isa = PBXGroup;
 			children = (
+				C4DD66AB20A6A9CC004C32CA /* NOVEditView.h */,
+				C4DD66AC20A6A9CC004C32CA /* NOVEditView.m */,
 				C4DB8D8320AAD902005BD0C4 /* NOVDetailTableViewCell.h */,
 				C4DB8D8420AAD902005BD0C4 /* NOVDetailTableViewCell.m */,
 				C4E724AB20A9B69D00D22CB1 /* NOVEditViewTableViewCell.h */,
 				C4E724AC20A9B69D00D22CB1 /* NOVEditViewTableViewCell.m */,
-				C4DD66AB20A6A9CC004C32CA /* NOVEditView.h */,
-				C4DD66AC20A6A9CC004C32CA /* NOVEditView.m */,
 			);
 			path = BookEditView;
 			sourceTree = "<group>";
@@ -1473,7 +1473,6 @@
 				C492AC76210AA2F5003E0CA3 /* NOVDataBase.m in Sources */,
 				C442C99A20A1BE7D00F742E6 /* NOVMyheadView.m in Sources */,
 				C49F53A22122F1BB00933027 /* NOVEditUserMessageManager.m in Sources */,
-				C4B7CFE2210318A800C2F9BE /* NOVObtainBookshelfModel.m in Sources */,
 				C4E724B220A9CC4D00D22CB1 /* NOVDetailViewController.m in Sources */,
 				C4D29B17208F6FE000020C8D /* NOVSetUpView.m in Sources */,
 				C4EA54DE20E2358200086979 /* NOVObtainBookList.m in Sources */,
@@ -1483,6 +1482,7 @@
 				C496037A209ADE7100ACBD28 /* NOVChatroomView.m in Sources */,
 				C4BEB6FC20C6CCB0002B1AA4 /* NOVStartManager.m in Sources */,
 				C4221E4D207EC0CB008E7D4E /* NOVFindView.m in Sources */,
+				C49D9346212414BC0021D6C1 /* NOVObtainBookShelfManager.m in Sources */,
 				C4B0DB74209D92B2006E1998 /* NOVChatroomReceiveModel.m in Sources */,
 				C4ADC1E6211563D10085BA78 /* MASViewConstraint.m in Sources */,
 				C49F539F21228E9E00933027 /* NOVGetMyStartModel.m in Sources */,

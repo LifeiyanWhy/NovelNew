@@ -34,35 +34,18 @@
     NOVDataModel *datamodel = [NOVDataModel shareInstance];
     NSString *token = [NSString stringWithFormat:@"Bearer %@",[datamodel getToken]];
     NSString *url = @"http://47.95.207.40/branch/upload/avatar";
-    AFHTTPSessionManager *manger = [AFHTTPSessionManager manager];
-    manger.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manger.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manger.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", @"text/plain",nil];
-    [manger.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
-    NSDictionary *parameters = @{
-                                 @"file":imageData
-                                     };
-    [manger POST:url parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"%@",responseObject);
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"multipart/form-data;boundary="] forHTTPHeaderField:@"Content-Type"];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
+    [manager POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        [formData appendPartWithFileData:imageData name:@"file" fileName:@"myImage.jpg" mimeType:@"image/jpg"];
+    } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         successBlock(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
-        NSLog(@"相册:%@",dict);
-        NSLog(@"%@",error);
         failBlock(error);
     }];
-    
-//    [manger POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-//        [formData appendPartWithFileData:UIImageJPEGRepresentation(image,0.5) name:@"myImage" fileName:@"myImage.jpg" mimeType:@"image/jpg"];
-//    } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        NSLog(@"%@",responseObject);
-//        successBlock(responseObject);
-//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
-//        NSLog(@"相册：%@",dict);
-//        NSLog(@"%@",error);
-//        failBlock(error);
-//    }];
 }
 //获取用户信息
 +(void)getUserMessageSuccess:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock{

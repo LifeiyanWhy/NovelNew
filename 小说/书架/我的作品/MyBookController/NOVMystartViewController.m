@@ -50,16 +50,14 @@
     //获取当前用户的所有作品
     NOVStartManager *startManager = [[NOVStartManager alloc] init];
     [startManager getMyStartSuccess:^(id  _Nonnull responseObject) {
-        NSLog(@"%@",responseObject[@"data"]);
+//        NSLog(@"%@",responseObject[@"data"]);
         NSArray *array = responseObject[@"data"];
         for (int i = 0 ; i < array.count; i++) {
             [_novelArray addObject:[[NOVGetMyStartModel alloc] initWithDictionary:array[i] error:nil]];
         }
-        dispatch_async(dispatch_get_main_queue(), ^{    //在主线程加载UI
-            _mystartView = [[NOVMystartView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) withViewNumber:_novelArray.count];
-            [self.view addSubview:_mystartView];
-            _mystartView.delegate = self;
-        });
+        _mystartView = [[NOVMystartView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) withViewNumber:_novelArray.count];
+        [self.view addSubview:_mystartView];
+        _mystartView.delegate = self;
     } fail:^(NSError * _Nonnull error) {
         NSLog(@"%@",error);
     }];
@@ -104,7 +102,7 @@
         //在我的发起界面根据回调的数据添加作品（未发布）
         [weakSelf.mystartView addViewWithModel:model];
         //更新数据源
-//        [weakSelf.novelArray addObject:model];
+        [weakSelf.novelArray addObject:model];
     };
     [self.navigationController pushViewController:editViewController animated:NO];
 }

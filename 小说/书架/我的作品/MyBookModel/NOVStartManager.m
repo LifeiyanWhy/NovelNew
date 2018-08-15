@@ -8,8 +8,6 @@
 //发布一个作品
 #import "NOVStartManager.h"
 #import "NOVStartBookModel.h"
-#import "AFNetworking.h"
-#import "NOVDataModel.h"
 #import "NOVRenewModel.h"
 
 @implementation NOVStartManager

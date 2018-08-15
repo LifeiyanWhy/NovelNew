@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-
+typedef void(^successBlock)(id  _Nullable responseObject);
+typedef void(^failBlock)(NSError * _Nonnull error);
 @interface NOVEditUserMessageManager : NSObject
 //修改签名
 +(void)changeUserSignText:(NSString *_Nonnull)signText success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;

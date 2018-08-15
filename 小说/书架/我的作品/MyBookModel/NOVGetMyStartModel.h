@@ -12,7 +12,7 @@
 @property(nonatomic,assign) NSInteger bookId;
 @property(nonatomic,copy) NSString *bookName;
 @property(nonatomic,copy) NSString *bookType;
-//@property(nonatomic,strong) UIImage *bookImage;
+@property(nonatomic,copy) NSString *bookImage;
 @property(nonatomic,copy) NSString *createTime;
 @property(nonatomic,assign) NSInteger branchNum;
 @property(nonatomic,assign) NSInteger readNum;

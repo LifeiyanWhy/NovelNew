@@ -16,5 +16,5 @@
 @property(nonatomic,strong) UITableView *tableview;
 -(instancetype)initWithFrame:(CGRect)frame;
 -(void)updateWithModel:(NOVGetMyStartModel *)model;
--(void)addBookWithModel:(NOVStartBookModel *)model;
+-(void)setBookWithModel:(NOVStartBookModel *)model;
 @end

@@ -15,6 +15,7 @@
 #import "NOVEditUserMessageManager.h"
 #import "NOVUserSetViewController.h"
 #import "NOVMystartViewController.h"
+#import <UIButton+WebCache.h>
 
 @interface MYViewController ()<NOVSelectPhotoManagerDeleagte,UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,strong) NOVSelectPhotoManager *photoManager;
@@ -78,6 +79,7 @@
             [self.myView.headview.profileButton setTitle:[NSString stringWithFormat:@"简介:%@",_userMessage.userMessage.signText] forState:UIControlStateNormal];
         }
         self.myView.headview.nameLabel.text = _userMessage.simpleUserMessage.username;
+        [self.myView.headview.myImageButton sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",UserImageUrl,_userMessage.userMessage.icon]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"添加账号.png"]];
         //存储个人信息
         [NOVDataModel updateUserMessage:_userMessage];
     } failure:^(NSError * _Nonnull error) {
@@ -109,7 +111,10 @@
     NSLog(@"=====%@",image);
     [_myView.headview.myImageButton setImage:image forState:UIControlStateNormal];
     [NOVEditUserMessageManager uploadMyImageWithImage:image success:^(id  _Nullable responseObject) {
+        NSLog(@"%@",responseObject[@"message"]);
     } failure:^(NSError * _Nonnull error) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
+        NSLog(@"相册=%@",dict);
     }];
 }
 

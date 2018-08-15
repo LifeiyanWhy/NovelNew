@@ -8,21 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@class NOVFindModel;
+@class NOVbookMessage;
 
 @interface NOVBookTableViewCell : UITableViewCell
-
 @property(nonatomic,strong) UIImageView *leftImageView;
-
-@property(nonatomic,strong) UILabel *titleLabel;
-
-@property(nonatomic,strong) UILabel *wordNumberLabel;
-
-@property(nonatomic,strong) UILabel *lastUpdateTimeLablel;
-
+@property(nonatomic,strong) UILabel *bookName;
+@property(nonatomic,strong) UILabel *authorName;
+@property(nonatomic,strong) UILabel *createTimeLabel;
 @property(nonatomic,strong) UILabel *joinNumberLabel;
-
 @property(nonatomic,strong) UILabel *contentLabel;
-
--(void)updateCellModel:(NOVFindModel *)model;
+-(void)updateCellModel:(NOVbookMessage *)model;
 @end

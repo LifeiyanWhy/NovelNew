@@ -29,5 +29,5 @@ typedef NS_OPTIONS(NSInteger, NovelState) {
 @property(nonatomic,assign) NovelState novelState;
 -(instancetype)initWithFrame:(CGRect)frame;
 -(void)updateWithModel:(NOVGetMyStartModel *)model;
--(void)addBookWithModel:(NOVStartBookModel *)model;
+-(void)setBookWithModel:(NOVStartBookModel *)model;
 @end
