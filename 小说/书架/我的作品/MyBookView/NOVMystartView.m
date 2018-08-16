@@ -15,6 +15,17 @@
     CGFloat scrollviewHeight;
 }
 
+-(instancetype)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.00];
+        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 64, frame.size.width, frame.size.height - 64)];
+        [self addSubview:_scrollView];
+        _viewNumber = 0;
+    }
+    return self;
+}
+
 -(instancetype)initWithFrame:(CGRect)frame withViewNumber:(NSInteger)viewNumber{
     self = [super initWithFrame:frame];
     if (self) {
@@ -42,7 +53,7 @@
         }
         bookSetView.tag = i + 1;
         bookSetView.detailButton.tag = i + 1;
-        [bookSetView.editButton setTitle:@"已发布(不可编辑)" forState:UIControlStateNormal];
+        [bookSetView.editButton setTitle:@"查看作品(已发布)" forState:UIControlStateNormal];
         bookSetView.editButton.userInteractionEnabled = NO;
         [_scrollView addSubview:bookSetView];
     }

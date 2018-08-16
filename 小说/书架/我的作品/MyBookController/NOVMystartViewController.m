@@ -84,6 +84,11 @@
             //标记为已发布
             setView.novelState = NovelStatePublished;
             NSLog(@"===%@",responseObject);
+//            [startManager uploadBookImage:model.bookImage bookId:1 success:^(id  _Nonnull responseObject) {
+//                NSLog(@"上传成功");
+//            } fail:^(NSError * _Nonnull error) {
+//                NSLog(@"图片上传失败");
+//            }];
         } fail:^(NSError * _Nonnull error) {
             NSLog(@"发布失败%@",[NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error]);
         }];
@@ -96,6 +101,11 @@
 }
 
 -(void)creatStart{
+    if (!_mystartView) {
+        _mystartView = [[NOVMystartView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        _mystartView.delegate = self;
+        [self.view addSubview:_mystartView];
+    }
     __block NOVMystartViewController *weakSelf = self;
     NOVEditViewController *editViewController = [[NOVEditViewController alloc] init];
     editViewController.novelTitleBlock = ^(NOVStartBookModel *model) {

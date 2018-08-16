@@ -13,5 +13,7 @@ typedef void(^failBlock)(NSError * _Nonnull error);
 
 @interface NOVObtainBookShelfManager : NSObject
 //获取关注列表
--(void)obtainFollowBookListSucceed:(successBlock _Nullable )succeedBlock failure:(failBlock _Nonnull )failBlock;
+-(void)obtainFollowBookListSucceed:(successBlock _Nullable )succeedBlock failure:(failBlock _Nullable)failBlock;
+//获取我的参与列表
+-(void)obtainMyRenewSucceed:(successBlock _Nullable )succeedBlock failure:(failBlock _Nullable)failBlock;
 @end

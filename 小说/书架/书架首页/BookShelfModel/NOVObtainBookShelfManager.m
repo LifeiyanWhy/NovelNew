@@ -30,4 +30,21 @@
         }
     }];
 }
+-(void)obtainMyRenewSucceed:(successBlock _Nullable )succeedBlock failure:(failBlock _Nullable)failBlock{
+    NOVDataModel *datamodel = [NOVDataModel shareInstance];
+    NSString *token = [NSString stringWithFormat:@"Bearer %@",[datamodel getToken]];
+    NSString *url = @"http://47.95.207.40/branch/user/branch";
+    AFHTTPSessionManager *manger = [AFHTTPSessionManager manager];
+    manger.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manger.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manger.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
+    [manger GET:url parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        succeedBlock(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
+        NSLog(@"%@",dict);
+        failBlock(error);
+    }];
+}
 @end

@@ -67,15 +67,15 @@
     [manager POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         [formData appendPartWithFormData:[@"refresh_token" dataUsingEncoding:NSUTF8StringEncoding] name:@"grant_type"];
         [formData appendPartWithFormData:refreshData name:@"refresh_token"];
-    } progress:^(NSProgress * _Nonnull uploadProgress) {
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         NSLog(@"%@",dict);
         NOVDataModel *datamodel = [NOVDataModel shareInstance];
         //获取到token后更新沙盒中的数据
         [datamodel updateToken:dict[@"access_token"] refreshToken:dict[@"refresh_token"]];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"获取token失败:%@",error);
+        NSString *string = [[NSString alloc] initWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] encoding:NSUTF8StringEncoding];
+        NSLog(@"token:%@",string);
     }];
 }
 

@@ -51,12 +51,11 @@
     
     _leftImageView.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.00];
     [_leftImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(self).multipliedBy(0.9f);
+        make.height.equalTo(self).multipliedBy(0.85f);
         make.centerY.equalTo(self);
         make.left.equalTo(self).offset(self.frame.size.width*0.015);
         make.width.equalTo(self).multipliedBy(0.23f);
     }];
-    
     
     [_bookName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_leftImageView.mas_right).offset(self.frame.size.height*0.05);
@@ -94,7 +93,6 @@
     [_contentLabel setFont:[UIFont systemFontOfSize:12]];
     [_contentLabel setTextColor:[UIColor grayColor]];
     
-    
     [_createTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_contentLabel);
         make.width.equalTo(self).multipliedBy(0.5);
@@ -104,14 +102,11 @@
     [_createTimeLabel setFont:[UIFont systemFontOfSize:12]];
     [_createTimeLabel setTextColor:[UIColor grayColor]];
     _createTimeLabel.textAlignment = NSTextAlignmentLeft;
-}
-
-- (void)setFrame:(CGRect)frame{
-    frame.origin.x += 5;
-    frame.origin.y += 20;
-    frame.size.height -= 20;
-    frame.size.width -= 15;
-    [super setFrame:frame];
+    [_bookName setText:@"书名"];//书名
+    [_authorName setText:@"作者"];
+    [_createTimeLabel setText:@"2018-08-16"];
+    [_joinNumberLabel setText:[NSString stringWithFormat:@"5人参与"]];//参与人数
+    [_contentLabel setText:@"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"];//简介
 }
 
 -(void)updateCellModel:(NOVbookMessage *)model{

@@ -10,15 +10,16 @@
 
 @class NOVStartBookModel;
 @class NOVRenewModel;
-typedef void(^successBlock)(id _Nonnull responseObject);
 
+typedef void(^successBlock)(id _Nonnull responseObject);
 typedef void(^failBlock)(NSError *_Nonnull error);
 
 @interface NOVStartManager : NSObject
 //获取我的发起
--(void)getMyStartSuccess:(successBlock _Nonnull)successBlock fail:(failBlock _Nonnull)failBlock;
+-(void)getMyStartSuccess:(successBlock _Nullable)successBlock fail:(failBlock _Nullable)failBlock;
 //发起一本小说
--(void)startNovelWithModel:(NOVStartBookModel *_Nonnull)model success:(successBlock _Nonnull)successBlock fail:(failBlock _Nonnull)failBlock;
+-(void)startNovelWithModel:(NOVStartBookModel *_Nonnull)model success:(successBlock _Nullable)successBlock fail:(failBlock _Nonnull)failBlock;
 //发布续写
--(void)publishRenewWithRenewModel:(NOVRenewModel *_Nonnull)renewModel success:(successBlock _Nonnull)successBlock fail:(failBlock _Nonnull)failBlock;
+-(void)publishRenewWithRenewModel:(NOVRenewModel *_Nonnull)renewModel success:(successBlock _Nullable)successBlock fail:(failBlock _Nonnull)failBlock;
+-(void)uploadBookImage:(UIImage *_Nonnull)image bookId:(NSInteger)bookId success:(successBlock _Nullable)successBlock fail:(failBlock _Nullable)failBlock;
 @end

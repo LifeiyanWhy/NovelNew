@@ -33,7 +33,7 @@
 #define ScreenWidth [UIScreen mainScreen].bounds.size.width
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height
 
-#define UserImageUrl @"http://47.95.207.40/branch/file"
+#define UserImageUrl @"http://47.95.207.40/branch/file/user/"
 #define BookImageUrl @"http://47.95.207.40/branch/file/book/"
 
 #endif

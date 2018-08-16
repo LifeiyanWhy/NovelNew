@@ -11,7 +11,7 @@
 #import "NOVRenewModel.h"
 
 @implementation NOVStartManager
--(void)getMyStartSuccess:(successBlock _Nonnull)successBlock fail:(failBlock _Nonnull)failBlock{
+-(void)getMyStartSuccess:(successBlock _Nullable)successBlock fail:(failBlock _Nullable)failBlock{
     NOVDataModel *dataModel = [NOVDataModel shareInstance];
     NSString *token = [NSString stringWithFormat:@"Bearer %@",[dataModel getToken]];
     NSString *url = @"http://47.95.207.40/branch/user/book";
@@ -45,6 +45,24 @@
 //                                 @"writeType":[NSNumber numberWithInteger:model.renewPeople],
                                  };
     [manager PUT:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        successBlock(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failBlock(error);
+    }];
+}
+
+-(void)uploadBookImage:(UIImage *_Nonnull)image bookId:(NSInteger)bookId success:(successBlock _Nullable)successBlock fail:(failBlock _Nullable)failBlock{
+    NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
+    NOVDataModel *datamodel = [NOVDataModel shareInstance];
+    NSString *token = [NSString stringWithFormat:@"Bearer %@",[datamodel getToken]];
+    NSString *url = [NSString stringWithFormat:@"http://47.95.207.40/branch/book/upload/book_image/%ld",(long)bookId];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        [formData appendPartWithFileData:imageData name:@"file" fileName:@"bookimage.jpg" mimeType:@"image/jpg"];
+    } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         successBlock(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         failBlock(error);

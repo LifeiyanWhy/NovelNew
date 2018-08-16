@@ -42,7 +42,6 @@ typedef NS_OPTIONS(NSInteger, NOVType) {
 };
 
 @interface NOVStartBookModel : NSObject
-
 //作品名称
 @property(nonatomic,strong) NSString *name;
 //作品类型

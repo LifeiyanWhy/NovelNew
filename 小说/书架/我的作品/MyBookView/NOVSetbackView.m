@@ -7,7 +7,7 @@
 //
 
 #import "NOVSetbackView.h"
-#import "Masonry.h"
+#import <UIImageView+WebCache.h>
 #import "NOVStartBookModel.h"
 #import "NOVGetMyStartModel.h"
 
@@ -75,10 +75,48 @@
 
 -(void)updateWithModel:(NOVGetMyStartModel *)model{
     modelArray = @[@[model.bookName,@"简介简介!!!",model.bookType,[model.createTime substringToIndex:10]],@[[NSNumber numberWithInteger:model.branchNum],[NSNumber numberWithInteger:model.branchNum],[NSNumber numberWithInteger:model.readNum],@"100"]];
+    [self.coverImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BookImageUrl,model.bookImage]]];
 }
 
 -(void)setBookWithModel:(NOVStartBookModel *)model{
-    
+    self.coverImage.image = model.bookImage;
+    NSString *bookType;
+    switch (model.bookType) {
+        case 0:
+            bookType = @"玄幻言情";
+            break;
+        case 1:
+            bookType = @"仙侠奇缘";
+            break;
+        case 2:
+            bookType = @"古代言情";
+            break;
+        case 3:
+            bookType = @"现代言情";
+            break;
+        case 4:
+            bookType = @"浪漫青春";
+            break;
+        case 5:
+            bookType = @"悬疑灵异";
+            break;
+        case 6:
+            bookType = @"科技空间";
+            break;
+        case 7:
+            bookType = @"游戏竞技";
+            break;
+        case 8:
+            bookType = @"耽美小说";
+            break;
+        default:
+            break;
+    }
+    NSDate *date = [NSDate date];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+    NSString *createTime = [formatter stringFromDate:date];
+    modelArray = @[@[model.name,model.introduction,bookType,[createTime substringToIndex:10]],@[@"暂无",@"暂无",@"暂无",@"暂无"]];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

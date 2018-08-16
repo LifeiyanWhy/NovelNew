@@ -129,9 +129,9 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if ([judge[indexPath.section] isEqual:@YES]) {
-        return 250;
+        return self.view.frame.size.height*0.33;
     }
-    return 110;
+    return self.view.frame.size.height*0.18;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

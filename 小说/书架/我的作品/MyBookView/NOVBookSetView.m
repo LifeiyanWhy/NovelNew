@@ -89,8 +89,8 @@
 
 -(void)setBookWithModel:(NOVStartBookModel *)model{
     self.titleLabel.text = model.name;
-    self.coverImage.image = model.bookImage;
-//    [self.backView setBookWithModel:model];
+    self.coverImage.image = model.bookImage;    
+    [self.backView setBookWithModel:model];
 }
 
 -(NOVSetbackView *)backView{

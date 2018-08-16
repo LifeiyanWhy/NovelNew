@@ -22,6 +22,7 @@
 @property(nonatomic,strong) UIScrollView *scrollView;
 @property(nonatomic,readonly,assign) NSInteger viewNumber;
 @property(nonatomic,weak) id <NOVMystartViewDategate>delegate;
+-(instancetype)initWithFrame:(CGRect)frame;
 -(instancetype)initWithFrame:(CGRect)frame withViewNumber:(NSInteger)viewNumber;
 -(void)addViewWithModel:(NOVStartBookModel *)model;
 @end

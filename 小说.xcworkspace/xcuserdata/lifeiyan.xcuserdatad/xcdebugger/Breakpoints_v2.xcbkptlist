@@ -19,29 +19,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "&#x5c0f;&#x8bf4;/&#x4e66;&#x67b6;/&#x6211;&#x7684;&#x4f5c;&#x54c1;/MyBookView/NOVMystartView.m"
-            timestampString = "556034452.542595"
+            filePath = "&#x5c0f;&#x8bf4;/&#x767b;&#x5f55;/SignInModel/NOVSignModel.m"
+            timestampString = "556121625.650279"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
-            landmarkName = "-touchEditButton:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "&#x5c0f;&#x8bf4;/&#x4e66;&#x67b6;/&#x6211;&#x7684;&#x4f5c;&#x54c1;/MyBookView/NOVMystartView.m"
-            timestampString = "556034452.543008"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
-            landmarkName = "-touchEditButton:"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
+            landmarkName = "+token"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

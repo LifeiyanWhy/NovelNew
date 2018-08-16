@@ -9,7 +9,6 @@
 #import "SJBottomView.h"
 #import "Masonry.h"
 #import "NOVBookTableViewCell.h"
-#import "NOVBookModel.h"
 
 #define Height [UIScreen mainScreen].bounds.size.height
 @implementation SJBottomView
@@ -27,7 +26,7 @@
     [self addSubview:_tableView];
     [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self);
-        make.width.equalTo(self).multipliedBy(0.95f);
+        make.width.equalTo(self).multipliedBy(0.94f);
         make.top.equalTo(self);
         make.bottom.equalTo(self);
     }];

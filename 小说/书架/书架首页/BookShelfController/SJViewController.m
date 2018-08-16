@@ -8,11 +8,14 @@
 
 #import "SJViewController.h"
 #import "SJView.h"
-#import "NOVBookTableViewCell.h"
 #import "NOVView.h"
 #import "SJBottomView.h"
+#import "NOVBookTableViewCell.h"
+#import "NOVMyRenewTableViewCell.h"
+#import "NOVMyRenewCellHeightModel.h"
 #import "NOVObtainBookShelfManager.h"
 #import "NOVbookMessage.h"
+#import "NOVGetMyRenewModel.h"
 #import "NOVReadNovelViewController.h"
 #import "NOVMystartViewController.h"
 
@@ -44,17 +47,20 @@
     [_sjview.startButton addTarget:self action:@selector(fqStart) forControlEvents:UIControlEventTouchUpInside];
     _sjview.headView.delegate = self;
     
-    _sjview.collectionView.tableView.delegate = self;
-    _sjview.collectionView.tableView.dataSource = self;
-    [_sjview.collectionView.tableView registerClass:[NOVBookTableViewCell class] forCellReuseIdentifier:@"cell"];
-    
     _sjview.followView.tableView.delegate = self;
     _sjview.followView.tableView.dataSource = self;
+    _sjview.followView.tableView.tag = 1001;
     [_sjview.followView.tableView registerClass:[NOVBookTableViewCell class] forCellReuseIdentifier:@"cell"];
     
+    _sjview.collectionView.tableView.delegate = self;
+    _sjview.collectionView.tableView.dataSource = self;
+    _sjview.collectionView.tableView.tag = 1002;
+    [_sjview.collectionView.tableView registerClass:[NOVBookTableViewCell class] forCellReuseIdentifier:@"cell"];
+ 
     _sjview.joinView.tableView.delegate = self;
     _sjview.joinView.tableView.dataSource = self;
-    [_sjview.joinView.tableView registerClass:[NOVBookTableViewCell class] forCellReuseIdentifier:@"cell"];
+    _sjview.joinView.tableView.tag = 1003;
+    [_sjview.joinView.tableView registerClass:[NOVMyRenewTableViewCell class] forCellReuseIdentifier:@"renewCell"];
     
     //分别标记三个页面是否加载过
     isLoadArray = [NSMutableArray arrayWithArray:@[@NO,@NO,@NO]];
@@ -73,14 +79,34 @@
                 NSLog(@"关注name:%@ bookID:%ld",model.bookName,(long)model.bookId);
             }
             [_sjview.followView.tableView reloadData];
-            isLoadArray[page] = @YES;
+            isLoadArray[page] = @YES;//标记页面已经加载
         } failure:^(NSError * _Nonnull error) {
             //显示网络故障
             self.networkAnomalyView.hidden = NO;
         }];
     }else if (page == 1){   //获取我的收藏列表
     }else{  //获取我的参与列表
-        
+        [model obtainMyRenewSucceed:^(id  _Nullable responseObject) {
+            NSMutableArray *modelArray = responseObject[@"data"];
+            NSLog(@"%@",responseObject);
+            for (int i = 0; i < modelArray.count; i++) {
+                NOVGetMyRenewModel *model = [[NOVGetMyRenewModel alloc] initWithDictionary:modelArray[i] error:nil];
+                NSMutableArray *array = modelArray[i][@"myWriteBranchDTOS"];
+                NSMutableArray *myBranchModelArray = [NSMutableArray array];
+                for (int j = 0; j < array.count; j++) {
+                    NOVMyBranchModel *myModel = [[NOVMyBranchModel alloc] initWithDictionary:array[j] error:nil];
+                    [myBranchModelArray addObject:myModel];
+                }
+                model.myWriteBranchDTOS = [myBranchModelArray copy];
+                model.simpleBookDTO = [[NOVSimpleBookModel alloc] initWithDictionary:modelArray[i][@"simpleBookDTO"] error:nil];
+                model.simpleBookDTO.author = [[NOVAuthorModel alloc] initWithDictionary:modelArray[i][@"simpleBookDTO"][@"author"] error:nil];
+                [self.joinModelArray addObject:model];
+            }
+            [_sjview.joinView.tableView reloadData];
+            isLoadArray[page] = @YES;
+        } failure:^(NSError * _Nonnull error) {
+            self.networkAnomalyView.hidden = YES;
+        }];
     }
 }
 
@@ -102,7 +128,7 @@
     touchTopButton = YES;
     [_sjview viewResponseWhenTouchButton:touchButton];
     currentPage = touchButton.tag;
-    if(isLoadArray[touchButton.tag]){  //该页面已经加载过
+    if([isLoadArray[touchButton.tag] isEqual:@YES]){  //该页面已经加载过
         return;
     }
     [self obtainBookListWithCurrentPage:currentPage];
@@ -121,17 +147,25 @@
 }
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     currentPage = scrollView.contentOffset.x/scrollView.frame.size.width;
-    if (isLoadArray[currentPage]) {  //该页面已经加载过
+    NSLog(@"%ld",(long)currentPage);
+    if ([isLoadArray[currentPage] isEqual:@YES]) {  //该页面已经加载过
         return;
     }
     [self obtainBookListWithCurrentPage:currentPage];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *identifier = @"cell";
-    NOVBookTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-    [cell updateCellModel:self.followModelArray[indexPath.section]];
-    return cell;
+    if (tableView.tag == 1001 || tableView.tag == 1002) {
+        static NSString *identifier = @"cell";
+        NOVBookTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+        [cell updateCellModel:self.followModelArray[indexPath.section]];
+        return cell;
+    }else{
+        static NSString *identifier = @"renewCell";
+        NOVMyRenewTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+        [cell updateCellModel:self.joinModelArray[indexPath.section]];
+        return cell;
+    }
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -139,15 +173,36 @@
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return self.followModelArray.count;
+    if (tableView.tag == 1001) {
+        return self.followModelArray.count;
+    }else if (tableView.tag == 1002){
+        return self.collectionModelArray.count;
+    }else{
+        return self.joinModelArray.count;
+    }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return self.view.frame.size.height*0.2;
+    if (tableView.tag == 1003) {
+        [NOVMyRenewCellHeightModel getRenewCellHeightWithModel:_joinModelArray[indexPath.section]];
+    }
+    return self.view.frame.size.height*0.18;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 0.001;
+    return 5;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 10;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    return [[UIView alloc] init];
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    return [[UIView alloc] init];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
