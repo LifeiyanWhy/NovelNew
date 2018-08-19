@@ -181,7 +181,7 @@
             [_bottomView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(_midView.mas_bottom);
                 make.left.and.right.equalTo(self.contentView);
-                make.height.equalTo(self.contentView).multipliedBy(0.25);
+                make.height.equalTo(self.contentView).multipliedBy(0.2);
             }];
         } completion:nil];
     }];

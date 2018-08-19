@@ -16,4 +16,6 @@ typedef void(^failBlock)(NSError * _Nonnull error);
 -(void)obtainFollowBookListSucceed:(successBlock _Nullable )succeedBlock failure:(failBlock _Nullable)failBlock;
 //获取我的参与列表
 -(void)obtainMyRenewSucceed:(successBlock _Nullable )succeedBlock failure:(failBlock _Nullable)failBlock;
+//获取我的收藏
+-(void)obtainMyCollectionSucceed:(successBlock _Nullable )succeedBlock failure:(failBlock _Nullable)failBlock;
 @end

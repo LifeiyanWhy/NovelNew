@@ -7,17 +7,7 @@
 //
 
 #import "SJViewController.h"
-#import "SJView.h"
-#import "NOVView.h"
-#import "SJBottomView.h"
-#import "NOVBookTableViewCell.h"
-#import "NOVMyRenewTableViewCell.h"
-#import "NOVMyRenewCellHeightModel.h"
-#import "NOVObtainBookShelfManager.h"
-#import "NOVbookMessage.h"
-#import "NOVGetMyRenewModel.h"
-#import "NOVReadNovelViewController.h"
-#import "NOVMystartViewController.h"
+#import "NOVBookShelf.h"
 
 #define tabBarHeight self.navigationController.tabBarController.tabBar.frame.size.height //控制器高度
 
@@ -55,7 +45,7 @@
     _sjview.collectionView.tableView.delegate = self;
     _sjview.collectionView.tableView.dataSource = self;
     _sjview.collectionView.tableView.tag = 1002;
-    [_sjview.collectionView.tableView registerClass:[NOVBookTableViewCell class] forCellReuseIdentifier:@"cell"];
+    [_sjview.collectionView.tableView registerClass:[NOVBookTableViewCell class] forCellReuseIdentifier:@"collectionCell"];
  
     _sjview.joinView.tableView.delegate = self;
     _sjview.joinView.tableView.dataSource = self;
@@ -71,6 +61,7 @@
 -(void)obtainBookListWithCurrentPage:(NSInteger)page{
     NOVObtainBookShelfManager *model = [[NOVObtainBookShelfManager alloc] init];
     if (page == 0) {    //获取关注列表
+        [self.followModelArray removeAllObjects];
         [model obtainFollowBookListSucceed:^(id  _Nullable responseObject) {
             NSMutableArray *array = [NSMutableArray arrayWithArray:responseObject[@"data"]];
             for (int i = 0; i < array.count; i++) {
@@ -85,19 +76,33 @@
             self.networkAnomalyView.hidden = NO;
         }];
     }else if (page == 1){   //获取我的收藏列表
+        [self.collectionModelArray removeAllObjects];
+        [model obtainMyCollectionSucceed:^(id  _Nullable responseObject) {
+            NSMutableArray *array = [NSMutableArray arrayWithArray:responseObject[@"data"]];
+            for (int i = 0; i < array.count; i++) {
+                NOVMyCollectionModel *model = [[NOVMyCollectionModel alloc] initWithDictionary:array[i] error:nil];
+                model.author = [[NOVMyCollectionAuthor alloc] initWithDictionary:array[i][@"author"] error:nil];
+                [self.collectionModelArray addObject:model];
+            }
+            [_sjview.collectionView.tableView reloadData];
+        } failure:^(NSError * _Nonnull error) {
+            NSLog(@"%@",error);
+        }];
     }else{  //获取我的参与列表
+        [self.joinModelArray removeAllObjects];
         [model obtainMyRenewSucceed:^(id  _Nullable responseObject) {
             NSMutableArray *modelArray = responseObject[@"data"];
-            NSLog(@"%@",responseObject);
             for (int i = 0; i < modelArray.count; i++) {
                 NOVGetMyRenewModel *model = [[NOVGetMyRenewModel alloc] initWithDictionary:modelArray[i] error:nil];
                 NSMutableArray *array = modelArray[i][@"myWriteBranchDTOS"];
+                NSLog(@"%@",array);
                 NSMutableArray *myBranchModelArray = [NSMutableArray array];
                 for (int j = 0; j < array.count; j++) {
                     NOVMyBranchModel *myModel = [[NOVMyBranchModel alloc] initWithDictionary:array[j] error:nil];
                     [myBranchModelArray addObject:myModel];
                 }
                 model.myWriteBranchDTOS = [myBranchModelArray copy];
+                NSLog(@"%lu",(unsigned long)model.myWriteBranchDTOS.count);
                 model.simpleBookDTO = [[NOVSimpleBookModel alloc] initWithDictionary:modelArray[i][@"simpleBookDTO"] error:nil];
                 model.simpleBookDTO.author = [[NOVAuthorModel alloc] initWithDictionary:modelArray[i][@"simpleBookDTO"][@"author"] error:nil];
                 [self.joinModelArray addObject:model];
@@ -155,20 +160,31 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (tableView.tag == 1001 || tableView.tag == 1002) {
+    if (tableView.tag == 1001) {
         static NSString *identifier = @"cell";
         NOVBookTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
         [cell updateCellModel:self.followModelArray[indexPath.section]];
         return cell;
+    }else if (tableView.tag == 1002){
+        static NSString *idetifier = @"collectionCell";
+        NOVMyCollecitonTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:idetifier forIndexPath:indexPath];
+        [cell updateCellWithModel:_collectionModelArray[indexPath.section]];
+        return cell;
     }else{
         static NSString *identifier = @"renewCell";
+        NOVGetMyRenewModel *model = _joinModelArray[indexPath.section];
         NOVMyRenewTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-        [cell updateCellModel:self.joinModelArray[indexPath.section]];
+        [cell updateCellModel:model.myWriteBranchDTOS[indexPath.row]];
         return cell;
     }
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if (tableView.tag == 1003) {
+        NOVGetMyRenewModel *model = _joinModelArray[section];
+        NSLog(@"section%ld====%lu",(long)section,(unsigned long)model.myWriteBranchDTOS.count);
+        return model.myWriteBranchDTOS.count;
+    }
     return 1;
 }
 
@@ -184,16 +200,20 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView.tag == 1003) {
-        [NOVMyRenewCellHeightModel getRenewCellHeightWithModel:_joinModelArray[indexPath.section]];
+        NOVGetMyRenewModel *model = _joinModelArray[indexPath.section];
+        return [NOVMyRenewCellHeightModel getRenewCellHeightWithModel:model.myWriteBranchDTOS[indexPath.row]];
     }
     return self.view.frame.size.height*0.18;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 5;
+    return 10;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    if (tableView.tag == 1003) {
+        return tableView.frame.size.width*(0.17 + 0.05) + 15;
+    }
     return 10;
 }
 
@@ -202,6 +222,17 @@
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    if (tableView.tag == 1003) {
+        static NSString *identifier = @"headView";
+        NOVGetMyRenewModel *model = _joinModelArray[section];
+        NOVRenewHeadView *headView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+        if (!headView) {
+            headView = [[NOVRenewHeadView alloc] initWithReuseIdentifier:identifier];
+        }
+        [headView updateCellModel:model.simpleBookDTO];
+        [headView setBackgroundColor:[UIColor whiteColor]];
+        return headView;
+    }
     return [[UIView alloc] init];
 }
 
@@ -209,7 +240,6 @@
     NOVReadNovelViewController *readNovelViewController = [[NOVReadNovelViewController alloc] init];
     readNovelViewController.hidesBottomBarWhenPushed = YES;
     readNovelViewController.bookMessage = self.followModelArray[indexPath.section];
-    readNovelViewController.readType = NOVReadTypeReadFromHomePage;
     [self.navigationController pushViewController:readNovelViewController animated:NO];
 }
 

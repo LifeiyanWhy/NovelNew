@@ -22,4 +22,5 @@ typedef void(^failBlock)(NSError * _Nonnull error);
 -(void)getPhoneVerityWithPhoneNum:(NSString *_Nonnull)phoneNum success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
 //获取关注列表
 +(void)obtainFollowList;
++(void)obtainCollectionList;
 @end

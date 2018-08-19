@@ -17,7 +17,9 @@
 
 @interface FindViewController ()<UIScrollViewDelegate,NOVViewDelegate,UITableViewDelegate,UITableViewDataSource,NOVNetworkAnomalyViewDelegate>
 @property(nonatomic,strong) NOVFindView *findView;
-@property(nonatomic,strong) NSMutableArray *bookArray;
+@property(nonatomic,strong) NSMutableArray *todayPromotionModelArray;
+@property(nonatomic,strong) NSMutableArray *rankingListModelArray;
+@property(nonatomic,strong) NSMutableArray *allWorksModelArray;
 @property(nonatomic,strong) NOVNetworkAnomalyView *networkAnoamlyView;
 @end
 
@@ -25,13 +27,15 @@
     NSIndexPath *selectIndex;
     NSMutableArray *judge ;
     BOOL touchTopButton;
+    NSInteger currentPage;//当前页
+    NSMutableArray *isLoadArray;//标记tableView是否加载过
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.navigationController.navigationBar.hidden = YES;
-    
+    judge = [NSMutableArray array];
     _findView = [[NOVFindView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - tabBarHeight)];
     [self.view addSubview:_findView];
     _findView.scrollView.delegate = self;
@@ -40,24 +44,30 @@
     _findView.todayPromotionView.tableView.delegate = self;
     _findView.todayPromotionView.tableView.dataSource = self;
     [_findView.todayPromotionView.tableView registerClass:[NOVFindTableViewCell class] forCellReuseIdentifier:@"findCell"];
+    _todayPromotionModelArray = [NSMutableArray array];
+    _findView.todayPromotionView.tableView.tag = 1000;
     
     _findView.rankingListView.tableView.delegate = self;
     _findView.rankingListView.tableView.dataSource = self;
     [_findView.rankingListView.tableView registerClass:[NOVFindTableViewCell class] forCellReuseIdentifier:@"findCell"];
+    _rankingListModelArray = [NSMutableArray array];
+    _findView.rankingListView.tableView.tag = 1001;
     
     _findView.allWorksView.tableView.delegate = self;
     _findView.allWorksView.tableView.dataSource = self;
     [_findView.allWorksView.tableView registerClass:[NOVFindTableViewCell class] forCellReuseIdentifier:@"findCell"];
+    _allWorksModelArray = [NSMutableArray array];
+    _findView.allWorksView.tableView.tag = 1002;
     
-    _bookArray = [NSMutableArray array];
-    judge = [NSMutableArray array];
-    
+    isLoadArray = [NSMutableArray arrayWithArray:@[@NO,@NO,@NO]];
+    currentPage = 0;
     //获取今日推介列表
-    [self obtainBookListWithType:NOVObtainBookListRecommend];
+    [self obtainBookListWithType:NOVObtainBookListBRANCH_NUM tableView:_findView.todayPromotionView.tableView modelArray:_todayPromotionModelArray];
 }
 
--(void)obtainBookListWithType:(NOVObtainListType)listType{  //根据类型获取图书列表
+-(void)obtainBookListWithType:(NOVObtainListType)listType tableView:(UITableView *)tableView modelArray:(NSMutableArray *)modelArray{  //根据类型获取图书列表
     NSLog(@"obtainBookList");
+    [modelArray removeAllObjects];
     NOVObtainBookList *obtainBookList = [[NOVObtainBookList alloc] init];
     [obtainBookList obtainBookListWithType:listType succeed:^(id responseObject) {
         NOVAllBookMesssage *allFindModel = [[NOVAllBookMesssage alloc] initWithDictionary:responseObject[@"data"] error:nil];
@@ -67,9 +77,10 @@
             NOVbookMessage *model = [[NOVbookMessage alloc] initWithDictionary:array[i] error:nil];
             model.author = [[NOVBookStartUser alloc] initWithDictionary:array[i][@"author"] error:nil];
             NSLog(@"name:%@ bookID:%ld username:%@",model.bookName,(long)model.bookId,model.author.username);
-            [_bookArray addObject:model];
+            [modelArray addObject:model];
         }
-        [_findView.todayPromotionView.tableView reloadData];
+        isLoadArray[currentPage] = @YES;
+        [tableView reloadData];
     } fail:^(NSError *error) {
         //显示网络故障
         self.networkAnoamlyView.hidden = NO;
@@ -93,13 +104,12 @@
 -(void)touchAnomalyImage{
     self.networkAnoamlyView.hidden = YES;
     //重新获取数据
-    [self obtainBookListWithType:NOVObtainBookListRecommend];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *identifier = @"findCell";
     NOVFindTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    [cell updateCellWithModel:_bookArray[indexPath.section]];
+    [cell updateCellWithModel:[self getCurrentPageWithPage:tableView.tag][indexPath.section]];
     cell.readButton.tag = indexPath.section;
     [cell.readButton addTarget:self action:@selector(readNovel:) forControlEvents:UIControlEventTouchUpInside];
     if ([judge[indexPath.section] isEqual:@YES]) {
@@ -114,7 +124,7 @@
 -(void)readNovel:(UIButton *)button{
     NOVReadNovelViewController *readNovelViewController = [[NOVReadNovelViewController alloc] init];
     //把点击作品的作品信息传给即将要进入的界面（小说阅读）
-    readNovelViewController.bookMessage = _bookArray[button.tag];
+    readNovelViewController.bookMessage = [self getCurrentPageWithPage:currentPage][button.tag];
     readNovelViewController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:readNovelViewController animated:NO];
 }
@@ -124,7 +134,7 @@
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return _bookArray.count;
+    return [self getCurrentPageWithPage:tableView.tag].count;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -163,6 +173,11 @@
 -(void)touchRespone:(UIButton *)touchButton{
     touchTopButton = YES;
     [_findView viewResponseWhenTouchButton:touchButton];
+    currentPage = touchButton.tag;
+    if([isLoadArray[touchButton.tag] isEqual:@YES]){  //该页面已经加载过
+        return;
+    }
+    [self updateCurrentPage];
 }
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
@@ -175,6 +190,43 @@
         return;
     }
     [_findView.headView setButtonPostion:scrollView.contentOffset width:scrollView.contentSize.width];
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    currentPage = scrollView.contentOffset.x/scrollView.frame.size.width;
+    if ([isLoadArray[currentPage] isEqual:@YES]) {  //该页面已经加载过
+        return;
+    }
+    [self updateCurrentPage];
+}
+
+- (void)updateCurrentPage{
+    switch (currentPage) {
+        case 0:
+            [self obtainBookListWithType:NOVObtainBookListBRANCH_NUM tableView:_findView.todayPromotionView.tableView modelArray:_todayPromotionModelArray];
+            break;
+        case 1:
+            [self obtainBookListWithType:NOVObtainBookListREAD_NUM tableView:_findView.rankingListView.tableView modelArray:_rankingListModelArray];
+            break;
+        case 2:
+            [self obtainBookListWithType:NOVObtainBookListJOIN_USERS tableView:_findView.allWorksView.tableView modelArray:_allWorksModelArray];
+            break;
+        default:
+            break;
+    }
+}
+
+-(NSMutableArray *)getCurrentPageWithPage:(NSInteger)currentPage{
+    switch (currentPage % 1000) {
+        case 0:
+            return _todayPromotionModelArray;
+        case 1:
+            return _rankingListModelArray;
+        case 2:
+            return _allWorksModelArray;
+        default:
+            return nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning {

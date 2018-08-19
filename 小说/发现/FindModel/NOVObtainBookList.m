@@ -12,7 +12,22 @@
 @implementation NOVObtainBookList
 
 -(void)obtainBookListWithType:(NOVObtainListType)listType succeed:(succeedBlock)succeedBlock fail:(failBlock)failBlock{
-    NSString *urlString = [NSString stringWithFormat:@"http://47.95.207.40/branch/book?pageNo=1&pageSize=5&sort=%@",@"BRANCH_NUM"];
+    NSString *typeString;
+    switch (listType) {
+        case 1:
+            typeString = @"BRANCH_NUM";
+            break;
+        case 2:
+            typeString = @"READ_NUM";
+            break;
+        case 3:
+            typeString = @"JOIN_USERS";
+            break;
+        default:
+            break;
+    }
+    NSLog(@"====%@",typeString);
+    NSString *urlString = [NSString stringWithFormat:@"http://47.95.207.40/branch/book?pageNo=1&pageSize=5&sort=%@",typeString];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];    
     [manager GET:urlString parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

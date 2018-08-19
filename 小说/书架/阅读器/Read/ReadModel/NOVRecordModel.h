@@ -14,12 +14,15 @@
 @interface NOVChapterReadModel : NSObject<NSCoding>
 @property(nonatomic,copy) NSString *chapterTitle; //章节名称
 @property(nonatomic,assign) NSInteger chapterId;    //章节ID
+@property(nonatomic,assign) NSInteger patentId;
 @property(nonatomic,assign) NSInteger chapterNumber;    //章节次序
+@property(nonatomic,copy) NSString *createTime;
+@property(nonatomic,copy) NSString *authorName;
 @end
 
 //记录阅读状态，包括所有浏览过的章节
 @interface NOVRecordModel : NSObject<NSCoding>
-@property(nonatomic,strong) NSMutableArray <NOVChapterReadModel *>*chapterArray;//记录阅读过的章节
+@property(nonatomic,strong) NSMutableArray <NSMutableArray *>*chapterArray;//记录阅读过的章节
 @property(nonatomic,assign) NSInteger bookId;
 @property(nonatomic,strong) NOVChapterModel *chapterModel;//正在阅读的章节
 @property(nonatomic,assign) NSInteger chapter;//章节次序

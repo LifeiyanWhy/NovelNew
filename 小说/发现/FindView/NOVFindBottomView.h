@@ -11,7 +11,5 @@
 #import "NOVFindTableViewCell.h"
 
 @interface NOVFindBottomView : UIView
-
 @property(nonatomic,strong) UITableView *tableView;
-
 @end

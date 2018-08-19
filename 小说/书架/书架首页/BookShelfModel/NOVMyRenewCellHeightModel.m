@@ -15,11 +15,11 @@ static const CGFloat kMyRenewCellTopSpacing = 10;
 static const CGFloat kMyRenewCellBottomSpacing = 10;
 static const CGFloat kMyRenewCellLineSpacing = 5;
 @implementation NOVMyRenewCellHeightModel
-+(CGFloat)getRenewCellHeightWithModel:(NOVGetMyRenewModel *)renewModel{
-    NOVMyBranchModel *model = renewModel.myWriteBranchDTOS[0];
++(CGFloat)getRenewCellHeightWithModel:(NOVMyBranchModel *)model{
     CGFloat cellHeight = 0;
-    CGFloat summaryHeight = [model.summary boundingRectWithSize:CGSizeMake(ScreenWidth*0.94 - kMyRenewCellLeftSpacing - kMyRenewCellRightSpacing, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} context:nil].size.height;
-    cellHeight = summaryHeight + kMyRenewCellLineSpacing*4 + ScreenWidth*0.94*0.06*4 + kMyRenewCellTopSpacing + kMyRenewCellBottomSpacing;
+    CGFloat summaryHeight = [model.summary boundingRectWithSize:CGSizeMake(ScreenWidth*0.94 - kMyRenewCellLeftSpacing - kMyRenewCellRightSpacing, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12]} context:nil].size.height;
+    NSLog(@"%f",summaryHeight);
+    cellHeight = summaryHeight + kMyRenewCellLineSpacing*2 + ScreenWidth*0.05*2 + kMyRenewCellTopSpacing + kMyRenewCellBottomSpacing;
     return cellHeight;
 }
 @end

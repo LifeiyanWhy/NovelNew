@@ -47,4 +47,19 @@
         failBlock(error);
     }];
 }
+
+-(void)obtainMyCollectionSucceed:(successBlock _Nullable )succeedBlock failure:(failBlock _Nullable)failBlock{
+    NOVDataModel *datamodel = [NOVDataModel shareInstance];
+    NSString *token = [NSString stringWithFormat:@"Bearer %@",[datamodel getToken]];
+    NSString *url = @"http://47.95.207.40/branch/usr/collection";
+    AFHTTPSessionManager *manger = [AFHTTPSessionManager manager];
+    manger.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manger.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manger.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
+    [manger GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        succeedBlock(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failBlock(error);
+    }];
+}
 @end

@@ -7,15 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-@class NOVGetMyRenewModel;
+@class NOVMyBranchModel;
 @interface NOVMyRenewTableViewCell : UITableViewCell
-@property(nonatomic,strong) UIButton *goNovelButton;
-@property(nonatomic,strong) UILabel *bookNameLabel;
-@property(nonatomic,strong) UILabel *authorLabel;
-@property(nonatomic,strong) UILabel *joinNumLabel;
 @property(nonatomic,strong) UILabel *myRenewTitle;
 @property(nonatomic,strong) UILabel *summaryLabel;
 @property(nonatomic,strong) UILabel *likeNum;
 @property(nonatomic,strong) UILabel *createTimeLabel;
--(void)updateCellModel:(NOVGetMyRenewModel *)model;
+-(void)updateCellModel:(NOVMyBranchModel *)model;
 @end

@@ -29,6 +29,7 @@
 #define RightSpacing  20.0f
 
 #define SystemColor [UIColor colorWithRed:0.15 green:0.65 blue:0.6 alpha:1.00];
+#define SystemCGColor [UIColor colorWithRed:0.15 green:0.65 blue:0.6 alpha:1.00].CGColor;
 
 #define ScreenWidth [UIScreen mainScreen].bounds.size.width
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height

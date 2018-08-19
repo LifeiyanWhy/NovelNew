@@ -8,7 +8,12 @@
 
 #import <UIKit/UIKit.h>
 @class NOVbookMessage;
+
+typedef void(^selectChapterIdBlock)(NSInteger chapter);
+
 @interface NOVNextChapterViewController : UIViewController
 @property(nonatomic,assign) NOVbookMessage *bookMessage;
 @property(nonatomic,assign) NSInteger parentId;
+@property(nonatomic,copy) selectChapterIdBlock chapterIdBlock;
+@property(nonatomic,strong) NSMutableArray *modelArray;
 @end

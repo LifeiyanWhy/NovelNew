@@ -20,6 +20,9 @@
         self.chapterTitle = [aDecoder decodeObjectForKey:@"chapterTitle"];
         self.chapterId = [aDecoder decodeIntegerForKey:@"chapterId"];
         self.chapterNumber = [aDecoder decodeIntegerForKey:@"chapterNumber"];
+        self.patentId = [aDecoder decodeIntegerForKey:@"patentId"];
+        self.createTime = [aDecoder decodeObjectForKey:@"createTime"];
+        self.authorName = [aDecoder decodeObjectForKey:@"authorName"];
     }
     return self;
 }
@@ -28,6 +31,9 @@
     [aCoder encodeObject:self.chapterTitle forKey:@"chapterTitle"];
     [aCoder encodeInteger:self.chapterId forKey:@"chapterId"];
     [aCoder encodeInteger:self.chapterNumber forKey:@"chapterNumber"];
+    [aCoder encodeInteger:self.patentId forKey:@"patentId"];
+    [aCoder encodeObject:self.createTime forKey:@"createTime"];
+    [aCoder encodeObject:self.authorName forKey:@"authorName"];
 }
 
 @end
@@ -54,15 +60,41 @@
 
 //当前阅读章节发生变化,更新pageArray
 -(void)updateChapterModel:(NOVChapterModel *)chapterModel{
+    _chapter = chapterModel.layer;
     _chapterModel = chapterModel;
     [self pagingWithContent:_chapterModel.content bounds:CGRectMake(LeftSpacing, TopSpacing, [UIScreen mainScreen].bounds.size.width-LeftSpacing - RightSpacing,[UIScreen mainScreen].bounds.size.height - TopSpacing - BottomSpacing)];
     
     NOVChapterReadModel *chapterReadModel = [[NOVChapterReadModel alloc] init];
     chapterReadModel.chapterTitle = _chapterModel.title;
     chapterReadModel.chapterId = _chapterModel.branchId;
-    chapterReadModel.chapterNumber = _chapter;
+    chapterReadModel.chapterNumber = _chapterModel.layer;
+    chapterReadModel.patentId = _chapterModel.parentId;
+    chapterReadModel.createTime = _chapterModel.createTime;
+    chapterReadModel.authorName = _chapterModel.author.username;
+    //将当前阅读章节加入存放阅读记录的数组
+    [self addCurrentChapterIntoReadRecord:chapterReadModel];
     self.page = 0;
-    [_chapterArray addObject:chapterReadModel];//添加到已阅读章节的数组中
+}
+
+-(void)addCurrentChapterIntoReadRecord:(NOVChapterReadModel *)model{
+    if (!_chapterArray) {
+        _chapterArray = [NSMutableArray array];
+    }
+    for (int i = 0; i< _chapterArray.count; i++) {
+        if (model.chapterNumber - 1 == i) { //找到该章节的阅读记录
+            for (NOVChapterReadModel *readModel in _chapterArray[i]) {
+                if (model.chapterId == readModel.chapterId) {  //该章节已经阅读过
+                    return;
+                }
+            }
+            NSMutableArray *chaptersArray = _chapterArray[i];
+            [chaptersArray addObject:model];
+            [_chapterArray replaceObjectAtIndex:i withObject:chaptersArray];
+            return;
+        }
+    }
+    NSMutableArray *chaptersArray = [NSMutableArray arrayWithArray:@[model]];
+    [self.chapterArray addObject:chaptersArray];
 }
 
 +(void)updateLocalRecordModel:(NOVRecordModel *)recordModel{

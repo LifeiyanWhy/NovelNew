@@ -10,15 +10,10 @@
 
 @interface NOVReadEditVIew : UIView
 @property(nonatomic,strong) UIButton *backButton;
-
 @property(nonatomic,strong) UIButton *partButton; //本段说
-
 @property(nonatomic,strong) UIButton *rightButton;
-
 @property(nonatomic,strong) UIButton *catalogButton;
-
 @property(nonatomic,strong) UIButton *nightButton;
-
 @property(nonatomic,strong) UIButton *nextChapterButton;
 
 @property(nonatomic,strong) UIButton *collectionButton;

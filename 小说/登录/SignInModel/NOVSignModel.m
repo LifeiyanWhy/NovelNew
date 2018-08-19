@@ -125,6 +125,19 @@
     }];
 }
 
++(void)obtainCollectionList{
+    NOVDataModel *datamodel = [NOVDataModel shareInstance];
+    NSString *token = [NSString stringWithFormat:@"Bearer %@",[datamodel getToken]];
+    NSString *url = @"http://47.95.207.40/branch/usr/collection";
+    AFHTTPSessionManager *manger = [AFHTTPSessionManager manager];
+    manger.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manger.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manger.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
+    [manger GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+    }];
+}
+
 -(void)getVeritysuccess:(successBlock)successBlock failure:(failBlock)failBlock{
     NSString *url = @"http://47.95.207.40/branch/code/image";
     NSString *identifierForVendor = [[UIDevice currentDevice].identifierForVendor UUIDString];

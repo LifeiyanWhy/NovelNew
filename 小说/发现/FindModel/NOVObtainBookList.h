@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_OPTIONS(NSInteger, NOVObtainListType){   //获取列表的类型
-    NOVObtainBookListRecommend = 1, //今日推荐
-    NOVObtainBookListRanking,    //排行榜
+    NOVObtainBookListBRANCH_NUM = 1, //今日推荐
+    NOVObtainBookListREAD_NUM,    //排行榜
+    NOVObtainBookListJOIN_USERS,
 };
 
 typedef void(^succeedBlock)(id responseObject);

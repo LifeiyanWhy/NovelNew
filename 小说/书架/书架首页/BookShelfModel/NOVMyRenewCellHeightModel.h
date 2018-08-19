@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class NOVGetMyRenewModel;
+@class NOVMyBranchModel;
 @interface NOVMyRenewCellHeightModel : NSObject
-+(CGFloat)getRenewCellHeightWithModel:(NOVGetMyRenewModel *)renewModel;
++(CGFloat)getRenewCellHeightWithModel:(NOVMyBranchModel *)model;
 @end
