@@ -19,6 +19,7 @@
 #import "NOVSignModel.h"
 #import <AFNetworking.h>
 #import "NOVUserLoginMessageModel.h"
+#import "NOVMyCollectionModel.h"
 
 @implementation NOVSignModel
 
@@ -128,13 +129,20 @@
 +(void)obtainCollectionList{
     NOVDataModel *datamodel = [NOVDataModel shareInstance];
     NSString *token = [NSString stringWithFormat:@"Bearer %@",[datamodel getToken]];
-    NSString *url = @"http://47.95.207.40/branch/usr/collection";
+    NSString *url = @"http://47.95.207.40/branch/user/collection";
     AFHTTPSessionManager *manger = [AFHTTPSessionManager manager];
     manger.requestSerializer = [AFHTTPRequestSerializer serializer];
     manger.responseSerializer = [AFJSONResponseSerializer serializer];
     [manger.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
     [manger GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSMutableArray *array = [NSMutableArray arrayWithArray:responseObject[@"data"]];
+        NSMutableArray *collectionArray = [NSMutableArray array];
+        for (int i = 0; i < array.count; i++) {
+           [collectionArray addObject:array[i][@"branchId"]];
+        }
+        [NOVDataModel updateCollectionListWithArray:collectionArray];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"collection:%@",error);
     }];
 }
 

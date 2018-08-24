@@ -8,6 +8,10 @@
 
 #import "NOVMyCollectionModel.h"
 
+@implementation NOVMyCollectionAuthor
+
+@end
+
 @implementation NOVMyCollectionModel
 
 @end

@@ -45,7 +45,7 @@
     _sjview.collectionView.tableView.delegate = self;
     _sjview.collectionView.tableView.dataSource = self;
     _sjview.collectionView.tableView.tag = 1002;
-    [_sjview.collectionView.tableView registerClass:[NOVBookTableViewCell class] forCellReuseIdentifier:@"collectionCell"];
+    [_sjview.collectionView.tableView registerClass:[NOVMyCollecitonTableViewCell class] forCellReuseIdentifier:@"collectionCell"];
  
     _sjview.joinView.tableView.delegate = self;
     _sjview.joinView.tableView.dataSource = self;
@@ -67,7 +67,7 @@
             for (int i = 0; i < array.count; i++) {
                 NOVbookMessage *model = [[NOVbookMessage alloc] initWithDictionary:array[i] error:nil];
                 [self.followModelArray addObject:model];
-                NSLog(@"关注name:%@ bookID:%ld",model.bookName,(long)model.bookId);
+//                NSLog(@"关注name:%@ bookID:%ld",model.bookName,(long)model.bookId);
             }
             [_sjview.followView.tableView reloadData];
             isLoadArray[page] = @YES;//标记页面已经加载
@@ -168,7 +168,8 @@
     }else if (tableView.tag == 1002){
         static NSString *idetifier = @"collectionCell";
         NOVMyCollecitonTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:idetifier forIndexPath:indexPath];
-        [cell updateCellWithModel:_collectionModelArray[indexPath.section]];
+        NOVMyCollectionModel *model = self.collectionModelArray[indexPath.section];
+        [cell updateCellWithModel:model];
         return cell;
     }else{
         static NSString *identifier = @"renewCell";
@@ -182,7 +183,6 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (tableView.tag == 1003) {
         NOVGetMyRenewModel *model = _joinModelArray[section];
-        NSLog(@"section%ld====%lu",(long)section,(unsigned long)model.myWriteBranchDTOS.count);
         return model.myWriteBranchDTOS.count;
     }
     return 1;
@@ -202,6 +202,9 @@
     if (tableView.tag == 1003) {
         NOVGetMyRenewModel *model = _joinModelArray[indexPath.section];
         return [NOVMyRenewCellHeightModel getRenewCellHeightWithModel:model.myWriteBranchDTOS[indexPath.row]];
+    }else if (tableView.tag == 1002){
+        NOVMyCollectionModel *model = _collectionModelArray[indexPath.section];
+        return [NOVMyRenewCellHeightModel getCollectionCellHeightWithModel:model];
     }
     return self.view.frame.size.height*0.18;
 }

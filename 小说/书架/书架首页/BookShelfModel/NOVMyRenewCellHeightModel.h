@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 @class NOVMyBranchModel;
+@class NOVMyCollectionModel;
 @interface NOVMyRenewCellHeightModel : NSObject
 +(CGFloat)getRenewCellHeightWithModel:(NOVMyBranchModel *)model;
++(CGFloat)getCollectionCellHeightWithModel:(NOVMyCollectionModel *)model;
 @end

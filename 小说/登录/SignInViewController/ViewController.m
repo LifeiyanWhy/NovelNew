@@ -81,6 +81,7 @@
     //登录成功
     [[NSNotificationCenter defaultCenter] postNotificationName:@"signinSucceed" object:nil];
     [NOVSignModel obtainFollowList];//获取关注列表
+    [NOVSignModel obtainCollectionList];
 }
 
 //点击注册button后进入注册页面（在登录界面点击注册时执行）

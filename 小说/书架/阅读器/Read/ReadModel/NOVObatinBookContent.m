@@ -80,6 +80,33 @@
     }];
 }
 
++(void)collectionChapterWithBranchId:(NSInteger)branchId succeed:(succeedBlock _Nullable)succeedBlock fail:(failBlock _Nullable)failBlock{
+    NOVDataModel *datamodel = [NOVDataModel shareInstance];
+    NSString *token = [NSString stringWithFormat:@"Bearer %@",[datamodel getToken]];
+    NSString *urlString = [NSString stringWithFormat:@"http://47.95.207.40/branch/user/collection/%ld",(long)branchId];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    [manager.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
+    [manager PUT:urlString parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        succeedBlock(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failBlock(error);
+    }];
+}
++(void)cancelCollectionChapterWithBranchId:(NSInteger)branchId succeed:(succeedBlock _Nullable)succeedBlock fail:(failBlock _Nullable)failBlock{
+    NOVDataModel *datamodel = [NOVDataModel shareInstance];
+    NSString *token = [NSString stringWithFormat:@"Bearer %@",[datamodel getToken]];
+    NSString *urlString = [NSString stringWithFormat:@"http://47.95.207.40/branch/user/collection/%ld",(long)branchId];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    [manager.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
+    [manager DELETE:urlString parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        succeedBlock(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failBlock(error);
+    }];
+}
+
 -(void)getRenewListWithBookId:(NSInteger)bookId ParentId:(NSInteger)parentId succeed:(succeedBlock _Nullable)succeedBlock fail:(failBlock _Nullable)failBlock{
     NSString *url = [NSString stringWithFormat:@"http://47.95.207.40/branch/book/%ld/branch?parentId=%ld",(long)bookId,(long)parentId];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];

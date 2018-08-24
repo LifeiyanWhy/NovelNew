@@ -22,4 +22,6 @@ typedef void(^failBlock)(NSError* error);
 -(void)getBookFirstChapterIdWithBookID:(NSInteger)bookId succeed:(succeedBlock)succeedBlock fail:(failBlock)failBlock;
 //根据段落ID获取本段续写列表
 -(void)getRenewListWithBookId:(NSInteger)bookId ParentId:(NSInteger)parentId succeed:(succeedBlock _Nullable)succeedBlock fail:(failBlock _Nullable)failBlock;
++(void)collectionChapterWithBranchId:(NSInteger)branchId succeed:(succeedBlock _Nullable)succeedBlock fail:(failBlock _Nullable)failBlock;
++(void)cancelCollectionChapterWithBranchId:(NSInteger)branchId succeed:(succeedBlock _Nullable)succeedBlock fail:(failBlock _Nullable)failBlock;
 @end

@@ -102,11 +102,11 @@
     [_createTimeLabel setFont:[UIFont systemFontOfSize:12]];
     [_createTimeLabel setTextColor:[UIColor grayColor]];
     _createTimeLabel.textAlignment = NSTextAlignmentLeft;
-    [_bookName setText:@"书名"];//书名
-    [_authorName setText:@"作者"];
-    [_createTimeLabel setText:@"2018-08-16"];
-    [_joinNumberLabel setText:[NSString stringWithFormat:@"5人参与"]];//参与人数
-    [_contentLabel setText:@"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"];//简介
+//    [_bookName setText:@"书名"];//书名
+//    [_authorName setText:@"作者"];
+//    [_createTimeLabel setText:@"2018-08-16"];
+//    [_joinNumberLabel setText:[NSString stringWithFormat:@"5人参与"]];//参与人数
+//    [_contentLabel setText:@"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"];//简介
 }
 
 -(void)updateCellModel:(NOVbookMessage *)model{

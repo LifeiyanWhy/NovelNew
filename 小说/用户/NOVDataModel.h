@@ -26,6 +26,9 @@
 //获取关注列表
 -(NSArray *)getFollowBookList;
 -(void)updateFollowBookListWithArray:(NSMutableArray *)followBookList;
+//收藏
++(void)updateCollectionListWithArray:(NSMutableArray *)collectionList;
++(NSArray *)getCollectionList;
 //更新用户信息
 +(void)updateUserMessage:(NOVUserMessage *)userMessage;
 //获取用户信息

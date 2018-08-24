@@ -9,5 +9,12 @@
 #import <UIKit/UIKit.h>
 @class NOVMyCollectionModel;
 @interface NOVMyCollecitonTableViewCell : UITableViewCell
+@property(nonatomic,strong) UIButton *authorImageButton;
+@property(nonatomic,strong) UILabel *authorLabel;
+@property(nonatomic,strong) UILabel *titleLabel;
+@property(nonatomic,strong) UILabel *summaryLabel;
+@property(nonatomic,strong) UIButton *likeNumButton;
+@property(nonatomic,strong) UIButton *commentButton;
+@property(nonatomic,strong) UILabel *createTimeLabel;
 -(void)updateCellWithModel:(NOVMyCollectionModel *)model;
 @end

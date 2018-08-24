@@ -11,6 +11,7 @@
 @interface NOVMyCollectionAuthor :JSONModel
 @property(nonatomic,copy) NSString *username;
 @property(nonatomic,copy) NSString *account;
+@property(nonatomic,copy) NSString *icon;
 @end
 
 @interface NOVMyCollectionModel : JSONModel

@@ -107,8 +107,25 @@ static NOVDataModel *datamodel = nil;
 -(NSArray *)getFollowBookList{
     NSArray *array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *documentPath = [array objectAtIndex:0];
-    NSString *tokenPath = [documentPath stringByAppendingPathComponent:@"followBookList.txt"];
-    NSArray *dataArray = [[NSArray alloc] initWithContentsOfFile:tokenPath];
+    NSString *filePath = [documentPath stringByAppendingPathComponent:@"followBookList.txt"];
+    NSArray *dataArray = [[NSArray alloc] initWithContentsOfFile:filePath];
+    return dataArray;
+}
+
++(void)updateCollectionListWithArray:(NSMutableArray *)collectionList{
+    NSLog(@"%lu",(unsigned long)collectionList.count);
+    NSArray *array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *libraryPath = [array objectAtIndex:0];
+    NSString *collectionPath = [libraryPath stringByAppendingPathComponent:@"collectionList.txt"];
+    [collectionList writeToFile:collectionPath atomically:YES];
+}
+
++(NSArray *)getCollectionList{
+    NSArray *array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *documentPath = [array objectAtIndex:0];
+    NSString *filePath = [documentPath stringByAppendingPathComponent:@"collectionList.txt"];
+    NSArray *dataArray = [[NSArray alloc] initWithContentsOfFile:filePath];
+    NSLog(@"%lu",(unsigned long)dataArray.count);
     return dataArray;
 }
 

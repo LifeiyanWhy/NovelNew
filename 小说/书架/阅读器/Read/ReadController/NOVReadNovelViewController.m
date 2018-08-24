@@ -205,17 +205,54 @@
 -(void)touchRightButton{
     BOOL collection = NO,follow = NO;
     NOVDataModel *datamodel = [NOVDataModel shareInstance];
+    //是否关注
     NSArray *array = [datamodel getFollowBookList];
     for (NSNumber *bookId in array) {
         if(self.bookMessage.bookId == [bookId integerValue]){
             follow = YES;
+            break;
+        }
+    }
+    //是否收藏
+    NSArray *collectionArray = [NOVDataModel getCollectionList];
+    for (NSNumber *chapterId in collectionArray) {
+        NSLog(@"%@===branchID%ld",chapterId,(long)self.recordModel.chapterModel.branchId);
+        if (self.recordModel.chapterModel.branchId == [chapterId integerValue]) {
+            collection = YES;
+            break;
         }
     }
     [_readEditView touchRightButtonCollection:collection follow:follow];
 }
 
 -(void)touchCollectionButton:(UIButton *)button{
-    [_readEditView collectionButtonChange:button];
+    if (!button.selected) {//收藏
+        [NOVObatinBookContent collectionChapterWithBranchId:self.recordModel.chapterModel.branchId succeed:^(id responseObject) {
+            NSMutableArray *array = [NSMutableArray arrayWithArray:responseObject[@"data"]];
+            NSMutableArray *collectionArray = [NSMutableArray array];
+            for (int i = 0; i < array.count; i++) {
+                [collectionArray addObject:array[i][@"branchId"]];
+            }
+            [NOVDataModel updateCollectionListWithArray:collectionArray];
+            [_readEditView collectionButtonChange:button];
+        } fail:^(NSError *error) {
+            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
+            NSLog(@"collection：%@",dict[@"message"]);
+        }];
+    } else {
+        [NOVObatinBookContent cancelCollectionChapterWithBranchId:self.recordModel.chapterModel.branchId succeed:^(id responseObject) {
+            NSMutableArray *array = [NSMutableArray arrayWithArray:responseObject[@"data"]];
+            NSMutableArray *collectionArray = [NSMutableArray array];
+            for (int i = 0; i < array.count; i++) {
+                [collectionArray addObject:array[i][@"branchId"]];
+            }
+            [NOVDataModel updateCollectionListWithArray:collectionArray];
+            [_readEditView collectionButtonChange:button];
+        } fail:^(NSError *error) {
+            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
+            NSLog(@"collection：%@",dict);
+        }];
+    }
 }
 
 -(void)touchFollowButton:(UIButton *)button{
