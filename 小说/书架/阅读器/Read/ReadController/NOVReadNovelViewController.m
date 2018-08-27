@@ -28,12 +28,12 @@
 @property(nonatomic,strong) NOVReadEditVIew *readEditView;
 @property(nonatomic,strong) NOVReadEndView *readEndView;//当前所在章节阅读结束时显示
 @property(nonatomic,assign) NOVPageChangeType pageChangeType;
+@property(nonatomic,strong) UITapGestureRecognizer *tap;
 @end
 
 @implementation NOVReadNovelViewController{
     NOVObatinBookContent *obatinBookContent; //用于获取作品信息的类
     NSInteger currentPage;
-    BOOL readFromCatalog;   //是否从目录进入阅读状态
 }
 
 - (void)viewDidLoad {
@@ -42,22 +42,23 @@
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bookBackground.png"]];
     [self addChildViewController:self.pageViewController];
     [self.view addGestureRecognizer:({
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setMenu:)];
-        tap.delegate = self;
-        tap;
+        _tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setMenu:)];
+        _tap.cancelsTouchesInView = NO;
+        _tap.delegate = self;
+        _tap;
     })];
     [self.view addSubview:self.readEndView];
     [self.view addSubview:self.readEditView];
     [self.view addSubview:self.backgroundView];
     [self.view addSubview:self.catalogView];
     currentPage = -1;
+    obatinBookContent = [[NOVObatinBookContent alloc] init];
     
     if (_bookMessage) {
-        readFromCatalog = NO;
+        _readFromCatalog = NO;
         //根据bookId在本地查找是否已有阅读数据
         _recordModel = [NOVRecordModel getRecordModelFromLocalWithBookId:_bookMessage.bookId];
         if (!_recordModel) {
-            obatinBookContent = [[NOVObatinBookContent alloc] init];
             self.recordModel.chapter = 1;
             //获取首段ID
             [obatinBookContent getBookFirstChapterIdWithBookID:_bookMessage.bookId succeed:^(id responseObject) {
@@ -86,13 +87,15 @@
         [self.recordModel updateChapterModel:[[NOVChapterModel alloc] initWithDictionary:responseObject[@"data"] error:nil]];
         currentPage = 0;
         //将获取到的文本self示到当前controller上
-        if (readFromCatalog) {
+        if (_readFromCatalog) {
             [_pageViewController setViewControllers:@[[self readViewControllerWithChapter:_recordModel.chapterModel position:currentPage]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
         }else{
             [_pageViewController setViewControllers:@[[self readViewControllerWithChapter:_recordModel.chapterModel position:currentPage]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
         }
         if (currentPage == _recordModel.pageCount -1) {
             _readEndView.hidden = NO;
+        }else{
+            _readEndView.hidden = YES;
         }
     } fail:^(NSError *error) {
         NSLog(@"%@",error);
@@ -121,6 +124,9 @@
 }
 
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController{
+    if (_catalogView.hidden == NO) {
+        return nil;
+    }
     if (currentPage == -1) {
         NSLog(@"未获取到作品信息");
         return nil;
@@ -326,7 +332,9 @@
 
 -(void)nextChapter{
     NOVObatinBookContent *obtainBookContent = [[NOVObatinBookContent alloc] init];
+    //获取下一章列表
     [obtainBookContent getRenewListWithBookId:_bookMessage.bookId ParentId:_recordModel.chapterModel.branchId succeed:^(id responseObject) {
+        //获取成功
         [_pageViewController setViewControllers:@[[[NOVReadPageViewController alloc] init]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
         NOVNextChapterViewController *nextChapterViewControler = [[NOVNextChapterViewController alloc] init];
         nextChapterViewControler.parentId = _recordModel.chapterModel.branchId;
@@ -335,13 +343,14 @@
         nextChapterViewControler.chapterIdBlock = ^(NSInteger chapter) {
             weakSelf.readEndView.hidden = YES;
             weakSelf.readEditView.hidden = YES;
-            readFromCatalog = YES;
+            _readFromCatalog = YES;
             obatinBookContent = [[NOVObatinBookContent alloc] init];
             [weakSelf obtainChapterContentWithBranchId:chapter];
         };
         [self.navigationController pushViewController:nextChapterViewControler animated:NO];
     } fail:^(NSError *error) {
         NSLog(@"未获取到作品信息");
+        [self showAlertActionWithTitle:@"本章暂无续写内容"];
     }];
 }
 
@@ -355,8 +364,9 @@
 
 -(void)showCatalogView{
     self.catalogView.hidden = NO;
-//    self.readEditView.hidden = YES;
     self.backgroundView.hidden = NO;
+    //目录出现时设为NO，使tableview可以响应
+//    _tap.cancelsTouchesInView = NO;
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{
         _catalogView.frame = CGRectMake(0, 0, ScreenWidth*0.8, ScreenHeight);
     } completion:nil];
@@ -383,7 +393,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated{
-    self.tabBarController.tabBar.hidden = YES;
+//    self.tabBarController.tabBar.hidden = YES;
     self.navigationController.navigationBar.hidden = YES;
 }
 

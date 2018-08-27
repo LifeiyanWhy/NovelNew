@@ -26,19 +26,19 @@
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bookBackground.png"]];
     [self.view addSubview:self.nextChapterView];
     
-//    NOVObatinBookContent *obtainBookContent = [[NOVObatinBookContent alloc] init];
-//    [obtainBookContent getRenewListWithBookId:_bookMessage.bookId ParentId:_parentId succeed:^(id responseObject) {
-//        NOVAllChapterListModel *allModel = [[NOVAllChapterListModel alloc] initWithDictionary:responseObject error:nil];
-//        NSMutableArray *array = [NSMutableArray arrayWithArray:allModel.data];
-//        for (int i = 0; i < array.count; i++) {
-//            NOVChapterListModel *model = [[NOVChapterListModel alloc] initWithDictionary:array[i] error:nil];
-//            model.author = [[NOVChapterAuthorModel alloc] initWithDictionary:array[i][@"author"] error:nil];
-//            [self.modelArray addObject:model];
-//        }
-//        [_nextChapterView.tableView reloadData];
-//    } fail:^(NSError *error) {
-//        NSLog(@"%@",error.userInfo[@"com.alamofire.serialization.response.error.response"]);
-//    }];
+    NOVObatinBookContent *obtainBookContent = [[NOVObatinBookContent alloc] init];
+    [obtainBookContent getRenewListWithBookId:_bookMessage.bookId ParentId:_parentId succeed:^(id responseObject) {
+        NOVAllChapterListModel *allModel = [[NOVAllChapterListModel alloc] initWithDictionary:responseObject error:nil];
+        NSMutableArray *array = [NSMutableArray arrayWithArray:allModel.data];
+        for (int i = 0; i < array.count; i++) {
+            NOVChapterListModel *model = [[NOVChapterListModel alloc] initWithDictionary:array[i] error:nil];
+            model.author = [[NOVChapterAuthorModel alloc] initWithDictionary:array[i][@"author"] error:nil];
+            [self.modelArray addObject:model];
+        }
+        [_nextChapterView.tableView reloadData];
+    } fail:^(NSError *error) {
+        NSLog(@"%@",error.userInfo[@"com.alamofire.serialization.response.error.response"]);
+    }];
  }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

@@ -10,4 +10,5 @@
 
 @interface NOVReadNovelViewController (catalog)<UITableViewDelegate,UITableViewDataSource>
 -(void)updateCatalog;
+- (void)showAlertActionWithTitle:(NSString *)title;
 @end

@@ -59,7 +59,18 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    NOVChapterReadModel *model = self.recordModel.chapterArray[indexPath.section][indexPath.row];
+    self.readFromCatalog = YES;
+    [self obtainChapterContentWithBranchId:model.chapterId];
+    self.catalogView.hidden = YES;
+    self.backgroundView.hidden = YES;
+}
+
+- (void)showAlertActionWithTitle:(NSString *)title{
+    UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *alert = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:nil];
+    [alertControl addAction:alert];
+    [self presentViewController:alertControl animated:YES completion:nil];
 }
 
 @end

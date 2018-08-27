@@ -127,7 +127,6 @@
 
 
 -(void)updateCellWithModel:(NOVMyCollectionModel *)model{
-//    NSLog(@"%@",model.author.icon);
     [_authorImageButton sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",UserImageUrl,model.author.icon]] forState:UIControlStateNormal];
     _titleLabel.text = model.title;
     _authorLabel.text = model.author.username;
