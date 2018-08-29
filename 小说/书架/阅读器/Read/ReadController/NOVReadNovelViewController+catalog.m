@@ -19,6 +19,7 @@
     self.catalogView.tableView.delegate = self;
     self.catalogView.tableView.dataSource = self;
     [self.catalogView.tableView registerClass:[NOVCatalogTableViewCell class] forCellReuseIdentifier:@"catalogCell"];
+    [self.catalogView.tableView reloadData];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

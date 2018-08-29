@@ -94,7 +94,7 @@
         }
     }
     NSMutableArray *chaptersArray = [NSMutableArray arrayWithArray:@[model]];
-    [self.chapterArray addObject:chaptersArray];
+    [_chapterArray addObject:chaptersArray];
 }
 
 +(void)updateLocalRecordModel:(NOVRecordModel *)recordModel{

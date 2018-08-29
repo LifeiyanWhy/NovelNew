@@ -115,10 +115,10 @@
         NSLog(@"未获取到作品信息");
         return nil;
     }
-    _readEndView.hidden = YES;
     if (currentPage == 0) {
         return nil;
     }
+    _readEndView.hidden = YES;
     _pageChangeType = NOVPageChangeTypeBefore;
     return [self readViewControllerWithChapter:_recordModel.chapterModel position:currentPage - 1];
 }
@@ -176,9 +176,15 @@
 
 -(void)setMenu:(UITapGestureRecognizer *)gester{
     CGPoint gesterPoint = [gester locationInView:gester.view];
-    if (!_catalogView.hidden && gesterPoint.x < ScreenWidth*0.8) {
+    NSLog(@"%@ %f %f",gester.view,gesterPoint.x,gesterPoint.y);
+    if (!_readEndView.hidden){
+        if (gesterPoint.x > ScreenWidth - 25 && gesterPoint.y < 64 && gesterPoint.y > 64 - 25) {
+            return;
+        }
+    }
+    if (!_catalogView.hidden && gesterPoint.x < ScreenWidth*0.8) {  //目录是显示状态，并点击了目录的位置
         return;
-    }else if (!_catalogView.hidden && gesterPoint.x >= ScreenWidth*0.75){
+    }else if (!_catalogView.hidden && gesterPoint.x >= ScreenWidth*0.75){   //目录是显示状态，并点击了空白处，回收菜单
         _catalogView.hidden = YES;
         _backgroundView.hidden = YES;
         [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionTransitionFlipFromRight animations:^{
@@ -366,7 +372,6 @@
     self.catalogView.hidden = NO;
     self.backgroundView.hidden = NO;
     //目录出现时设为NO，使tableview可以响应
-//    _tap.cancelsTouchesInView = NO;
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{
         _catalogView.frame = CGRectMake(0, 0, ScreenWidth*0.8, ScreenHeight);
     } completion:nil];
