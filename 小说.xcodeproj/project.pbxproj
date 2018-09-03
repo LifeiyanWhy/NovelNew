@@ -16,6 +16,7 @@
 		C4260968211D422F007F7DD5 /* NOVRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4260967211D422F007F7DD5 /* NOVRegisterViewController.m */; };
 		C426096B211DAE89007F7DD5 /* NOVNextChapterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C426096A211DAE89007F7DD5 /* NOVNextChapterTableViewCell.m */; };
 		C426096E211DBDB6007F7DD5 /* NOVChapterListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C426096D211DBDB6007F7DD5 /* NOVChapterListModel.m */; };
+		C437C5E3213D684100F34308 /* NOVMyCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C437C5E2213D684100F34308 /* NOVMyCollectionViewController.m */; };
 		C442C99A20A1BE7D00F742E6 /* NOVMyheadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C442C99920A1BE7D00F742E6 /* NOVMyheadView.m */; };
 		C45A4FD820A493A40084D8D4 /* NOVEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C45A4FD720A493A40084D8D4 /* NOVEditViewController.m */; };
 		C45AB13F21156E8F00A28869 /* 笔组合.png in Resources */ = {isa = PBXBuildFile; fileRef = C45AB13E21156E8F00A28869 /* 笔组合.png */; };
@@ -201,6 +202,9 @@
 		C426096A211DAE89007F7DD5 /* NOVNextChapterTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVNextChapterTableViewCell.m; sourceTree = "<group>"; };
 		C426096C211DBDB6007F7DD5 /* NOVChapterListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVChapterListModel.h; sourceTree = "<group>"; };
 		C426096D211DBDB6007F7DD5 /* NOVChapterListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVChapterListModel.m; sourceTree = "<group>"; };
+		C437C5E1213D684100F34308 /* NOVMyCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVMyCollectionViewController.h; sourceTree = "<group>"; };
+		C437C5E2213D684100F34308 /* NOVMyCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVMyCollectionViewController.m; sourceTree = "<group>"; };
+		C437C5E4213D6D6100F34308 /* NOVAccountHeadFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVAccountHeadFile.h; sourceTree = "<group>"; };
 		C442C99820A1BE7D00F742E6 /* NOVMyheadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVMyheadView.h; sourceTree = "<group>"; };
 		C442C99920A1BE7D00F742E6 /* NOVMyheadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVMyheadView.m; sourceTree = "<group>"; };
 		C45A4FD620A493A40084D8D4 /* NOVEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVEditViewController.h; sourceTree = "<group>"; };
@@ -1169,8 +1173,11 @@
 		C4E6272521156492008EB105 /* AccountController */ = {
 			isa = PBXGroup;
 			children = (
+				C437C5E4213D6D6100F34308 /* NOVAccountHeadFile.h */,
 				C4C8906F206BF61E00BED312 /* MYViewController.h */,
 				C4C89070206BF61E00BED312 /* MYViewController.m */,
+				C437C5E1213D684100F34308 /* NOVMyCollectionViewController.h */,
+				C437C5E2213D684100F34308 /* NOVMyCollectionViewController.m */,
 			);
 			path = AccountController;
 			sourceTree = "<group>";
@@ -1511,6 +1518,7 @@
 				C4E9C5C32099BE32004E7EFF /* NOVChatroomViewController.m in Sources */,
 				C4960D7321198A9700132C43 /* NOVAccountManageView.m in Sources */,
 				C495B12B2127A54400949E6E /* NOVCatalogView.m in Sources */,
+				C437C5E3213D684100F34308 /* NOVMyCollectionViewController.m in Sources */,
 				C419D08820B5BAE30016E464 /* NOVStartBookModel.m in Sources */,
 				C4A81079210578DA009D2254 /* NOVRecordModel.m in Sources */,
 				C4D629882109545300D5E283 /* NOVEditUserMessageView.m in Sources */,

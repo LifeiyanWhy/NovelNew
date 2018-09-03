@@ -7,15 +7,7 @@
 //
 
 #import "MYViewController.h"
-#import "NOVMyView.h"
-#import "NOVMyheadView.h"
-#import "NOVSelectPhotoManager.h"
-#import "NOVEditUserMessageViewController.h"
-#import "NOVPersonalMessage.h"
-#import "NOVEditUserMessageManager.h"
-#import "NOVUserSetViewController.h"
-#import "NOVMystartViewController.h"
-#import <UIButton+WebCache.h>
+#import "NOVAccountHeadFile.h"
 
 @interface MYViewController ()<NOVSelectPhotoManagerDeleagte,UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,strong) NOVSelectPhotoManager *photoManager;
@@ -209,6 +201,10 @@
         UIAlertAction *sureAlert = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:nil];
         [alertControl addAction:sureAlert];
         [self presentViewController:alertControl animated:YES completion:nil];
+    }else if (indexPath.section == 0 && indexPath.row == 0){
+        NOVMyCollectionViewController *myCollectionViewController = [[NOVMyCollectionViewController alloc] init];
+        myCollectionViewController.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:myCollectionViewController animated:NO];
     }
 }
 

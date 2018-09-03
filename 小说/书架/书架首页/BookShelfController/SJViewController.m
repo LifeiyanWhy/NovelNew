@@ -231,7 +231,9 @@
         NOVRenewHeadView *headView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
         if (!headView) {
             headView = [[NOVRenewHeadView alloc] initWithReuseIdentifier:identifier];
+            [headView.goNovelButton addTarget:self action:@selector(goNovelButton:) forControlEvents:UIControlEventTouchUpInside];
         }
+        headView.goNovelButton.tag = section;
         [headView updateCellModel:model.simpleBookDTO];
         [headView setBackgroundColor:[UIColor whiteColor]];
         return headView;
@@ -239,11 +241,29 @@
     return [[UIView alloc] init];
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+-(void)goNovelButton:(UIButton *)button{
+    NOVGetMyRenewModel *model = _joinModelArray[button.tag];
     NOVReadNovelViewController *readNovelViewController = [[NOVReadNovelViewController alloc] init];
     readNovelViewController.hidesBottomBarWhenPushed = YES;
-    readNovelViewController.bookMessage = self.followModelArray[indexPath.section];
+    readNovelViewController.bookMessage = [[NOVbookMessage alloc] init];
+    readNovelViewController.bookMessage.author.username = model.simpleBookDTO.author.username;
+    readNovelViewController.bookMessage.author.account = model.simpleBookDTO.author.account;
+    readNovelViewController.bookMessage.bookId = model.simpleBookDTO.bookId;
+    readNovelViewController.bookMessage.bookName = model.simpleBookDTO.bookName;
     [self.navigationController pushViewController:readNovelViewController animated:NO];
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (tableView.tag == 1001) {
+        NOVReadNovelViewController *readNovelViewController = [[NOVReadNovelViewController alloc] init];
+        readNovelViewController.hidesBottomBarWhenPushed = YES;
+        readNovelViewController.bookMessage = self.followModelArray[indexPath.section];
+        [self.navigationController pushViewController:readNovelViewController animated:NO];
+    }else if (tableView.tag == 1002){
+        
+    }else if (tableView.tag == 1003){
+        
+    }
 }
 
 - (void)fqStart{

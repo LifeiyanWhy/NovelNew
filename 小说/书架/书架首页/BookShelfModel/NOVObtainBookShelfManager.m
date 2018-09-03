@@ -25,7 +25,7 @@
             NSLog(@"1009");
         }else{
             NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
-            NSLog(@"%@",dict);
+            NSLog(@"follow%@",dict);
             failBlock(error);
         }
     }];
@@ -43,7 +43,7 @@
         succeedBlock(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
-        NSLog(@"%@",dict);
+        NSLog(@"renew%@",dict);
         failBlock(error);
     }];
 }
@@ -59,6 +59,8 @@
     [manger GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         succeedBlock(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
+        NSLog(@"collection%@",dict);
         failBlock(error);
         failBlock(error);
     }];

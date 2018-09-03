@@ -23,7 +23,7 @@
 - (void)addUI{
     self.backgroundColor = [UIColor colorWithRed:0.98 green:0.98 blue:0.98 alpha:1.00];
     
-    _headView = [[NOVView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width*0.66, 64) titleArray:@[@"我的关注",@"我的收藏",@"我的参与"]];
+    _headView = [[NOVView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width*0.66, 64) titleArray:@[@"我的关注",@"我的收藏",@"我的创作"]];
     _headView.backgroundColor = [UIColor  colorWithRed:0.15 green:0.65 blue:0.60 alpha:1.00];
     [self addSubview:_headView];
     
