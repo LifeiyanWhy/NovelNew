@@ -62,7 +62,6 @@
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
         NSLog(@"collection%@",dict);
         failBlock(error);
-        failBlock(error);
     }];
 }
 @end

@@ -212,7 +212,7 @@
     detailViewcontroller.viewtitleBlock = ^(NSString *viewtitle,NSInteger enumNumber) {
         NSLog(@"%@",viewtitle);
         if (viewtitle) {
-            cell.leftLabel.text = viewtitle;
+            cell.leftLabel.text = [NSString stringWithFormat:@"%@ >",viewtitle];
             cell.enumNumber = enumNumber;
         }
     };

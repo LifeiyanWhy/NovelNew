@@ -121,8 +121,7 @@
         //存储关注列表
         [datamodel updateFollowBookListWithArray:followIdArray];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
-        NSLog(@"获取关注列表失败：%@",dict);
+        NSLog(@"获取关注列表失败：%@",error);
     }];
 }
 
@@ -142,8 +141,7 @@
         }
         [NOVDataModel updateCollectionListWithArray:collectionArray];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
-        NSLog(@"collection：%@",dict);
+        NSLog(@"%@",error);
     }];
 }
 

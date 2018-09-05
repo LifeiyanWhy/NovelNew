@@ -32,11 +32,12 @@
     
     textPlacehoderArray = [NSArray arrayWithObjects:@"请输入章节名称",@"请输入正文", nil];
     
-    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height*0.9)];
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height*0.9 - 5)];
     [self addSubview:_scrollView];
     _scrollView.directionalLockEnabled = YES;
     _scrollView.showsVerticalScrollIndicator = NO;
     _scrollView.showsHorizontalScrollIndicator = NO;
+    _scrollView.backgroundColor = [UIColor redColor];
     
     //作品简介输入框0.1H
     _titleTextView = [[UITextView alloc] init];
@@ -44,11 +45,11 @@
     _titleTextView.tag = 0;
     [_titleTextView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_scrollView).offset(10);
-        make.height.equalTo(self).multipliedBy(0.07f);
-        make.width.equalTo(_scrollView).multipliedBy(0.94f);
+        make.height.equalTo(self).multipliedBy(0.07);
+        make.width.equalTo(self).multipliedBy(0.94f);
         make.centerX.equalTo(_scrollView);
     }];
-    [_titleTextView sizeToFit];
+    _titleTextView.scrollEnabled = NO;
     _titleTextView.text = @"请输入章节名称";
     [_titleTextView setFont:[UIFont systemFontOfSize:18]];
     _titleTextView.textColor = [UIColor grayColor];
@@ -73,7 +74,6 @@
     _contentTextView.tag = 1;
     [_contentTextView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_chapterLabel.mas_bottom);
-        make.height.mas_equalTo(_scrollView.frame.size.height*0.85-20);
         make.right.and.left.equalTo(_titleTextView);
     }];
     [_contentTextView sizeToFit];
@@ -88,7 +88,10 @@
     [_contentTextView setFont:[UIFont systemFontOfSize:16]];
     _contentTextView.textColor = [UIColor grayColor];
     _contentTextView.delegate = self;
-    _contentTextView.keyboardType = UIKeyboardTypeDefault;
+    _contentTextView.scrollEnabled = NO;
+    _contentTextView.showsVerticalScrollIndicator = NO;
+    _contentTextView.showsHorizontalScrollIndicator = NO;
+    _contentTextView.backgroundColor = [UIColor whiteColor];
     
     _deleteButton = [[UIButton alloc] init];
     [self addSubview:_deleteButton];
@@ -157,27 +160,21 @@
 }
 
 - (void)textViewDidChange:(UITextView *)textView{
-/*
-    //文本框的初始高度
-    CGFloat contentHeight = _scrollView.frame.size.height*0.9-20;
     //计算当前高度
     CGFloat height = [_contentTextView sizeThatFits:CGSizeMake(self.frame.size.width*0.94, MAXFLOAT)].height;
-    if (height > _scrollView.frame.size.height*0.85-20) {
-        [_contentTextView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_chapterLabel.mas_bottom);
-            make.height.mas_equalTo(height);
-            make.right.and.left.equalTo(_titleTextView);
-        }];
-        _scrollView.scrollEnabled = YES;
-        //height - contentHeight为文本框增加的高度
-       _scrollView.contentSize = CGSizeMake(self.frame.size.width, self.frame.size.height*0.9 + height - contentHeight);
+    _scrollView.scrollEnabled = YES;
+    _scrollView.contentSize = CGSizeMake(self.frame.size.width, self.frame.size.height*(0.07 + 0.05) + 20 + height);
+    CGFloat offset = _scrollView.contentSize.height - _scrollView.bounds.size.height;
+    if (offset > 0)
+    {
+        [_scrollView setContentOffset:CGPointMake(0, offset)];
     }
- */
     //执行协议方法，参数为正文字数以及内容
     if(textView == _contentTextView){
         NSString *text = _contentTextView.text;
         [self.delagate contentTextViewChange:text.length withContent:text];
     }
+    
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView{
@@ -230,17 +227,24 @@
 }
 
 - (void)keyboardShowWithFrame:(CGRect)keyboardFrame{
-    NSLog(@"%f %f %f %f",keyboardFrame.origin.x,keyboardFrame.origin.y,keyboardFrame.size.height,keyboardFrame.size.width);
     [_keyboardView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.mas_bottom).offset(keyboardFrame.size.height*-1 - 20);
         make.height.mas_equalTo(40);
         make.left.and.right.equalTo(self);
+    }];
+    [_scrollView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.and.left.and.right.equalTo(self);
+        make.bottom.equalTo(_keyboardView.mas_top).offset(-5);
     }];
 }
 
 - (void)keyBoardHidden{
     [_keyboardView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.height.and.width.mas_equalTo(0);
+    }];
+    [_scrollView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.and.left.and.right.equalTo(self);
+        make.bottom.equalTo(_deleteButton.mas_top).offset(-5);
     }];
 }
 

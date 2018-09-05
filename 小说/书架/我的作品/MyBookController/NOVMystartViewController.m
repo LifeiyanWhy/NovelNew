@@ -16,11 +16,8 @@
 #import "NOVStartBookModel.h"
 
 @interface NOVMystartViewController ()<NOVMystartViewDategate>
-
 @property(nonatomic,strong) NOVMystartView *mystartView;
-
 @property(nonatomic,strong) NSMutableArray *novelArray;
-
 @end
 
 @implementation NOVMystartViewController

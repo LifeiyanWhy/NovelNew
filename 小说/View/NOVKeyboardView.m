@@ -17,6 +17,7 @@
         self.backgroundColor = [UIColor redColor];
         _hiddenKeyboard = [UIButton buttonWithType:UIButtonTypeCustom];
         [self addSubview:_hiddenKeyboard];
+        _hiddenKeyboard.backgroundColor = [UIColor blackColor];
     }
     return self;
 }

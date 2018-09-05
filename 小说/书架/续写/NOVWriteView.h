@@ -24,30 +24,19 @@
 @end
 
 @interface NOVWriteView : UIView<UITextViewDelegate>
-
 @property(nonatomic,weak) id <NOVWriteViewDelegate>delagate;
-
 //输入简介的文本框
 @property(nonatomic,strong) UITextView *titleTextView;
-
 //显示章节
 @property(nonatomic,strong) UILabel *chapterLabel;
-
 //输入内容的文本框
 @property(nonatomic,strong) UITextView *contentTextView;
-
 @property(nonatomic,strong) UIButton *deleteButton;
-
 @property(nonatomic,strong) UIButton *setupButton;
-
 @property(nonatomic,strong) UIButton *writeButton;
-
 @property(nonatomic,strong) UIButton *historyButton;
-
 @property(nonatomic,strong) UIScrollView *scrollView;
-
 @property(nonatomic,strong) NOVSetUpView *setUpView;
-
 @property(nonatomic,strong) NOVKeyboardView *keyboardView;
 
 //显示设置view

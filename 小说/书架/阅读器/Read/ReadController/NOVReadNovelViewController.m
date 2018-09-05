@@ -87,7 +87,7 @@
         [self.recordModel updateChapterModel:[[NOVChapterModel alloc] initWithDictionary:responseObject[@"data"] error:nil]];
         currentPage = 0;
         //将获取到的文本self示到当前controller上
-        if (_readFromCatalog) {
+        if (_readFromCatalog) { //开始阅读新的章节(从续写目录跳转而来)
             [_pageViewController setViewControllers:@[[self readViewControllerWithChapter:_recordModel.chapterModel position:currentPage]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
         }else{
             [_pageViewController setViewControllers:@[[self readViewControllerWithChapter:_recordModel.chapterModel position:currentPage]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
@@ -176,26 +176,38 @@
 
 -(void)setMenu:(UITapGestureRecognizer *)gester{
     CGPoint gesterPoint = [gester locationInView:gester.view];
-    NSLog(@"%@ %f %f",gester.view,gesterPoint.x,gesterPoint.y);
-    if (!_readEndView.hidden){
-        if (gesterPoint.x > ScreenWidth - 25 && gesterPoint.y < 64 && gesterPoint.y > 64 - 25) {
+    NSLog(@"%f %f",gesterPoint.x,gesterPoint.y);
+    if (gesterPoint.y > self.view.frame.size.height - 60 && !_readEndView.hidden && _readEditView.hidden) {
+        return;
+    }
+    
+    if (!_readEditView.hidden){
+        if (gesterPoint.x > ScreenWidth - 25 && gesterPoint.y < 64 && gesterPoint.y > 64 - 25) {//点击了readEditView右边的button
+            return;
+        }
+        if (gesterPoint.y >= ScreenHeight - 64 && gesterPoint.x >= ScreenWidth/2 - 32 && gesterPoint.x <= ScreenWidth/2 + 32) {   //夜间模式
+            return;
+        }
+        if (gesterPoint.x >= ScreenWidth * 0.75 - 10 && gesterPoint.x <= ScreenWidth - 10 && gesterPoint.y > 74 && gesterPoint.y < 74 + ScreenHeight * 0.15 && _readEditView.rightButton.selected) {  //收藏关注view
             return;
         }
     }
-    if (!_catalogView.hidden && gesterPoint.x < ScreenWidth*0.8) {  //目录是显示状态，并点击了目录的位置
+    
+    if (!_catalogView.hidden && gesterPoint.x < ScreenWidth*0.75) {  //目录是显示状态，并点击了目录的位置
         return;
     }else if (!_catalogView.hidden && gesterPoint.x >= ScreenWidth*0.75){   //目录是显示状态，并点击了空白处，回收菜单
         _catalogView.hidden = YES;
         _backgroundView.hidden = YES;
         [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionTransitionFlipFromRight animations:^{
-            _catalogView.frame = CGRectMake(-1*ScreenWidth*0.8, 0, ScreenWidth*0.8, ScreenHeight);
+            _catalogView.frame = CGRectMake(-1*ScreenWidth*0.75, 0, ScreenWidth*0.75, ScreenHeight);
         } completion:nil];
         return;
     }
-    if (_readEditView.hidden) {
-        [_readEditView displayMenu:self.view];
-    }else{
+    
+    if (!_readEditView.hidden) {
         [_readEditView hiddenMenu];
+    }else{
+        [_readEditView displayMenu:self.view];
     }
 }
 
@@ -331,6 +343,7 @@
 }
 
 -(void)like{
+    
 }
 
 -(void)disLike{
