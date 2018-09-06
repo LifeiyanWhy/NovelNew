@@ -8,10 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^publishNovelBlock)(NSString *title,NSString *content);
-
+typedef void(^publishNovelBlock)(NSString *title,NSString *summary,NSString *content);
 @interface NOVWriteViewController : UIViewController
-
-@property(nonatomic,strong)  publishNovelBlock publishNovelBlock;
-
+@property(nonatomic,copy)  publishNovelBlock publishNovelBlock;
 @end

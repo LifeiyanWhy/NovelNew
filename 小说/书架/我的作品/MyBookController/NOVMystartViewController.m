@@ -69,9 +69,10 @@
 -(void)touchEditButtonInSetView:(NOVBookSetView *)setView{    
     NOVStartBookModel *model = _novelArray[setView.tag-1];
     NOVWriteViewController *writeViewController = [[NOVWriteViewController alloc] init];
-    writeViewController.publishNovelBlock = ^(NSString *title, NSString *content) {
+    writeViewController.publishNovelBlock = ^(NSString *title, NSString *summary, NSString *content) {
         model.firstTitle = title;
         model.firstContent = content;
+        model.firstSummary = summary;
         NOVStartManager *startManager = [[NOVStartManager alloc] init];
         [startManager startNovelWithModel:model success:^(id  _Nonnull responseObject) {
             //发布成功
@@ -81,13 +82,8 @@
             //标记为已发布
             setView.novelState = NovelStatePublished;
             NSLog(@"===%@",responseObject);
-//            [startManager uploadBookImage:model.bookImage bookId:1 success:^(id  _Nonnull responseObject) {
-//                NSLog(@"上传成功");
-//            } fail:^(NSError * _Nonnull error) {
-//                NSLog(@"图片上传失败");
-//            }];
         } fail:^(NSError * _Nonnull error) {
-            NSLog(@"发布失败%@",[NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error]);
+            NSLog(@"发布失败%@",error);
         }];
     };
     [self.navigationController pushViewController:writeViewController animated:NO];

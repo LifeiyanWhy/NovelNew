@@ -32,12 +32,11 @@
     
     textPlacehoderArray = [NSArray arrayWithObjects:@"请输入章节名称",@"请输入正文", nil];
     
-    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height*0.9 - 5)];
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height*0.9)];
     [self addSubview:_scrollView];
     _scrollView.directionalLockEnabled = YES;
     _scrollView.showsVerticalScrollIndicator = NO;
     _scrollView.showsHorizontalScrollIndicator = NO;
-    _scrollView.backgroundColor = [UIColor redColor];
     
     //作品简介输入框0.1H
     _titleTextView = [[UITextView alloc] init];
@@ -54,6 +53,7 @@
     [_titleTextView setFont:[UIFont systemFontOfSize:18]];
     _titleTextView.textColor = [UIColor grayColor];
     _titleTextView.delegate = self;
+    _titleTextView.backgroundColor = [UIColor clearColor];
     
     //正文输入框的生上面的label 0.05H
     _chapterLabel = [[UILabel alloc] init];
@@ -62,11 +62,23 @@
         make.top.equalTo(_titleTextView.mas_bottom).offset(10);
         make.height.equalTo(self).multipliedBy(0.05);
         make.left.equalTo(_titleTextView);
-        make.width.equalTo(self).multipliedBy(0.3f);
+        make.width.equalTo(self).multipliedBy(0.25f);
     }];
     _chapterLabel.text = @"📖 编辑内容";
     [_chapterLabel setFont:[UIFont systemFontOfSize:13]];
     _chapterLabel.textColor =  [UIColor grayColor];
+    _chapterLabel.backgroundColor = [UIColor clearColor];
+    
+    _summaryButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_scrollView addSubview:_summaryButton];
+    [_summaryButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.and.height.and.width.equalTo(_chapterLabel);
+        make.right.equalTo(_titleTextView);
+    }];
+    [_summaryButton setTitle:@"添加章节简介" forState:UIControlStateNormal];
+    _summaryButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    [_summaryButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    _summaryButton.titleLabel.textAlignment = NSTextAlignmentRight;
     
     //正文输入框 0.85H-20
     _contentTextView = [[UITextView alloc] init];
@@ -91,7 +103,7 @@
     _contentTextView.scrollEnabled = NO;
     _contentTextView.showsVerticalScrollIndicator = NO;
     _contentTextView.showsHorizontalScrollIndicator = NO;
-    _contentTextView.backgroundColor = [UIColor whiteColor];
+    _contentTextView.backgroundColor = [UIColor clearColor];
     
     _deleteButton = [[UIButton alloc] init];
     [self addSubview:_deleteButton];
@@ -101,7 +113,7 @@
         make.left.equalTo(self.mas_left).offset(self.frame.size.width*0.05);
         make.width.equalTo(self.mas_width).multipliedBy(0.15);
     }];
-    [_deleteButton setImage:[UIImage imageNamed:@"删除.png"] forState:UIControlStateNormal];
+    [_deleteButton setImage:[UIImage imageNamed:@"删除write.png"] forState:UIControlStateNormal];
     _deleteButton.imageEdgeInsets = UIEdgeInsetsMake(-10, 0, 10, 0);
     
     _setupButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -111,7 +123,7 @@
         make.left.equalTo(_deleteButton.mas_right).offset(self.frame.size.width*0.1);
         make.width.equalTo(self).multipliedBy(0.15f);
     }];
-    [_setupButton setImage:[UIImage imageNamed:@"设置-2.png"] forState:UIControlStateNormal];
+    [_setupButton setImage:[UIImage imageNamed:@"设置write.png"] forState:UIControlStateNormal];
     _setupButton.imageEdgeInsets = UIEdgeInsetsMake(-10, 0, 10, 0);
     
     _writeButton = [[UIButton alloc] init];
@@ -121,8 +133,9 @@
         make.left.equalTo(_setupButton.mas_right).offset(self.frame.size.width*0.1);
         make.width.equalTo(self).multipliedBy(0.15f);
     }];
-    [_writeButton setImage:[UIImage imageNamed:@"写作.png"] forState:UIControlStateNormal];
+    [_writeButton setImage:[UIImage imageNamed:@"写字.png"] forState:UIControlStateNormal];
     _writeButton.imageEdgeInsets = UIEdgeInsetsMake(-10, 0, 10, 0);
+    [_writeButton addTarget:self action:@selector(contentTextViewIntoEdit) forControlEvents:UIControlEventTouchUpInside];
     
     _historyButton = [[UIButton alloc] init];
     [self addSubview:_historyButton];
@@ -131,7 +144,7 @@
         make.left.equalTo(_writeButton.mas_right).offset(self.frame.size.width*0.1);
         make.width.equalTo(self).multipliedBy(0.15f);
     }];
-    [_historyButton setImage:[UIImage imageNamed:@"历史记录.png"] forState:UIControlStateNormal];
+    [_historyButton setImage:[UIImage imageNamed:@"历史.png"] forState:UIControlStateNormal];
     _historyButton.imageEdgeInsets = UIEdgeInsetsMake(-10, 0, 10, 0);
     
     UIImageView *imageview = [[UIImageView alloc] init];
@@ -164,6 +177,7 @@
     CGFloat height = [_contentTextView sizeThatFits:CGSizeMake(self.frame.size.width*0.94, MAXFLOAT)].height;
     _scrollView.scrollEnabled = YES;
     _scrollView.contentSize = CGSizeMake(self.frame.size.width, self.frame.size.height*(0.07 + 0.05) + 20 + height);
+    
     CGFloat offset = _scrollView.contentSize.height - _scrollView.bounds.size.height;
     if (offset > 0)
     {
@@ -174,7 +188,6 @@
         NSString *text = _contentTextView.text;
         [self.delagate contentTextViewChange:text.length withContent:text];
     }
-    
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView{
@@ -209,7 +222,6 @@
     _scrollView.userInteractionEnabled = NO;
 }
 
-
 - (void)responseWhenTouchView{
     NSLog(@"touchView");
     //隐藏设置view
@@ -222,8 +234,13 @@
     }
 }
 
+//改变背景颜色
 -(void)setViewColorWithColor:(UIColor *)color{
-    _contentTextView.backgroundColor = color;
+    _scrollView.backgroundColor = color;
+}
+
+-(void)contentTextViewIntoEdit{
+    [_contentTextView becomeFirstResponder];
 }
 
 - (void)keyboardShowWithFrame:(CGRect)keyboardFrame{
@@ -234,7 +251,7 @@
     }];
     [_scrollView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.and.left.and.right.equalTo(self);
-        make.bottom.equalTo(_keyboardView.mas_top).offset(-5);
+        make.bottom.equalTo(_keyboardView.mas_top);
     }];
 }
 
@@ -244,7 +261,7 @@
     }];
     [_scrollView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.and.left.and.right.equalTo(self);
-        make.bottom.equalTo(_deleteButton.mas_top).offset(-5);
+        make.bottom.equalTo(_deleteButton.mas_top);
     }];
 }
 

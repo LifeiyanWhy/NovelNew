@@ -9,13 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @protocol NOVSetUpViewDelegate <NSObject>
-
 - (void)touchColorButton:(UIButton *)button color:(UIColor *)color;
-
 @end
 
 @interface NOVSetUpView : UIView
-
 @property(nonatomic,weak) id<NOVSetUpViewDelegate> delegate;
-
 @end

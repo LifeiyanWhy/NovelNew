@@ -9,18 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @class NOVSetUpView;
-
 @class NOVKeyboardView;
 
 @protocol NOVWriteViewDelegate <NSObject>
-
 @optional
-
 //内容文本框中内容改变时执行该方法
 - (void)contentTextViewChange:(NSUInteger)numberOfWords withContent:(NSString *)content;
-
-
-
 @end
 
 @interface NOVWriteView : UIView<UITextViewDelegate>
@@ -29,6 +23,7 @@
 @property(nonatomic,strong) UITextView *titleTextView;
 //显示章节
 @property(nonatomic,strong) UILabel *chapterLabel;
+@property(nonatomic,strong) UIButton *summaryButton;
 //输入内容的文本框
 @property(nonatomic,strong) UITextView *contentTextView;
 @property(nonatomic,strong) UIButton *deleteButton;

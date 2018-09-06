@@ -33,7 +33,6 @@
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    model.firstSummary = @"摘要";
     NSDictionary *parameters = @{@"bookName":model.name,
                                  @"bookType":[NSNumber numberWithInteger:model.bookType],
                                  @"bookIntroduce":model.introduction,
@@ -77,7 +76,6 @@
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    renewModel.summary = @"父亲魏长泽，母亲藏色散人。长相俊美，性格不羁，三观极正，爱憎分明，重情义。幼年父母在夜猎中丧生，被江澄之父江枫眠带回云梦江氏莲花坞，与江澄、江厌离一同生活修习。";
     NSDictionary *parameters = @{
                                  @"parentId":[NSNumber numberWithInteger:renewModel.parentId],
                                  @"bookId":[NSNumber numberWithInteger:renewModel.bookId],

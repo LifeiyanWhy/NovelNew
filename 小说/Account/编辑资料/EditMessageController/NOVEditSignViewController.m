@@ -63,7 +63,6 @@
     }else{
         _editSignView.wordNumberLabel.textColor = [UIColor blackColor];
         self.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
-
     }
 }
 

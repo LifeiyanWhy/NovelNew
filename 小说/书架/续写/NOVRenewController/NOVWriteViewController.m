@@ -10,11 +10,11 @@
 #import "NOVWriteView.h"
 #import "NOVSetUpView.h"
 #import "NOVKeyboardView.h"
+#import "NOVSummaryViewController.h"
 
 @interface NOVWriteViewController ()<NOVWriteViewDelegate,UIScrollViewDelegate,NOVSetUpViewDelegate>
-
 @property(nonatomic,strong) NOVWriteView *writeView;
-
+@property(nonatomic,copy) NSString *summaryString;
 @end
 
 @implementation NOVWriteViewController{
@@ -44,7 +44,7 @@
     tempBar.width = -10;
     self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:tempBar,leftBar,nil];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发布" style:UIBarButtonItemStylePlain target:self action:@selector(publish)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发布" style:UIBarButtonItemStylePlain target:self action:@selector(toPublish)];
     [self.navigationItem.rightBarButtonItem setTintColor:[UIColor blackColor]];
     self.navigationController.navigationBar.layer.shadowColor = [UIColor lightGrayColor].CGColor;
     self.navigationController.navigationBar.layer.shadowOpacity = 0.8f;
@@ -58,6 +58,7 @@
     _writeView.delagate = self;
     _writeView.setUpView.delegate = self;
     [_writeView.keyboardView.hiddenKeyboard addTarget:self action:@selector(cancelKeyboard) forControlEvents:UIControlEventTouchUpInside];
+    [_writeView.summaryButton addTarget:self action:@selector(editSummary) forControlEvents:UIControlEventTouchUpInside];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardHidden:) name:UIKeyboardWillHideNotification object:nil];
@@ -107,16 +108,32 @@
 
 
 //点击rightBarButtonItem（发布）button执行
-- (void)publish{
-    if ([_writeView.contentTextView.text  isEqual: @""]) {
-        [self showAlertActionWithTitle:@"内容不能为空"];
+- (void)toPublish{
+    NSLog(@"%@",_summaryString);
+    if ([_writeView.contentTextView.text isEqualToString:@""] || [_writeView.contentTextView.text isEqualToString:@"请输入正文"]) {
+        [self showAlertActionWithTitle:@"内容不能为空!"];
         return;
-    }else if ([_writeView.titleTextView.text  isEqual: @""]){
-        [self showAlertActionWithTitle:@"章节名称不能为空"];
+    }else if ([_writeView.titleTextView.text  isEqualToString:@""] || [_writeView.titleTextView.text isEqualToString:@"请输入章节名称"]){
+        [self showAlertActionWithTitle:@"章节名称不能为空!"];
         return;
     }
-    self.publishNovelBlock(_writeView.titleTextView.text, _writeView.contentTextView.text);
+    if (_summaryString == NULL) {
+        [self showAlertActionWithTitle:@"请添加章节简介!"];
+        return;
+    }
+    self.publishNovelBlock(_writeView.titleTextView.text, _summaryString,_writeView.contentTextView.text);
     [self.navigationController popViewControllerAnimated:NO];
+}
+
+-(void)editSummary{
+    NOVSummaryViewController *summaryController = [[NOVSummaryViewController alloc] init];
+    __block NOVWriteViewController *weakSelf = self;
+    summaryController.summaryblock = ^(NSString *summaryString) {
+        NSLog(@"%@",summaryString);
+        weakSelf.summaryString = summaryString;
+        [weakSelf.writeView.summaryButton setTitle:@"章节简介" forState:UIControlStateNormal];
+    };
+    [self.navigationController pushViewController:summaryController animated:NO];
 }
 
 //点击颜色button（setupview的代理方法）
@@ -125,9 +142,7 @@
 }
 
 - (void)showAlertActionWithTitle:(NSString *)title{
-    UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *messageAlert = [UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:nil];
-    [alertControl addAction:messageAlert];
+    UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *alert = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:nil];
     [alertControl addAction:alert];
     [self presentViewController:alertControl animated:YES completion:nil];

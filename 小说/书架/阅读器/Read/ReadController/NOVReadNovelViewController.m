@@ -326,15 +326,18 @@
 -(void)renew{
     NOVWriteViewController *writeViewController = [[NOVWriteViewController alloc] init];
     writeViewController.hidesBottomBarWhenPushed = YES;
-    writeViewController.publishNovelBlock = ^(NSString *title, NSString *content) {
+    __block NOVReadNovelViewController *weakSelf = self;
+    writeViewController.publishNovelBlock = ^(NSString *title, NSString *summary,NSString *content) {
         NOVRenewModel *renewModel = [[NOVRenewModel alloc] init];
         renewModel.bookId = _bookMessage.bookId;
         renewModel.parentId = _recordModel.chapterModel.branchId;
         renewModel.title = title;
         renewModel.content = content;
+        renewModel.summary = summary;
         NOVStartManager *startManager = [[NOVStartManager alloc] init];
         [startManager publishRenewWithRenewModel:renewModel success:^(id  _Nonnull responseObject) {
             NSLog(@"%@",responseObject);
+            [weakSelf showAlertActionWithTitle:@"发布成功"];
         } fail:^(NSError * _Nonnull error) {
             NSLog(@"%@",error);
         }];
@@ -343,7 +346,6 @@
 }
 
 -(void)like{
-    
 }
 
 -(void)disLike{
@@ -389,7 +391,6 @@
         _catalogView.frame = CGRectMake(0, 0, ScreenWidth*0.8, ScreenHeight);
     } completion:nil];
     [self updateCatalog];
-    
 }
 
 -(NOVCatalogView *)catalogView{
@@ -410,8 +411,14 @@
     return _backgroundView;
 }
 
+- (void)showAlertActionWithTitle:(NSString *)title{
+    UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *alert = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:nil];
+    [alertControl addAction:alert];
+    [self presentViewController:alertControl animated:YES completion:nil];
+}
+
 - (void)viewWillAppear:(BOOL)animated{
-//    self.tabBarController.tabBar.hidden = YES;
     self.navigationController.navigationBar.hidden = YES;
 }
 
