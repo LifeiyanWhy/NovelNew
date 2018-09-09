@@ -52,10 +52,18 @@
             bookSetView = [[NOVBookSetView alloc] initWithFrame:CGRectMake(self.frame.size.width*(0.15+i), scrollviewHeight*0.07, self.frame.size.width*0.7, scrollviewHeight*0.83)];
         }
         bookSetView.tag = i + 1;
+        [bookSetView.changeImageGesture addTarget:self action:@selector(changeCurrentBookImage:)];
         bookSetView.detailButton.tag = i + 1;
         [bookSetView.editButton setTitle:@"查看作品(已发布)" forState:UIControlStateNormal];
         bookSetView.editButton.userInteractionEnabled = NO;
         [_scrollView addSubview:bookSetView];
+    }
+}
+
+-(void)changeCurrentBookImage:(UITapGestureRecognizer *)gesture{
+    NSLog(@"%@",[gesture.view class]);
+    if([_delegate respondsToSelector:@selector(changeBookImageWithView:)]) {
+        [_delegate changeBookImageWithView:(UIImageView *)gesture.view];
     }
 }
 
@@ -68,6 +76,7 @@
     setview.detailButton.tag = _viewNumber;
     [setview.editButton setTitle:@"编辑作品(未发布)" forState:UIControlStateNormal];
     [setview.editButton addTarget:self action:@selector(touchEditButton:) forControlEvents:UIControlEventTouchUpInside];
+    [setview.changeImageGesture addTarget:self action:@selector(changeCurrentBookImage:)];
     [_scrollView addSubview:setview];
     [_scrollView setContentOffset:CGPointMake(self.frame.size.width*(_viewNumber - 1), 0) animated:NO];
     [setview setBookWithModel:model];

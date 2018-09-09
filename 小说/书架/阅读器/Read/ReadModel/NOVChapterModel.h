@@ -26,6 +26,7 @@
 @property(nonatomic,assign) NSInteger parentId;
 @property(nonatomic,copy) NSString *content;
 @property(nonatomic,assign) NSInteger layer;
+@property(nonatomic,strong) NSNumber <Optional>*voteStatus;
 @end
 
 @interface NOVObtainChapterModel : JSONModel

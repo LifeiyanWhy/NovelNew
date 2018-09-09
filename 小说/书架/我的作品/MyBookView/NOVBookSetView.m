@@ -27,6 +27,11 @@
         
         _coverImage = [[UIImageView alloc] init];
         [view addSubview:_coverImage];
+        _coverImage.userInteractionEnabled = YES;
+        
+        _changeImageGesture = [[UITapGestureRecognizer alloc] init];
+        //给image添加手势，用于点击更换图像
+        [_coverImage addGestureRecognizer:_changeImageGesture];
         
         _titleLabel = [[UILabel alloc] init];
         [view addSubview:_titleLabel];

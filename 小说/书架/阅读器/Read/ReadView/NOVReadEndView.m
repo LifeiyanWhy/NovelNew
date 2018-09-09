@@ -41,7 +41,7 @@
         make.top.equalTo(self);
         make.height.equalTo(self).multipliedBy(0.4);
     }];
-    [self setButton:_renewButton title:@"我要续写"];
+    [self setButton:_renewButton title:@"我要续写" selectTitle:@"我要续写"];
     [_renewNumber mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_renewButton.mas_bottom);
         make.left.and.right.equalTo(_renewButton);
@@ -54,7 +54,7 @@
         make.width.equalTo(_renewButton);
         make.top.and.height.equalTo(_renewButton);
     }];
-    [self setButton:_likeButton title:@"点赞"];
+    [self setButton:_likeButton title:@"点赞" selectTitle:@"已点赞"];
     [_likeNumber mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.and.right.equalTo(_likeButton);
         make.top.and.height.equalTo(_renewNumber);
@@ -66,7 +66,8 @@
         make.width.equalTo(_renewButton);
         make.top.and.height.equalTo(_renewButton);
     }];
-    [self setButton:_disLikeButton title:@"不喜欢"];
+    [self setButton:_disLikeButton title:@"反对" selectTitle:@"已反对"];
+    
     [_disLikeNumber mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.and.height.equalTo(_renewNumber);
         make.left.and.right.equalTo(_disLikeButton);
@@ -74,18 +75,21 @@
     [self setLabelWithLabel:_disLikeNumber];
 }
 
--(void)setButton:(UIButton *)button title:(NSString *)title{
+-(void)setButton:(UIButton *)button title:(NSString *)title selectTitle:(NSString *)selectTitle{
     button.backgroundColor = [UIColor clearColor];
     [button setTitle:title forState:UIControlStateNormal];
+    [button setTitle:selectTitle forState:UIControlStateSelected | UIControlStateHighlighted];
+    [button setTitle:selectTitle forState:UIControlStateSelected];
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
     button.titleLabel.font = [UIFont systemFontOfSize:12];
+    
 }
 
 -(void)setLabelWithLabel:(UILabel *)label{
     label.font = [UIFont systemFontOfSize:10];
     label.textColor = [UIColor grayColor];
     label.textAlignment = NSTextAlignmentCenter;
-    label.text = @"12345";
 }
 
 /*

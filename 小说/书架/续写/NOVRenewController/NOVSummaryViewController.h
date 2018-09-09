@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-typedef void (^summaryBlock)(NSString *summaryString);
+
+typedef NS_OPTIONS(NSInteger, NOVSummaryEdit){
+    NOVSummaryEditSummary = 1,
+    NOVSummaryEditBookIntroduce
+};
+
+typedef void(^summaryBlock)(NSString *summaryString);
 @interface NOVSummaryViewController : UIViewController
 @property(nonatomic,copy) summaryBlock summaryblock;
+@property(nonatomic,assign) NOVSummaryEdit summaryEdit;
 @end

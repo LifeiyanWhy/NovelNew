@@ -24,7 +24,7 @@
         label = [[UILabel alloc] init];
         [self addSubview:label];
         
-        self.placeholder = @"请输入章节简介";
+        self.placeholder = @"请输入简介";
     }
     return self;
 }

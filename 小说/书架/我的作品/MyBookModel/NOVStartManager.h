@@ -21,5 +21,6 @@ typedef void(^failBlock)(NSError *_Nonnull error);
 -(void)startNovelWithModel:(NOVStartBookModel *_Nonnull)model success:(successBlock _Nullable)successBlock fail:(failBlock _Nonnull)failBlock;
 //发布续写
 -(void)publishRenewWithRenewModel:(NOVRenewModel *_Nonnull)renewModel success:(successBlock _Nullable)successBlock fail:(failBlock _Nonnull)failBlock;
+//上传书的封面
 -(void)uploadBookImage:(UIImage *_Nonnull)image bookId:(NSInteger)bookId success:(successBlock _Nullable)successBlock fail:(failBlock _Nullable)failBlock;
 @end

@@ -27,6 +27,7 @@ typedef NS_OPTIONS(NSInteger, NovelState) {
 @property(nonatomic,strong) UIButton *detailButton;
 @property(nonatomic,strong) NOVSetbackView *backView;
 @property(nonatomic,assign) NovelState novelState;
+@property(nonatomic,strong) UITapGestureRecognizer *changeImageGesture;
 -(instancetype)initWithFrame:(CGRect)frame;
 -(void)updateWithModel:(NOVGetMyStartModel *)model;
 -(void)setBookWithModel:(NOVStartBookModel *)model;

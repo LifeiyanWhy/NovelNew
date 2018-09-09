@@ -12,13 +12,11 @@
 #import "NOVDetailViewController.h"
 #import "NOVStartBookModel.h"
 #import "NOVSelectPhotoManager.h"
+#import "NOVSummaryViewController.h"
 
 @interface NOVEditViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,NOVSelectPhotoManagerDeleagte>
-
 @property(nonatomic,strong) NOVEditView *editView;
-
 @property(nonatomic,strong) NOVSelectPhotoManager *photoManager;
-
 @end
 
 @implementation NOVEditViewController{
@@ -52,10 +50,11 @@
     _editView.tableView.delegate = self;
     _editView.tableView.dataSource = self;
     _editView.novelNameTextfeild.delegate = self;
+    _startModel = [[NOVStartBookModel alloc] init];
     
     [_editView.tableView registerClass:[NOVEditViewTableViewCell class] forCellReuseIdentifier:@"cell"];
-    cellTitleArray = @[@"发起形式",@"作品类型",@"指定续写人员",@"指定观看人群"];
-    [_editView.changeImage addTarget:self action:@selector(changeImage)];
+    cellTitleArray = @[@"作品简介",@"发起形式",@"作品类型",@"指定续写人员",@"指定观看人群"];
+    [_editView.changeImageTap addTarget:self action:@selector(changeImage)];
     
     
     actionController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
@@ -76,10 +75,6 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     self.navigationController.navigationBar.hidden = NO;
-}
-
--(void)viewWillDisappear:(BOOL)animated{
-    self.navigationController.navigationBar.hidden = YES;
 }
 
 -(void)changeImage{
@@ -113,48 +108,38 @@
 }
 
 -(void)finishEdit{
-    
     if ([_editView.novelNameTextfeild.text  isEqual: @""]) {
         [self addAlertActionWithTitle:@"作品名称不能为空"];
         return;
     }
-    
-    NOVStartBookModel *model = [[NOVStartBookModel alloc] init];
-    model.name = _editView.novelNameTextfeild.text;//作品名称
-    
-    for (int i = 0; i <= 4; i++) {
+    _startModel.name = _editView.novelNameTextfeild.text;//作品名称
+    _startModel.bookImage = _editView.novelImage.image;
+    for (int i = 1; i <= 4; i++) {
         NOVEditViewTableViewCell *cell = [_editView.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
         //cell.enumNumber == -1 表示该条信息未编辑
-        if (cell.enumNumber == -1 || !_editView.novelImage.image) {
+        if (cell.enumNumber == -1) {
             [self addAlertActionWithTitle:@"请完善作品信息"];
             return;
         }
-        model.bookImage = _editView.novelImage.image;
-        model.introduction = @"简介简介！！！";
         switch (i) {
-            case 0:
-                model.startType = cell.enumNumber;
-                break;
             case 1:
-                model.bookType = cell.enumNumber;
+                _startModel.startType = cell.enumNumber;
                 break;
             case 2:
-                model.renewPeople = cell.enumNumber;
+                _startModel.bookType = cell.enumNumber;
                 break;
             case 3:
-                model.viewerType = cell.enumNumber;
+                _startModel.renewPeople = cell.enumNumber;
+                break;
+            case 4:
+                _startModel.viewerType = cell.enumNumber;
                 break;
             default:
                 break;
         }
     }
-    self.novelTitleBlock(model);
+    self.novelTitleBlock(_startModel);
     [self.navigationController popViewControllerAnimated:NO];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -173,7 +158,11 @@
     static NSString *identifier = @"cell";
     NOVEditViewTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     cell.textLabel.text = cellTitleArray[indexPath.row];
-    cell.leftLabel.text = @"请选择 >";
+    if (indexPath.row == 0) {
+        cell.leftLabel.text = @"请填写";
+    } else {
+        cell.leftLabel.text = @"请选择 >";
+    }
     return cell;
 }
 
@@ -182,7 +171,7 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 4;
+    return 5;
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -200,19 +189,32 @@
     detailViewcontroller.viewtitle = cell.textLabel.text;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.row == 0) {
-        detailViewcontroller.viewtype = startType;
+        //编辑简介
+        NOVSummaryViewController *summaryController = [[NOVSummaryViewController alloc] init];
+        __block NOVEditViewController *weakSelf = self;
+        summaryController.summaryblock = ^(NSString *summaryString) {
+            NSLog(@"%@",summaryString); //书的简介
+            if (summaryString != NULL) {
+                weakSelf.startModel.introduction = summaryString;
+                cell.leftLabel.text = @"已填写";
+                cell.enumNumber = 1;
+            }
+        };
+        [self.navigationController pushViewController:summaryController animated:NO];
+        return;
     }else if (indexPath.row == 1) {
-        detailViewcontroller.viewtype = viewNovelType;
-    }else if (indexPath.row == 2){
-        detailViewcontroller.viewtype = renewPeople;
-    }else if(indexPath.row == 3){
-        detailViewcontroller.viewtype = viewerType;
+        detailViewcontroller.viewtype = startType;  //编辑发起类型
+    }else if (indexPath.row == 2) {
+        detailViewcontroller.viewtype = viewNovelType;  //编辑作品类型
+    }else if (indexPath.row == 3){
+        detailViewcontroller.viewtype = renewPeople; //续写权限
+    }else if(indexPath.row == 4){
+        detailViewcontroller.viewtype = viewerType; //观看权限
     }
-    
     detailViewcontroller.viewtitleBlock = ^(NSString *viewtitle,NSInteger enumNumber) {
         NSLog(@"%@",viewtitle);
         if (viewtitle) {
-            cell.leftLabel.text = [NSString stringWithFormat:@"%@ >",viewtitle];
+            cell.leftLabel.text = [NSString stringWithFormat:@"%@",viewtitle];
             cell.enumNumber = enumNumber;
         }
     };
@@ -226,6 +228,12 @@
     UIAlertAction *alert = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:nil];
     [alertControl addAction:alert];
     [self presentViewController:alertControl animated:YES completion:nil];
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 /*

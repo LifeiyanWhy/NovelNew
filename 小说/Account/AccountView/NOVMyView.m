@@ -46,6 +46,8 @@
     _tableView.tableHeaderView = _headview;
     _tableView.bounces = NO;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    _tableView.showsVerticalScrollIndicator = NO;
+    _tableView.showsHorizontalScrollIndicator = NO;
     
     _headview.nameLabel.text = @"用户名";
     [_headview.profileButton setTitle:@"简介:暂无介绍" forState:UIControlStateNormal];

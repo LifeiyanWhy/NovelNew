@@ -43,6 +43,7 @@
 //                                 @"readType":[NSNumber numberWithInteger:model.viewerType],
 //                                 @"writeType":[NSNumber numberWithInteger:model.renewPeople],
                                  };
+    NSLog(@"%@",parameters);
     [manager PUT:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         successBlock(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

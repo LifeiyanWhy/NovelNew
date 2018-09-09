@@ -113,14 +113,29 @@
 +(void)commentWithType:(NSInteger)typeNumber branchId:(NSInteger)branchId succeed:(succeedBlock _Nullable)succeedBlock fail:(failBlock _Nullable)failBlock{
     NOVDataModel *dataModel = [NOVDataModel shareInstance];
     NSString *token = [NSString stringWithFormat:@"Bearer %@",[dataModel getToken]];
-    NSString *url = [NSString stringWithFormat:@"http://47.95.207.40/branchv/user/%ld/vote",(long)branchId];
+    NSString *url = [NSString stringWithFormat:@"http://47.95.207.40/branch/user/%ld/vote",(long)branchId];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer= [AFHTTPRequestSerializer serializer];
+    manager.requestSerializer= [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
     NSDictionary *parameters = @{
                                  @"status":[NSNumber numberWithInteger:typeNumber]
                                  };
     [manager POST:url parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        succeedBlock(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failBlock(error);
+        NSLog(@"%@",error);
+    }];
+}
+
++(void)cancelCommentWithBranchId:(NSInteger)branchId succeed:(succeedBlock _Nullable)succeedBlock fail:(failBlock _Nullable)failBlock{
+    NOVDataModel *dataModel = [NOVDataModel shareInstance];
+    NSString *token = [NSString stringWithFormat:@"Bearer %@",[dataModel getToken]];
+    NSString *url = [NSString stringWithFormat:@"http://47.95.207.40/branch/user/%ld/vote",(long)branchId];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer= [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
+    [manager DELETE:url parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         succeedBlock(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         failBlock(error);

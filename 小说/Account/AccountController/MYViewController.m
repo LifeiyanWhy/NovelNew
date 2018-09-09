@@ -201,8 +201,14 @@
         UIAlertAction *sureAlert = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:nil];
         [alertControl addAction:sureAlert];
         [self presentViewController:alertControl animated:YES completion:nil];
-    }else if (indexPath.section == 0 && indexPath.row == 0){
+    }else if (indexPath.section == 0 && indexPath.row == 0){//我的收藏
         NOVMyCollectionViewController *myCollectionViewController = [[NOVMyCollectionViewController alloc] init];
+        myCollectionViewController.showChapterType = NOVShowChapterTypeCollection;
+        myCollectionViewController.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:myCollectionViewController animated:NO];
+    }else if (indexPath.section == 0 && indexPath.row == 2){
+        NOVMyCollectionViewController *myCollectionViewController = [[NOVMyCollectionViewController alloc] init];
+        myCollectionViewController.showChapterType = NOVShowChapterTypeLike;
         myCollectionViewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:myCollectionViewController animated:NO];
     }

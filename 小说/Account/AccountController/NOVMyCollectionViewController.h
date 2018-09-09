@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NOVMyCollectionViewController : UIViewController
+typedef NS_OPTIONS(NSInteger, NOVShowChapterType) {
+    NOVShowChapterTypeCollection = 1,
+    NOVShowChapterTypeLike
+};
 
+@interface NOVMyCollectionViewController : UIViewController
+@property(nonatomic,assign) NOVShowChapterType showChapterType;
 @end

@@ -34,9 +34,9 @@
         _novelImage.userInteractionEnabled = YES;
         [headView addSubview:_novelImage];
         
-        _changeImage = [[UITapGestureRecognizer alloc] init];
+        _changeImageTap = [[UITapGestureRecognizer alloc] init];
         //给image添加手势，用于点击更换图像
-        [_novelImage addGestureRecognizer:_changeImage];
+        [_novelImage addGestureRecognizer:_changeImageTap];
         
         imageView = [[UIImageView alloc] init];
         [self addSubview:imageView];

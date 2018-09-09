@@ -14,4 +14,5 @@ typedef void(^novelTitleBlock)(NOVStartBookModel *model);
 
 @interface NOVEditViewController : UIViewController
 @property(nonatomic,copy) novelTitleBlock novelTitleBlock;
+@property(nonatomic,strong) NOVStartBookModel *startModel;
 @end

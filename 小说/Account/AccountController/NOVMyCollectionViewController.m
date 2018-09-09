@@ -34,7 +34,11 @@
     self.view.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0];
     [self.view addSubview:self.tableView];
     
-    [self getMyCollection];
+    if (self.showChapterType == NOVShowChapterTypeCollection) {
+        [self getMyCollection];
+    }else{
+        
+    }
 }
 
 -(void)getMyCollection{

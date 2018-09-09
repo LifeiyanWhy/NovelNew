@@ -7,20 +7,7 @@
 //
 
 #import "NOVReadNovelViewController.h"
-#import "NOVReadNovelViewController+catalog.h"
-#import "NOVReadPageViewController.h"
-#import "NOVObatinBookContent.h"
-#import "NOVReadEditVIew.h"
-#import "NOVDataModel.h"
-#import "NOVChapterModel.h"
-#import "NOVbookMessage.h"
-#import "NOVRecordModel.h"
-#import "NOVReadEndView.h"
-#import "NOVWriteViewController.h"
-#import "NOVRenewModel.h"
-#import "NOVStartManager.h"
-#import "NOVNextChapterViewController.h"
-#import "NOVCatalogView.h"
+#import "NOVReadNovelHeadFile.h"
 
 @interface NOVReadNovelViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate,UIGestureRecognizerDelegate>
 @property(nonatomic,strong) UIPageViewController *pageViewController;
@@ -72,6 +59,7 @@
             [_pageViewController setViewControllers:@[[self readViewControllerWithChapter:_recordModel.chapterModel position:currentPage]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
             if (currentPage == _recordModel.pageCount -1) {
                 _readEndView.hidden = NO;
+                [self setEndView];
             }
         }
     }else{
@@ -94,8 +82,9 @@
         }
         if (currentPage == _recordModel.pageCount -1) {
             _readEndView.hidden = NO;
+            [self setEndView];
         }else{
-            _readEndView.hidden = YES;
+            self.readEndView.hidden = YES;
         }
     } fail:^(NSError *error) {
         NSLog(@"%@",error);
@@ -105,7 +94,8 @@
 //翻页后加载页面
 -(NOVReadPageViewController *)readViewControllerWithChapter:(NOVChapterModel *)chapter position:(NSInteger)position{
     _readViewController = [[NOVReadPageViewController alloc] init];
-    _readViewController.content = [_recordModel stringWithPage:position];
+    _readViewController.content = [_recordModel stringWithPage:position];//取出翻页后显示的片段
+    _readViewController.chapterModel = _recordModel.chapterModel;
     return _readViewController;
 }
 
@@ -118,7 +108,7 @@
     if (currentPage == 0) {
         return nil;
     }
-    _readEndView.hidden = YES;
+    self.readEndView.hidden = YES;
     _pageChangeType = NOVPageChangeTypeBefore;
     return [self readViewControllerWithChapter:_recordModel.chapterModel position:currentPage - 1];
 }
@@ -150,6 +140,7 @@
     }
     if (currentPage == _recordModel.pageCount - 1) {//最后一页
         _readEndView.hidden = NO;
+        [self setEndView];
     }
 }
 
@@ -316,10 +307,70 @@
         _readEndView = [[NOVReadEndView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 60, self.view.frame.size.width, 60)];
         _readEndView.hidden = YES;
         [_readEndView.renewButton addTarget:self action:@selector(renew) forControlEvents:UIControlEventTouchUpInside];
-        [_readEndView.likeButton addTarget:self action:@selector(like) forControlEvents:UIControlEventTouchUpInside];
-        [_readEndView.disLikeButton addTarget:self action:@selector(disLike) forControlEvents:UIControlEventTouchUpInside];
+        [_readEndView.likeButton addTarget:self action:@selector(commentLikeOrDislike:) forControlEvents:UIControlEventTouchUpInside];
+        [_readEndView.disLikeButton addTarget:self action:@selector(commentLikeOrDislike:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _readEndView;
+}
+
+-(void)setEndView{
+    _readEndView.renewNumber.text = [NSString stringWithFormat:@"%ld",(long)_bookMessage.branchNum];
+    _readEndView.likeNumber.text = [NSString stringWithFormat:@"%ld",(long)_recordModel.chapterModel.likeNum];
+    _readEndView.disLikeNumber.text = [NSString stringWithFormat:@"%ld",(long)_recordModel.chapterModel.dislikeNum];
+    NSLog(@"%@",_recordModel.chapterModel.voteStatus);
+    if (_recordModel.chapterModel.voteStatus != NULL) {
+        if ([_recordModel.chapterModel.voteStatus isEqualToNumber:[NSNumber numberWithInteger:0]]) {
+            _readEndView.likeButton.selected = YES;
+        }else if([_recordModel.chapterModel.voteStatus isEqualToNumber:[NSNumber numberWithInteger:1]]){
+            _readEndView.disLikeButton.selected = YES;
+        }
+    }else{
+        _readEndView.likeButton.selected = NO;
+        _readEndView.disLikeButton.selected = NO;
+    }
+}
+
+-(void)commentLikeOrDislike:(UIButton *)button{
+        NSInteger i = 0;
+        if ([button isEqual:_readEndView.likeButton]) {
+            i = 0;  //点赞
+        }else{
+            i = 1;  //反对
+        }
+        if (button.selected) {  //已点赞/已反对
+            //cancel点赞/反对
+            [NOVObatinBookContent cancelCommentWithBranchId:_recordModel.chapterModel.branchId succeed:^(id responseObject) {
+                if (i == 0) {
+                    _readEndView.likeNumber.text = [NSString stringWithFormat:@"%ld",(long)--_recordModel.chapterModel.likeNum];
+                }else if (i == 1){
+                    _readEndView.disLikeNumber.text = [NSString stringWithFormat:@"%ld",(long)--_recordModel.chapterModel.dislikeNum];
+                }
+                button.selected = NO;
+            } fail:^(NSError *error) {
+                NSString *string = [[NSString alloc] initWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] encoding:NSUTF8StringEncoding];
+                NSLog(@"注册:%@",string);
+                NSLog(@"%@",error);
+            }];
+        }else{
+            //点赞/反对
+            [NOVObatinBookContent commentWithType:i branchId:_recordModel.chapterModel.branchId succeed:^(id responseObject) {
+                button.selected = YES;
+                if (i == 0) {
+                    _readEndView.likeNumber.text = [NSString stringWithFormat:@"%ld",(long)++_recordModel.chapterModel.likeNum];
+                    if (_readEndView.disLikeButton.selected) {
+                        _readEndView.disLikeButton.selected = NO;
+                        _readEndView.disLikeNumber.text = [NSString stringWithFormat:@"%ld",(long)--_recordModel.chapterModel.dislikeNum];
+                    }
+                }else if (i == 1){
+                    _readEndView.disLikeNumber.text = [NSString stringWithFormat:@"%ld",(long)++_recordModel.chapterModel.dislikeNum];
+                    if (_readEndView.likeButton.selected) {
+                        _readEndView.likeButton.selected = NO;
+                        _readEndView.likeNumber.text = [NSString stringWithFormat:@"%ld",(long)--_recordModel.chapterModel.likeNum];;
+                    }
+                }
+            } fail:^(NSError *error) {
+            }];
+        }
 }
 
 //续写
@@ -343,12 +394,6 @@
         }];
     };
     [self.navigationController pushViewController:writeViewController animated:NO];
-}
-
--(void)like{
-}
-
--(void)disLike{
 }
 
 -(void)nextChapter{

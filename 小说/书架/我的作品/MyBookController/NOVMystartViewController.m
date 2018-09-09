@@ -47,12 +47,12 @@
     //获取当前用户的所有作品
     NOVStartManager *startManager = [[NOVStartManager alloc] init];
     [startManager getMyStartSuccess:^(id  _Nonnull responseObject) {
-//        NSLog(@"%@",responseObject[@"data"]);
         NSArray *array = responseObject[@"data"];
         for (int i = 0 ; i < array.count; i++) {
             [_novelArray addObject:[[NOVGetMyStartModel alloc] initWithDictionary:array[i] error:nil]];
         }
         _mystartView = [[NOVMystartView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) withViewNumber:_novelArray.count];
+        _mystartView.delegate = self;
         [self.view addSubview:_mystartView];
         _mystartView.delegate = self;
     } fail:^(NSError * _Nonnull error) {
@@ -64,6 +64,10 @@
     NOVBookSetView *bookSetView = [[NOVBookSetView alloc] initWithFrame:CGRectMake(width*(0.15+page), height*0.07, width*0.7, height*0.83)];
     [bookSetView updateWithModel:_novelArray[page]];
     return bookSetView;
+}
+
+-(void)changeBookImageWithView:(UIImageView *)imageView{
+    
 }
 
 -(void)touchEditButtonInSetView:(NOVBookSetView *)setView{    
@@ -81,7 +85,14 @@
             setView.editButton.userInteractionEnabled = NO;
             //标记为已发布
             setView.novelState = NovelStatePublished;
-            NSLog(@"===%@",responseObject);
+            NSLog(@"发布成功%@",responseObject);
+            if (model.bookImage) {
+                //根据bookId上传图片
+                model.bookId = (NSInteger)responseObject[@"data"][@"bookId"];
+                [startManager uploadBookImage:model.bookImage bookId:model.bookId success:^(id  _Nonnull responseObject) {
+                } fail:^(NSError * _Nonnull error) {
+                }];
+            }
         } fail:^(NSError * _Nonnull error) {
             NSLog(@"发布失败%@",error);
         }];
@@ -102,6 +113,7 @@
     __block NOVMystartViewController *weakSelf = self;
     NOVEditViewController *editViewController = [[NOVEditViewController alloc] init];
     editViewController.novelTitleBlock = ^(NOVStartBookModel *model) {
+        NSLog(@"%@",model.introduction);
         //在我的发起界面根据回调的数据添加作品（未发布）
         [weakSelf.mystartView addViewWithModel:model];
         //更新数据源

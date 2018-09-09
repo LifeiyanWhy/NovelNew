@@ -19,11 +19,7 @@ typedef  NS_OPTIONS(NSInteger, viewType){
 };
 
 @interface NOVDetailViewController : UIViewController
-
 @property(nonatomic,assign) viewType viewtype;
-
 @property(nonatomic,strong) NSString *viewtitle;
-
 @property(nonatomic,copy) viewTitleBlock viewtitleBlock;
-
 @end

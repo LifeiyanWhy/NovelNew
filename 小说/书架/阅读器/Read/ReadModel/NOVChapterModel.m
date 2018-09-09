@@ -54,6 +54,8 @@
     [aCoder encodeInteger:self.dislikeNum forKey:@"dislikeNum"];
     [aCoder encodeInteger:self.parentId forKey:@"parentId"];
     [aCoder encodeObject:self.content forKey:@"content"];
+    [aCoder encodeObject:self.voteStatus forKey:@"voteStatus"];
+    [aCoder encodeInteger:self.layer forKey:@"layer"];
 }
 
 -(instancetype)initWithCoder:(NSCoder *)aDecoder{
@@ -66,6 +68,8 @@
     self.dislikeNum = [aDecoder decodeIntegerForKey:@"dislikeNum"];
     self.parentId = [aDecoder decodeIntegerForKey:@"parentId"];
     self.content = [aDecoder decodeObjectForKey:@"content"];
+    self.voteStatus = [aDecoder decodeObjectForKey:@"voteStatus"];
+    self.layer = [aDecoder decodeIntegerForKey:@"layer"];
     return self;
 }
 

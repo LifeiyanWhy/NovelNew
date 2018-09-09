@@ -10,9 +10,10 @@
 #import "NOVReadNovelView.h"
 #import "NOVReadConfig.h"
 #import "NOVReadParser.h"
+#import "NOVChapterModel.h"
 
 @interface NOVReadPageViewController ()
-
+@property(nonatomic,strong) UILabel *chapterLabel;
 @end
 
 @implementation NOVReadPageViewController
@@ -22,6 +23,21 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bookBackground.png"]];
     [self.view addSubview:self.readNovelView];
+    
+    _chapterLabel = [[UILabel alloc] init];
+    [self.view addSubview:_chapterLabel];
+    
+    [_chapterLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(25);
+        make.height.mas_equalTo(20);
+        make.left.equalTo(self.view).offset(20);
+        make.right.equalTo(self.view).offset(-20);
+    }];
+    _chapterLabel.font = [UIFont systemFontOfSize:12];
+    _chapterLabel.textColor = [UIColor grayColor];
+    _chapterLabel.textAlignment = NSTextAlignmentLeft;
+    NSLog(@"%@",[NSString stringWithFormat:@"第%ld章 %@",(long)_chapterModel.layer,_chapterModel.title]);
+    _chapterLabel.text = [NSString stringWithFormat:@"第%ld章 %@",(long)_chapterModel.layer,_chapterModel.title];
 }
 
 -(NOVReadNovelView *)readNovelView{

@@ -62,5 +62,5 @@ typedef NS_OPTIONS(NSInteger, NOVType) {
 @property(nonatomic,assign) NOVJurisdiction renewPeople;
 //可观看人群
 @property(nonatomic,assign) NOVJurisdiction viewerType;
-
+@property(nonatomic,assign) NSInteger bookId;
 @end

@@ -26,4 +26,5 @@ typedef void(^failBlock)(NSError* error);
 +(void)cancelCollectionChapterWithBranchId:(NSInteger)branchId succeed:(succeedBlock _Nullable)succeedBlock fail:(failBlock _Nullable)failBlock;
 //评论,喜欢或不喜欢
 +(void)commentWithType:(NSInteger)typeNumber branchId:(NSInteger)branchId succeed:(succeedBlock _Nullable)succeedBlock fail:(failBlock _Nullable)failBlock;
++(void)cancelCommentWithBranchId:(NSInteger)branchId succeed:(succeedBlock _Nullable)succeedBlock fail:(failBlock _Nullable)failBlock;
 @end

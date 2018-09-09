@@ -9,13 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @class NOVReadNovelView;
+@class NOVChapterModel;
 
 @interface NOVReadPageViewController : UIViewController
-
-@property(nonatomic,strong) NSString *content;
+@property(nonatomic,strong) NOVChapterModel *chapterModel;
+@property(nonatomic,copy) NSString *content;
 @property(nonatomic,strong) NOVReadNovelView *readNovelView;
-
 -(void)setBookContent:(NSString *)content;
-
 @end
 

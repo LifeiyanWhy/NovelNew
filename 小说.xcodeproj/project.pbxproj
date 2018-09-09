@@ -208,6 +208,7 @@
 		C426096A211DAE89007F7DD5 /* NOVNextChapterTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVNextChapterTableViewCell.m; sourceTree = "<group>"; };
 		C426096C211DBDB6007F7DD5 /* NOVChapterListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVChapterListModel.h; sourceTree = "<group>"; };
 		C426096D211DBDB6007F7DD5 /* NOVChapterListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVChapterListModel.m; sourceTree = "<group>"; };
+		C4279C782144E8EA0088B366 /* NOVReadNovelHeadFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVReadNovelHeadFile.h; sourceTree = "<group>"; };
 		C437C5E1213D684100F34308 /* NOVMyCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVMyCollectionViewController.h; sourceTree = "<group>"; };
 		C437C5E2213D684100F34308 /* NOVMyCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVMyCollectionViewController.m; sourceTree = "<group>"; };
 		C437C5E4213D6D6100F34308 /* NOVAccountHeadFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVAccountHeadFile.h; sourceTree = "<group>"; };
@@ -815,6 +816,7 @@
 				C4D679DE208A318D00246CF8 /* NOVReadNovelViewController.m */,
 				C495B1352127D31E00949E6E /* NOVReadNovelViewController+catalog.h */,
 				C495B1362127D31E00949E6E /* NOVReadNovelViewController+catalog.m */,
+				C4279C782144E8EA0088B366 /* NOVReadNovelHeadFile.h */,
 			);
 			path = ReadController;
 			sourceTree = "<group>";
@@ -1805,6 +1807,7 @@
 			baseConfigurationReference = D3F08AF944DF9DE9832F29EB /* Pods-小说.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/小说/PrefixHeader.pch";
 				INFOPLIST_FILE = "小说/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1818,6 +1821,7 @@
 			baseConfigurationReference = 4252EFE227F3E92F2EDD8EC4 /* Pods-小说.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/小说/PrefixHeader.pch";
 				INFOPLIST_FILE = "小说/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

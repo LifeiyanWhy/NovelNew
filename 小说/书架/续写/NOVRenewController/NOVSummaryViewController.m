@@ -18,16 +18,29 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"返回read.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+    if (_summaryEdit == NOVSummaryEditSummary) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"返回read.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+        self.navigationItem.title = @"编辑简介";
+    } else {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"返回white.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+        self.navigationItem.title = @"作品简介";
+    }
+
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(save)];
-    self.navigationItem.rightBarButtonItem.tintColor = [UIColor grayColor];
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.00];
     
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} forState:UIControlStateNormal];
-    self.navigationItem.title = @"编辑简介";
-    [self.navigationController.navigationBar setTitleTextAttributes:
-     @{NSFontAttributeName:[UIFont systemFontOfSize:16],
-       NSForegroundColorAttributeName:[UIColor blackColor]}];
+    if (_summaryEdit == NOVSummaryEditSummary) {
+        self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+        [self.navigationController.navigationBar setTitleTextAttributes:
+         @{NSFontAttributeName:[UIFont systemFontOfSize:16],
+           NSForegroundColorAttributeName:[UIColor blackColor]}];
+    } else {
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        [self.navigationController.navigationBar setTitleTextAttributes:
+         @{NSFontAttributeName:[UIFont systemFontOfSize:16],
+           NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    }
     self.automaticallyAdjustsScrollViewInsets = false;
     [self.view addSubview:self.summaryView];
 }
@@ -48,18 +61,19 @@
 
 -(void)textViewDidChange:(UITextView *)textView{
     _summaryView.wordNumberLabel.text = [NSString stringWithFormat:@"%lu",(unsigned long)textView.text.length];
-    if (![_summaryView.textView.text  isEqual: @""]) {
-        self.navigationItem.rightBarButtonItem.tintColor = [UIColor grayColor];
-    }
     if (textView.text.length > 100) {
         _summaryView.wordNumberLabel.textColor = [UIColor orangeColor];
-        self.navigationItem.rightBarButtonItem.tintColor = [UIColor grayColor];
+        self.navigationItem.rightBarButtonItem.tintColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.00];
     }else if(textView.text.length == 0){
         _summaryView.wordNumberLabel.textColor = [UIColor blackColor];
-        self.navigationItem.rightBarButtonItem.tintColor = [UIColor grayColor];
+        self.navigationItem.rightBarButtonItem.tintColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.00];
     }else{
         _summaryView.wordNumberLabel.textColor = [UIColor blackColor];
-        self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
+        if (self.summaryEdit == NOVSummaryEditSummary) {
+            self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
+        } else {
+            self.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
+        }
     }
 }
 

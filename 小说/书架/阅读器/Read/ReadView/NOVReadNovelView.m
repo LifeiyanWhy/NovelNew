@@ -7,9 +7,9 @@
 //
 
 #import "NOVReadNovelView.h"
-#import "Masonry.h"
 
 @implementation NOVReadNovelView
+
 -(void)setFrameRef:(CTFrameRef)frameRef{
     if (_frameRef != frameRef) {
         if (_frameRef) {
