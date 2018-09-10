@@ -14,10 +14,8 @@
 -(instancetype)init{
     self = [super init];
     if (self) {
-        self.backgroundColor = [UIColor redColor];
         _hiddenKeyboard = [UIButton buttonWithType:UIButtonTypeCustom];
         [self addSubview:_hiddenKeyboard];
-        _hiddenKeyboard.backgroundColor = [UIColor blackColor];
     }
     return self;
 }
@@ -31,7 +29,7 @@
         make.right.equalTo(self).offset(-10);
         make.width.equalTo(self).multipliedBy(0.1f);
     }];
-    [_hiddenKeyboard setImage:[UIImage imageNamed:@"下拉.png"] forState:UIControlStateNormal];
+    [_hiddenKeyboard setImage:[UIImage imageNamed:@"Unfold.png"] forState:UIControlStateNormal];
 }
 
 -(void)drawRect:(CGRect)rect{

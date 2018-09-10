@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface NOVMystartViewController : UIViewController
-
+@property(nonatomic,strong) NSMutableArray *novelArray;
 @end

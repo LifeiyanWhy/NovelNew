@@ -14,7 +14,7 @@
 -(void)getMyStartSuccess:(successBlock _Nullable)successBlock fail:(failBlock _Nullable)failBlock{
     NOVDataModel *dataModel = [NOVDataModel shareInstance];
     NSString *token = [NSString stringWithFormat:@"Bearer %@",[dataModel getToken]];
-    NSString *url = @"http://47.95.207.40/branch/user/book";
+    NSString *url = [NSString stringWithFormat:@"http://47.95.207.40/branch/user/book?status=%@",@"PUBLISH"];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     [manager.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
@@ -83,6 +83,7 @@
                                  @"title":renewModel.title,
                                  @"content":renewModel.content,
                                  @"summary":renewModel.summary,
+                                 @"status":@"STATUS_ONLINE"
                                  };
     [manager PUT:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         successBlock(responseObject);

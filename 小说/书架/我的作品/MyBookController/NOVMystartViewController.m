@@ -9,15 +9,14 @@
 #import "NOVMystartViewController.h"
 #import "NOVMystartView.h"
 #import "NOVBookSetView.h"
-#import "NOVWriteViewController.h"
 #import "NOVEditViewController.h"
 #import "NOVStartManager.h"
 #import "NOVGetMyStartModel.h"
 #import "NOVStartBookModel.h"
+#import "NOVWriteViewController.h"
 
 @interface NOVMystartViewController ()<NOVMystartViewDategate>
 @property(nonatomic,strong) NOVMystartView *mystartView;
-@property(nonatomic,strong) NSMutableArray *novelArray;
 @end
 
 @implementation NOVMystartViewController
@@ -66,12 +65,8 @@
     return bookSetView;
 }
 
--(void)changeBookImageWithView:(UIImageView *)imageView{
-    
-}
-
--(void)touchEditButtonInSetView:(NOVBookSetView *)setView{    
-    NOVStartBookModel *model = _novelArray[setView.tag-1];
+-(void)touchEditButtonInSetView:(NOVBookSetView *)setView{
+    NOVStartBookModel *model = self.novelArray[setView.tag-1];
     NOVWriteViewController *writeViewController = [[NOVWriteViewController alloc] init];
     writeViewController.publishNovelBlock = ^(NSString *title, NSString *summary, NSString *content) {
         model.firstTitle = title;
@@ -98,6 +93,9 @@
         }];
     };
     [self.navigationController pushViewController:writeViewController animated:NO];
+}
+
+-(void)changeBookImageWithView:(UIImageView *)imageView{
 }
 
 -(void)back{

@@ -100,13 +100,11 @@
 }
 
 -(void)changeImageWithImage:(UIImage *)image{
-    NSLog(@"=====%@",image);
     [_myView.headview.myImageButton setImage:image forState:UIControlStateNormal];
     [NOVEditUserMessageManager uploadMyImageWithImage:image success:^(id  _Nullable responseObject) {
         NSLog(@"%@",responseObject[@"message"]);
     } failure:^(NSError * _Nonnull error) {
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
-        NSLog(@"相册=%@",dict);
+        NSLog(@"相册=%@",error);
     }];
 }
 

@@ -75,8 +75,9 @@
         //获取到token后更新沙盒中的数据
         [datamodel updateToken:dict[@"access_token"] refreshToken:dict[@"refresh_token"]];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSString *string = [[NSString alloc] initWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] encoding:NSUTF8StringEncoding];
-        NSLog(@"token:%@",string);
+        NSLog(@"%@",error);
+//        NSString *string = [[NSString alloc] initWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] encoding:NSUTF8StringEncoding];
+//        NSLog(@"token:%@",string);
     }];
 }
 

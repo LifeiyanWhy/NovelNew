@@ -48,7 +48,7 @@
         make.left.equalTo(self).offset(10);
         make.height.and.width.mas_equalTo(width*0.1);
     }];
-    _authorImageButton.backgroundColor = [UIColor redColor];
+    _authorImageButton.backgroundColor = [UIColor whiteColor];
     
     UIBezierPath * maskPath = [UIBezierPath bezierPathWithRoundedRect:_authorImageButton.bounds byRoundingCorners:UIRectCornerTopLeft|UIRectCornerTopRight|UIRectCornerBottomLeft|UIRectCornerBottomRight cornerRadii:CGSizeMake(width*0.1, width*0.1)];
     CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
@@ -127,7 +127,7 @@
 
 
 -(void)updateCellWithModel:(NOVMyCollectionModel *)model{
-    [_authorImageButton sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",UserImageUrl,model.author.icon]] forState:UIControlStateNormal];
+    [_authorImageButton sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",UserImageUrl,model.author.icon]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"笔组合.png"]];
     _titleLabel.text = model.title;
     _authorLabel.text = model.author.username;
     _summaryLabel.text = model.summary;

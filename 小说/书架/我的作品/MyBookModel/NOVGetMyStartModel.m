@@ -9,9 +9,7 @@
 #import "NOVGetMyStartModel.h"
 
 @implementation NOVGetMyStartModel
-
 @end
 
 @implementation NOVGetAllMyStartModel
-
 @end

@@ -128,6 +128,7 @@
 -(void)editSummary{
     NOVSummaryViewController *summaryController = [[NOVSummaryViewController alloc] init];
     __block NOVWriteViewController *weakSelf = self;
+    summaryController.summaryEdit = NOVSummaryEditSummary;
     summaryController.summaryblock = ^(NSString *summaryString) {
         NSLog(@"%@",summaryString);
         weakSelf.summaryString = summaryString;

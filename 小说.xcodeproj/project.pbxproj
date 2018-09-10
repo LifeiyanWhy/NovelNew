@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		27A8FA3A5F8791EBCAE63CAB /* libPods-小说.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7192F5A42A381EEF16586A5A /* libPods-小说.a */; };
+		C400445721465A0700B56505 /* Unfold.png in Resources */ = {isa = PBXBuildFile; fileRef = C400445621465A0700B56505 /* Unfold.png */; };
 		C4123FCE211D2832008BC675 /* NOVRegisterNextStepViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4123FCD211D2832008BC675 /* NOVRegisterNextStepViewController.m */; };
 		C4123FD1211D3F43008BC675 /* NOVRegisterNextStepView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4123FD0211D3F43008BC675 /* NOVRegisterNextStepView.m */; };
 		C414C70120A083B500244736 /* NOVMyView.m in Sources */ = {isa = PBXBuildFile; fileRef = C414C70020A083B500244736 /* NOVMyView.m */; };
@@ -192,6 +193,7 @@
 /* Begin PBXFileReference section */
 		4252EFE227F3E92F2EDD8EC4 /* Pods-小说.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-小说.release.xcconfig"; path = "Pods/Target Support Files/Pods-小说/Pods-小说.release.xcconfig"; sourceTree = "<group>"; };
 		7192F5A42A381EEF16586A5A /* libPods-小说.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-小说.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C400445621465A0700B56505 /* Unfold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Unfold.png; sourceTree = "<group>"; };
 		C4123FCC211D2832008BC675 /* NOVRegisterNextStepViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVRegisterNextStepViewController.h; sourceTree = "<group>"; };
 		C4123FCD211D2832008BC675 /* NOVRegisterNextStepViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVRegisterNextStepViewController.m; sourceTree = "<group>"; };
 		C4123FCF211D3F43008BC675 /* NOVRegisterNextStepView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVRegisterNextStepView.h; sourceTree = "<group>"; };
@@ -880,6 +882,7 @@
 		C45AB13A21156B1F00A28869 /* 图片 */ = {
 			isa = PBXGroup;
 			children = (
+				C400445621465A0700B56505 /* Unfold.png */,
 				C4960D822119D95C00132C43 /* 添加账号.png */,
 				C483B816211832BF009E48E4 /* 退出.png */,
 				C45AB1772115B1A500A28869 /* 圈.png */,
@@ -1486,6 +1489,7 @@
 				C45AB1742115A8FC00A28869 /* 对话框-气泡右.png in Resources */,
 				C483B817211832C0009E48E4 /* 退出.png in Resources */,
 				C45AB14D211570EA00A28869 /* 书架-2.png in Resources */,
+				C400445721465A0700B56505 /* Unfold.png in Resources */,
 				C45AB1792115B1A500A28869 /* 圈.png in Resources */,
 				C45AB16D2115A74B00A28869 /* 关注.png in Resources */,
 				C45AB15D2115A45F00A28869 /* 收藏.png in Resources */,

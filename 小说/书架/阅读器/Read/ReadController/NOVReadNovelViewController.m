@@ -391,6 +391,8 @@
             [weakSelf showAlertActionWithTitle:@"发布成功"];
         } fail:^(NSError * _Nonnull error) {
             NSLog(@"%@",error);
+            NSString *string = [[NSString alloc] initWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] encoding:NSUTF8StringEncoding];
+            NSLog(@"error:%@",string);
         }];
     };
     [self.navigationController pushViewController:writeViewController animated:NO];

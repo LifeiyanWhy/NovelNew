@@ -25,7 +25,6 @@
     [manger POST:url parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         successBlock(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"%@",error.userInfo[@"com.alamofire.serialization.response.error.response"]);
         failBlock(error);
     }];
 }

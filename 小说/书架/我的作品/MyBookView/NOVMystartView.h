@@ -12,10 +12,11 @@
 @class NOVStartBookModel;
 @class NOVGetMyStartModel;
 @protocol NOVMystartViewDategate <NSObject>
+@required
+-(NOVBookSetView *)viewForPape:(NSInteger)page WithWidth:(CGFloat)width Height:(CGFloat)height;
 @optional
 //点击编辑button时执行
 -(void)touchEditButtonInSetView:(NOVBookSetView *)setView;
--(NOVBookSetView *)viewForPape:(NSInteger)page WithWidth:(CGFloat)width Height:(CGFloat)height;
 -(void)changeBookImageWithView:(UIImageView *)imageView;
 @end
 
