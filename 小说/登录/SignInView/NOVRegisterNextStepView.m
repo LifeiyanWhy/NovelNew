@@ -26,6 +26,8 @@
         
         _registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self addSubview:_registerButton];
+        _registerButton.backgroundColor = [UIColor colorWithRed:0.92f green:0.65f blue:0.60f alpha:1.00f];
+        _registerButton.userInteractionEnabled = NO;
         
         _imageView = [[UIImageView alloc] init];
         [self addSubview:_imageView];
@@ -72,7 +74,7 @@
         make.width.equalTo(self).multipliedBy(0.7);
         make.centerX.equalTo(self);
     }];
-    _usernameTextField.placeholder = @"请输入用户名";
+    _usernameTextField.placeholder = @"请输入用户名(1～20个字符)";
     [self setTextField:_usernameTextField];
     
     [_passwardTextField mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -80,7 +82,7 @@
         make.height.equalTo(_usernameTextField);
         make.left.and.right.equalTo(_usernameTextField);
     }];
-    _passwardTextField.placeholder = @"请输入密码";
+    _passwardTextField.placeholder = @"请输入密码(6～20个字符)";
     _passwardTextField.secureTextEntry = YES;
     [self setTextField:_passwardTextField];
     
@@ -94,7 +96,6 @@
     _inputPswdAgain.secureTextEntry = YES;
     [self setTextField:_inputPswdAgain];
     
-    _registerButton.backgroundColor = [UIColor colorWithRed:0.15 green:0.65 blue:0.6 alpha:1.00];
     [_registerButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_inputPswdAgain.mas_bottom).offset(self.frame.size.height*0.05);
         make.height.equalTo(_usernameTextField).multipliedBy(0.9);
@@ -107,7 +108,7 @@
 
 - (void)setTextField:(UITextField *)textField{
     textField.backgroundColor = [UIColor clearColor];
-    [textField setFont:[UIFont systemFontOfSize:15]];
+    [textField setFont:[UIFont systemFontOfSize:13]];
 }
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{

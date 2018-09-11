@@ -22,6 +22,22 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.registerNextView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardHidden:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)keyboardShow:(NSNotification *)notification{
+    CGRect frame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];//键盘位置
+    CGRect selfViewFrame = self.view.frame;
+    CGFloat inputBottom = self.registerNextView.registerButton.frame.origin.y + self.registerNextView.registerButton.frame.size.height;
+    if (inputBottom + 5 > frame.origin.y) {
+        CGFloat distance = inputBottom + 5 - frame.origin.y;
+        self.registerNextView.frame = CGRectMake(selfViewFrame.origin.x, selfViewFrame.origin.y - distance, selfViewFrame.size.width, selfViewFrame.size.height);
+    }
+}
+- (void)keyboardHidden:(NSNotification *)notification{
+    self.registerNextView.frame = self.view.frame;
 }
 
 -(NOVRegisterNextStepView *)registerNextView{
@@ -35,6 +51,35 @@
         [_registerNextView.quitButton addTarget:self action:@selector(quit) forControlEvents:UIControlEventTouchUpInside];
     }
     return _registerNextView;
+}
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSString *text = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    NSString *username;
+    NSString *passward;
+    NSString *passwardAgain;
+    if ([textField isEqual:self.registerNextView.usernameTextField]) {
+        username = text;
+        passward = self.registerNextView.passwardTextField.text;
+        passwardAgain = self.registerNextView.inputPswdAgain.text;
+    }else if ([textField isEqual:self.registerNextView.passwardTextField]){
+        username = self.registerNextView.usernameTextField.text;
+        passward = text;
+        passwardAgain = self.registerNextView.inputPswdAgain.text;
+    }else{
+        username = self.registerNextView.usernameTextField.text;
+        passward = self.registerNextView.passwardTextField.text;
+        passwardAgain = text;
+    }
+    
+    if (username.length > 0 && username.length <= 20 && passward.length >= 6 && passward.length <= 20 && passwardAgain.length >= 6 && passwardAgain.length <= 20) {
+        self.registerNextView.registerButton.backgroundColor = SystemColor;
+        self.registerNextView.registerButton.userInteractionEnabled = YES;
+    }else{
+        self.registerNextView.registerButton.backgroundColor = [UIColor colorWithRed:0.92f green:0.65f blue:0.60f alpha:1.00f];
+        self.registerNextView.registerButton.userInteractionEnabled = NO;
+    }
+    return YES;
 }
 
 -(void)doRegister{

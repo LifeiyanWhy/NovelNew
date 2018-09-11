@@ -21,7 +21,24 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.view addSubview:self.registerView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardHidden:) name:UIKeyboardWillHideNotification object:nil];
 }
+
+- (void)keyboardShow:(NSNotification *)notification{
+    CGRect frame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];//键盘位置
+    CGRect selfViewFrame = self.view.frame;
+    CGFloat inputBottom = self.registerView.nextStepButton.frame.origin.y + self.registerView.nextStepButton.frame.size.height;
+    if (inputBottom + 5 > frame.origin.y) {
+        CGFloat distance = inputBottom + 5 - frame.origin.y;
+        self.registerView.frame = CGRectMake(selfViewFrame.origin.x, selfViewFrame.origin.y - distance, selfViewFrame.size.width, selfViewFrame.size.height);
+    }
+}
+- (void)keyboardHidden:(NSNotification *)notification{
+    self.registerView.frame = self.view.frame;
+}
+
 -(NOVRegisterView *)registerView{
     if (!_registerView) {
         _registerView = [[NOVRegisterView alloc] initWithFrame:self.view.frame];
@@ -36,28 +53,56 @@
 }
 
 -(void)obtainVerify{
-    if (_registerView.accountTextField.text.length != 11) {
-        [self showAlertActionWithTitle:@"手机号为十一位数字"];
+    NSString *pattern = @"^1+[3578]+\\d{9}";
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pattern];
+    if (!([pred evaluateWithObject:_registerView.accountTextField.text] && _registerView.accountTextField.text.length == 11)) {
+        [self showAlertActionWithTitle:@"手机号格式错误"];
         return;
     }
     NOVSignModel *model = [[NOVSignModel alloc] init];
+    //获取验证码
     [model getPhoneVerityWithPhoneNum:_registerView.accountTextField.text success:^(id  _Nullable responseObject) {
         NSLog(@"%@",responseObject);
+        NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSLog(@"%@",string);
         [_registerView.verifyeButton setTitle:@"60s后重发" forState:UIControlStateNormal];
         time = 60;
         _registerView.verifyeButton.userInteractionEnabled = NO;
         [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(verityTime:) userInfo:nil repeats:YES];
     } failure:^(NSError * _Nonnull error) {
         [self showAlertActionWithTitle:@"发送失败，请检查手机号"];
-        NSLog(@"%@",error);
-        NSString *string = [[NSString alloc] initWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] encoding:NSUTF8StringEncoding];
-        NSLog(@"注册:%@",string);
+        NSLog(@"注册:%@",error);
     }];
+}
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSString *pattern = @"^1+[3578]+\\d{9}";
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pattern];
+    NSString *text = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    NSString *accountText;
+    NSString *verity;
+    if ([textField isEqual:_registerView.accountTextField]) {
+        accountText = text;
+        verity = _registerView.verifyTextfield.text;
+    } else {
+        accountText = _registerView.accountTextField.text;
+        verity = text;
+    }
+    NSLog(@"%@",accountText);
+    NSLog(@"%@",verity);
+    if (verity.length > 0 && [pred evaluateWithObject:accountText] && accountText.length == 11) {
+        _registerView.nextStepButton.backgroundColor = SystemColor;
+        _registerView.nextStepButton.userInteractionEnabled = YES;
+    }else{
+        _registerView.nextStepButton.backgroundColor = [UIColor colorWithRed:0.92f green:0.65f blue:0.60f alpha:1.00f];;
+        _registerView.nextStepButton.userInteractionEnabled = NO;
+    }
+    return YES;
 }
 
 -(void)verityTime:(NSTimer *)timer{
     time--;
-    [_registerView.verifyeButton setTitle:[NSString stringWithFormat:@"%lds后重新发送",(long)time] forState:UIControlStateNormal];
+    [_registerView.verifyeButton setTitle:[NSString stringWithFormat:@"%lds后重发",(long)time] forState:UIControlStateNormal];
     if (time == 0) {
         [timer invalidate];
         [_registerView.verifyeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
@@ -66,12 +111,14 @@
 }
 
 -(void)nextStep{
-    //检测验证码
-    
-    NOVRegisterNextStepViewController *registerViewController = [[NOVRegisterNextStepViewController alloc] init];
-    registerViewController.verityCode = _registerView.verifyTextfield.text;
-    registerViewController.account = _registerView.accountTextField.text;
-    [self.navigationController pushViewController:registerViewController animated:NO];
+//    if () {
+        //检测验证码
+        NOVRegisterNextStepViewController *registerViewController = [[NOVRegisterNextStepViewController alloc] init];
+        registerViewController.verityCode = _registerView.verifyTextfield.text;
+        registerViewController.account = _registerView.accountTextField.text;
+        [self.navigationController pushViewController:registerViewController animated:NO];
+//    }
+
 }
 
 -(void)quit{

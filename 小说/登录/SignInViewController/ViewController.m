@@ -12,6 +12,8 @@
 #import "NOVRegisterViewController.h"
 #import "NOVDataModel.h"
 #import "NOVUserLoginMessageModel.h"
+#import "ViewController+keyboardChange.h"
+
 @interface ViewController ()<UITextFieldDelegate>
 @end
 
@@ -22,7 +24,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     self.navigationController.navigationBar.hidden = YES;
     [self.view addSubview:self.signView];
-    
+ /*
     NOVUserLoginMessageModel *model = [NOVDataModel getLastUserMessage];
     if (model) {
         if (model.isLogin) {//当前用户是登录状态
@@ -38,7 +40,10 @@
             }
         }
     }
+  */
     [self getVerity];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardHidden:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 -(void)getVerity{
@@ -51,14 +56,6 @@
 }
 
 - (void)login{
-    if (_signView.accountTextField.text.length <= 0 || _signView.passwardTextField.text.length <= 0) {
-        [self showAlertActionWithTitle:@"账号密码不能为空"];
-        return;
-    }
-    if (_signView.verityTextField.text.length <= 0) {
-        [self showAlertActionWithTitle:@"请输入验证码!!!"];
-        return;
-    }
     NOVSignModel *loginModel = [[NOVSignModel alloc] init];
     [loginModel loginWithAccount:_signView.accountTextField.text  password:_signView.passwardTextField.text verity:_signView.verityTextField.text success:^(id  _Nullable responseObject) {
         NSLog(@"%@",responseObject);

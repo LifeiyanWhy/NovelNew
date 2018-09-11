@@ -9,25 +9,14 @@
 #import <UIKit/UIKit.h>
 
 @interface NOVSigninView : UIView
-
 @property(nonatomic,strong) UITextField *accountTextField;
-
 @property(nonatomic,strong) UITextField *passwardTextField;
-
 @property(nonatomic,strong) UITextField *verityTextField;
-
 @property(nonatomic,strong) UIButton *verityButton;
-
 @property(nonatomic,strong) UIButton *signinButton;
-
 @property(nonatomic,strong) UIButton *signupButton;
-
 @property(nonatomic,strong) UIButton *findPasswradButton;
-
 @property(nonatomic,strong) UIImageView *imageView;
-
 @property(nonatomic,strong) UILabel *label;
-
 @property(nonatomic,strong) UIButton *showPassword;
-
 @end

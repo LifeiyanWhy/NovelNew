@@ -20,6 +20,8 @@ typedef void(^failBlock)(NSError * _Nonnull error);
 -(void)getVeritysuccess:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
 //获取短信验证码
 -(void)getPhoneVerityWithPhoneNum:(NSString *_Nonnull)phoneNum success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
+//验证验证码
+//-(void)validateVerityWithPhoneNum vali
 //获取关注列表
 +(void)obtainFollowList;
 +(void)obtainCollectionList;

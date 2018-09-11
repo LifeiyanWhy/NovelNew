@@ -25,6 +25,8 @@
         
         _nextStepButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self addSubview:_nextStepButton];
+        _nextStepButton.backgroundColor = [UIColor colorWithRed:0.92f green:0.65f blue:0.60f alpha:1.00f];
+        _nextStepButton.userInteractionEnabled = NO;
         
         _quit = [UIButton buttonWithType:UIButtonTypeCustom];
         [self addSubview:_quit];
@@ -74,15 +76,16 @@
     }];
     _accountTextField.placeholder = @"请输入手机号";
     [self setTextField:_accountTextField];
+    _accountTextField.keyboardType = UIKeyboardTypeNamePhonePad;
     
     [_verifyeButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(_accountTextField);
         make.height.equalTo(_accountTextField).multipliedBy(0.8);
         make.right.equalTo(self).offset(self.frame.size.width*0.15*-1);
-        make.width.equalTo(self).multipliedBy(0.2);
+        make.width.equalTo(self).multipliedBy(0.25);
     }];
     [_verifyeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
-    [_verifyeButton.titleLabel setFont:[UIFont systemFontOfSize:11]];
+    [_verifyeButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
     [_verifyeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     _verifyeButton.titleLabel.textAlignment = NSTextAlignmentRight;
     _verifyeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
@@ -97,7 +100,6 @@
     _verifyTextfield.placeholder = @"请输入验证码";
     [self setTextField:_verifyTextfield];
 
-    _nextStepButton.backgroundColor = [UIColor colorWithRed:0.15 green:0.65 blue:0.6 alpha:1.00];
     [_nextStepButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.verifyTextfield.mas_bottom).offset(self.frame.size.height*0.025);
         make.height.equalTo(_accountTextField);

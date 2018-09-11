@@ -152,6 +152,7 @@
 		C4D81DAF208C35560014431A /* NOVReadPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D81DAE208C35560014431A /* NOVReadPageViewController.m */; };
 		C4D81DB5208C7EAF0014431A /* NOVWriteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D81DB4208C7EAF0014431A /* NOVWriteViewController.m */; };
 		C4D81DB8208C7ED60014431A /* NOVWriteView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D81DB7208C7ED60014431A /* NOVWriteView.m */; };
+		C4D8797D2147C5DB00D9494B /* ViewController+keyboardChange.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D8797C2147C5DB00D9494B /* ViewController+keyboardChange.m */; };
 		C4D9EBA7207FDC2100365B10 /* NOVFindBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D9EBA6207FDC2100365B10 /* NOVFindBottomView.m */; };
 		C4D9EBAA207FE0F900365B10 /* NOVFindTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D9EBA9207FE0F900365B10 /* NOVFindTableViewCell.m */; };
 		C4DB8D8520AAD902005BD0C4 /* NOVDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DB8D8420AAD902005BD0C4 /* NOVDetailTableViewCell.m */; };
@@ -442,6 +443,8 @@
 		C4D81DB4208C7EAF0014431A /* NOVWriteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVWriteViewController.m; sourceTree = "<group>"; };
 		C4D81DB6208C7ED60014431A /* NOVWriteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVWriteView.h; sourceTree = "<group>"; };
 		C4D81DB7208C7ED60014431A /* NOVWriteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVWriteView.m; sourceTree = "<group>"; };
+		C4D8797B2147C5DB00D9494B /* ViewController+keyboardChange.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ViewController+keyboardChange.h"; sourceTree = "<group>"; };
+		C4D8797C2147C5DB00D9494B /* ViewController+keyboardChange.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ViewController+keyboardChange.m"; sourceTree = "<group>"; };
 		C4D9EBA5207FDC2100365B10 /* NOVFindBottomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVFindBottomView.h; sourceTree = "<group>"; };
 		C4D9EBA6207FDC2100365B10 /* NOVFindBottomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVFindBottomView.m; sourceTree = "<group>"; };
 		C4D9EBA8207FE0F900365B10 /* NOVFindTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVFindTableViewCell.h; sourceTree = "<group>"; };
@@ -871,6 +874,8 @@
 			children = (
 				C4C8903C206BF5CD00BED312 /* ViewController.h */,
 				C4C8903D206BF5CD00BED312 /* ViewController.m */,
+				C4D8797B2147C5DB00D9494B /* ViewController+keyboardChange.h */,
+				C4D8797C2147C5DB00D9494B /* ViewController+keyboardChange.m */,
 				C4260966211D422F007F7DD5 /* NOVRegisterViewController.h */,
 				C4260967211D422F007F7DD5 /* NOVRegisterViewController.m */,
 				C4123FCC211D2832008BC675 /* NOVRegisterNextStepViewController.h */,
@@ -1604,6 +1609,7 @@
 				C495B1312127A57500949E6E /* NOVCatalogTableViewCell.m in Sources */,
 				C492AC76210AA2F5003E0CA3 /* NOVDataBase.m in Sources */,
 				C4C8C60B21252518003A1B95 /* NOVMyRenewTableViewCell.m in Sources */,
+				C4D8797D2147C5DB00D9494B /* ViewController+keyboardChange.m in Sources */,
 				C442C99A20A1BE7D00F742E6 /* NOVMyheadView.m in Sources */,
 				C4C6789E214122AD009FE2E4 /* NOVSummaryViewController.m in Sources */,
 				C49F53A22122F1BB00933027 /* NOVEditUserMessageManager.m in Sources */,
