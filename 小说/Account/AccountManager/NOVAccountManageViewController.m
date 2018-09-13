@@ -12,6 +12,8 @@
 #import "ViewController.h"
 #import "NOVUserLoginMessageModel.h"
 #import "NOVDataModel.h"
+#import "MYViewController.h"
+#import "AppDelegate.h"
 @interface NOVAccountManageViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,strong) NOVAccountManageView *accountManageView;
 @end
@@ -47,8 +49,13 @@
         NOVUserLoginMessageModel *model = [NOVDataModel getLastUserMessage];
         model.isLogin = NO;
         [NOVDataModel updateCurrentUserWithLoginMessage:model];
-        ViewController *viewController = [[ViewController alloc] init];
-        [self presentViewController:viewController animated:NO completion:nil];
+        ViewController *loginController = [[ViewController alloc] init];
+        loginController.account = model.account;
+        loginController.passward = model.password;
+        [self.navigationController popToViewController:self.navigationController.viewControllers[0] animated:NO];
+        
+        AppDelegate *myAppDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        myAppDelegate.window.rootViewController = loginController;
     }];
     [alertControl addAction:cancelAction];
     [alertControl addAction:sureAction];
@@ -61,6 +68,7 @@
         cell.textLabel.text = @"退出当前账号";
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.textLabel.textColor = [UIColor redColor];
+        cell.textLabel.font = [UIFont systemFontOfSize:16];
         return cell;
     }
     NOVAccountManageCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
@@ -76,9 +84,9 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
-        return 70;
+        return ScreenHeight*0.1;
     }
-    return 50;
+    return ScreenHeight*0.08;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -86,7 +94,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 15;
+    return 5;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{

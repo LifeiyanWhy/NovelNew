@@ -304,7 +304,7 @@
 
 -(NOVReadEndView *)readEndView{
     if (!_readEndView) {
-        _readEndView = [[NOVReadEndView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 60, self.view.frame.size.width, 60)];
+        _readEndView = [[NOVReadEndView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 49, self.view.frame.size.width, 49)];
         _readEndView.hidden = YES;
         [_readEndView.renewButton addTarget:self action:@selector(renew) forControlEvents:UIControlEventTouchUpInside];
         [_readEndView.likeButton addTarget:self action:@selector(commentLikeOrDislike:) forControlEvents:UIControlEventTouchUpInside];
@@ -402,20 +402,25 @@
     NOVObatinBookContent *obtainBookContent = [[NOVObatinBookContent alloc] init];
     //获取下一章列表
     [obtainBookContent getRenewListWithBookId:_bookMessage.bookId ParentId:_recordModel.chapterModel.branchId succeed:^(id responseObject) {
-        //获取成功
-        [_pageViewController setViewControllers:@[[[NOVReadPageViewController alloc] init]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
-        NOVNextChapterViewController *nextChapterViewControler = [[NOVNextChapterViewController alloc] init];
-        nextChapterViewControler.parentId = _recordModel.chapterModel.branchId;
-        nextChapterViewControler.bookMessage = _bookMessage;
-        __block NOVReadNovelViewController *weakSelf = self;
-        nextChapterViewControler.chapterIdBlock = ^(NSInteger chapter) {
-            weakSelf.readEndView.hidden = YES;
-            weakSelf.readEditView.hidden = YES;
-            _readFromCatalog = YES;
-            obatinBookContent = [[NOVObatinBookContent alloc] init];
-            [weakSelf obtainChapterContentWithBranchId:chapter];
-        };
-        [self.navigationController pushViewController:nextChapterViewControler animated:NO];
+        NSLog(@"%@",responseObject);
+        if ([responseObject[@"data"] count] > 0) {
+            //获取成功
+            [_pageViewController setViewControllers:@[[[NOVReadPageViewController alloc] init]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+            NOVNextChapterViewController *nextChapterViewControler = [[NOVNextChapterViewController alloc] init];
+            nextChapterViewControler.parentId = _recordModel.chapterModel.branchId;
+            nextChapterViewControler.bookMessage = _bookMessage;
+            __block NOVReadNovelViewController *weakSelf = self;
+            nextChapterViewControler.chapterIdBlock = ^(NSInteger chapter) {
+                weakSelf.readEndView.hidden = YES;
+                weakSelf.readEditView.hidden = YES;
+                _readFromCatalog = YES;
+                obatinBookContent = [[NOVObatinBookContent alloc] init];
+                [weakSelf obtainChapterContentWithBranchId:chapter];
+            };
+            [self.navigationController pushViewController:nextChapterViewControler animated:NO];
+        }else{
+            [self showAlertActionWithTitle:@"本章暂无续写内容"];
+        }
     } fail:^(NSError *error) {
         NSLog(@"未获取到作品信息");
         [self showAlertActionWithTitle:@"本章暂无续写内容"];

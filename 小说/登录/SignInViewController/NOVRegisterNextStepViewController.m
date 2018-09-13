@@ -46,8 +46,7 @@
         _registerNextView.usernameTextField.delegate = self;
         _registerNextView.passwardTextField.delegate = self;
         _registerNextView.inputPswdAgain.delegate = self;
-        [_registerNextView.registerButton addTarget:self action:@selector(
-         doRegister) forControlEvents:UIControlEventTouchUpInside];
+        [_registerNextView.registerButton addTarget:self action:@selector(doRegister) forControlEvents:UIControlEventTouchUpInside];
         [_registerNextView.quitButton addTarget:self action:@selector(quit) forControlEvents:UIControlEventTouchUpInside];
     }
     return _registerNextView;
@@ -83,29 +82,13 @@
 }
 
 -(void)doRegister{
-    if (_registerNextView.usernameTextField.text.length < 2 || _registerNextView.usernameTextField.text.length > 20) {
-        [self showAlertActionWithTitle:@"用户名为2～20位"];
-        return;
-    }else if (_registerNextView.passwardTextField.text.length < 6 || _registerNextView.passwardTextField.text.length > 30){
-        [self showAlertActionWithTitle:@"密码为6～30位"];
-        return;
-    }else if (![_registerNextView.passwardTextField.text isEqualToString:_registerNextView.inputPswdAgain.text]){
-        [self showAlertActionWithTitle:@"输入密码不一致"];
-        return;
-    }
-        //输入成功之后注册
-        NOVSignModel *signupModel = [[NOVSignModel alloc] init];
-        [signupModel signUpWithAccount:_account username:_registerNextView.usernameTextField.text passward:_registerNextView.passwardTextField.text verity:_verityCode success:^(id  _Nullable responseObject) {
-            if ([[NSString stringWithFormat:@"%@", responseObject[@"status"]] isEqualToString:@"0"]) {
-                //0 注册成功返回登录界面
-                [self showAlertActionWithTitle:@"注册成功，请登录！"];
-    
-            }
-        } failure:^(NSError * _Nonnull error) {
-        }];
-        ViewController *viewController = [[ViewController alloc] init];
-        viewController.signView.accountTextField.text = _account;
-        [self.navigationController pushViewController:viewController animated:NO];
+    //输入成功之后注册
+    [NOVSignModel signUpWithAccount:_account username:_registerNextView.usernameTextField.text passward:_registerNextView.passwardTextField.text key:self.key success:^(id  _Nullable responseObject) {
+        NSLog(@"%@",responseObject);
+        [self showAlertActionWithTitle:@"恭喜您,注册成功!" leftMessage:@"重新登录" rightMessage:@"直接进入"];
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+    }];
 }
 
 -(void)quit{
@@ -113,10 +96,21 @@
     [self.navigationController pushViewController:viewController animated:NO];
 }
 
-- (void)showAlertActionWithTitle:(NSString *)title{
+- (void)showAlertActionWithTitle:(NSString *)title leftMessage:(NSString *)leftMessage rightMessage:(NSString *)rightMessage{
     UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *alert = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:nil];
-    [alertControl addAction:alert];
+    UIAlertAction *alertLeft = [UIAlertAction actionWithTitle:leftMessage style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        //重新登录(跳转回登录界面)
+        ViewController *viewController = [[ViewController alloc] init];
+        viewController.account = _account;
+        viewController.passward = _registerNextView.passwardTextField.text;
+        [self.navigationController pushViewController:viewController animated:NO];
+    }];
+    [alertControl addAction:alertLeft];
+    UIAlertAction *alertRight = [UIAlertAction actionWithTitle:rightMessage style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+         //直接登录
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"signinSucceed" object:nil];
+    }];
+    [alertControl addAction:alertRight];
     [self presentViewController:alertControl animated:YES completion:nil];
 }
 

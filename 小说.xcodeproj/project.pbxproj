@@ -171,6 +171,7 @@
 		C4EA54DB20E22B2200086979 /* NOVbookMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA54DA20E22B2200086979 /* NOVbookMessage.m */; };
 		C4EA54DE20E2358200086979 /* NOVObtainBookList.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA54DD20E2358200086979 /* NOVObtainBookList.m */; };
 		C4EC833E212113BF007DF270 /* NOVNextChapterCellHeightModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EC833D212113BF007DF270 /* NOVNextChapterCellHeightModel.m */; };
+		C4EE2867214A5CD7007BE81E /* UIFont+fontAdjust.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EE2866214A5CD7007BE81E /* UIFont+fontAdjust.m */; };
 		C4F2D7D8207BDA170005E889 /* NOVBookTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F2D7D7207BDA170005E889 /* NOVBookTableViewCell.m */; };
 /* End PBXBuildFile section */
 
@@ -481,6 +482,8 @@
 		C4EA54DD20E2358200086979 /* NOVObtainBookList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVObtainBookList.m; sourceTree = "<group>"; };
 		C4EC833C212113BF007DF270 /* NOVNextChapterCellHeightModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVNextChapterCellHeightModel.h; sourceTree = "<group>"; };
 		C4EC833D212113BF007DF270 /* NOVNextChapterCellHeightModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVNextChapterCellHeightModel.m; sourceTree = "<group>"; };
+		C4EE2865214A5CD7007BE81E /* UIFont+fontAdjust.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIFont+fontAdjust.h"; sourceTree = "<group>"; };
+		C4EE2866214A5CD7007BE81E /* UIFont+fontAdjust.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIFont+fontAdjust.m"; sourceTree = "<group>"; };
 		C4F2D7D6207BDA170005E889 /* NOVBookTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVBookTableViewCell.h; sourceTree = "<group>"; };
 		C4F2D7D7207BDA170005E889 /* NOVBookTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVBookTableViewCell.m; sourceTree = "<group>"; };
 		D3F08AF944DF9DE9832F29EB /* Pods-小说.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-小说.debug.xcconfig"; path = "Pods/Target Support Files/Pods-小说/Pods-小说.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1209,6 +1212,8 @@
 				C4E8994C20DBD28B00E65AF8 /* NOVKeyboardView.m */,
 				C4B7CFE32103272C00C2F9BE /* NOVNetworkAnomalyView.h */,
 				C4B7CFE42103272C00C2F9BE /* NOVNetworkAnomalyView.m */,
+				C4EE2865214A5CD7007BE81E /* UIFont+fontAdjust.h */,
+				C4EE2866214A5CD7007BE81E /* UIFont+fontAdjust.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1653,6 +1658,7 @@
 				C4C89038206BF5CD00BED312 /* main.m in Sources */,
 				C4D9EBAA207FE0F900365B10 /* NOVFindTableViewCell.m in Sources */,
 				C4960D6C2119886C00132C43 /* NOVSecurityCenterViewController.m in Sources */,
+				C4EE2867214A5CD7007BE81E /* UIFont+fontAdjust.m in Sources */,
 				C4C343AB211A9A9900C4C8ED /* NOVReadEndView.m in Sources */,
 				C4A49DD620C2A41D00FBEE87 /* NOVSelectPhotoManager.m in Sources */,
 				C495B1342127A59600949E6E /* NOVCatalogModel.m in Sources */,

@@ -10,5 +10,7 @@
 @class NOVSigninView;
 @interface ViewController : UIViewController
 @property(nonatomic,strong) NOVSigninView *signView;
+@property(nonatomic,copy) NSString *account;
+@property(nonatomic,copy) NSString *passward;
 @end
 

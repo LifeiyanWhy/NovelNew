@@ -12,6 +12,7 @@
 #import "MYViewController.h"
 #import "NOVMessageViewController.h"
 #import "ViewController.h"
+//#import "NOVSigninView.h"
 
 @interface AppDelegate ()
 
@@ -19,6 +20,7 @@
 
 @implementation AppDelegate{
     UITabBarController *tabBar;
+    UINavigationController *findNavigation;
 }
 
 
@@ -26,7 +28,7 @@
     // Override point for customization after application launch.
     
     FindViewController *findViewController = [[FindViewController alloc] init];
-    UINavigationController *findNavigation = [[UINavigationController alloc] initWithRootViewController:findViewController];
+    findNavigation = [[UINavigationController alloc] initWithRootViewController:findViewController];
     findNavigation.tabBarItem.image = [[UIImage imageNamed:@"发现.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     findNavigation.tabBarItem.selectedImage = [[UIImage imageNamed:@"发现-2.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     findNavigation.tabBarItem.title = @"发现";
@@ -66,12 +68,19 @@
     ViewController *viewController = [[ViewController alloc] init];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
     self.window.rootViewController = nav;
+    
+    //监测是否登录成功
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(signsucceed) name:@"signinSucceed" object:nil];
     return YES;
 }
 
 - (void)signsucceed{
+    tabBar.selectedViewController = findNavigation;
     self.window.rootViewController = tabBar;
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

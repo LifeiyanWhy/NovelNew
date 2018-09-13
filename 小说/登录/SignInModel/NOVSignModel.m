@@ -49,6 +49,20 @@
     //    NSLog(@"=====HTTPRequestHeaders:%@",manager.requestSerializer.HTTPRequestHeaders);
 }
 
++(void)validateVerityWithPhoneNumber:(NSString *_Nonnull)phoneNumber validateCode:(NSString *_Nonnull)validateCode success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock{
+    NSString *identifierForVendor = [[UIDevice currentDevice].identifierForVendor UUIDString];
+    NSString *url = [NSString stringWithFormat:@"http://47.95.207.40/branch/code/sms/verificate?phoneNum=%@",phoneNumber];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    [manager.requestSerializer setValue:identifierForVendor forHTTPHeaderField:@"deviceId"];
+    [manager.requestSerializer setValue:validateCode forHTTPHeaderField:@"validateCode"];
+    [manager GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        successBlock(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failBlock(error);
+    }];
+}
+
 +(void)updateToken{
     //每两个小时重新获取一次token
     NSTimer *timer = [NSTimer timerWithTimeInterval:7199.0 target:self selector:@selector(token) userInfo:nil repeats:YES];
@@ -76,12 +90,10 @@
         [datamodel updateToken:dict[@"access_token"] refreshToken:dict[@"refresh_token"]];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"%@",error);
-//        NSString *string = [[NSString alloc] initWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] encoding:NSUTF8StringEncoding];
-//        NSLog(@"token:%@",string);
     }];
 }
 
--(void)signUpWithAccount:(NSString *_Nonnull)account username:(NSString *_Nonnull)username passward:(NSString *_Nullable)password verity:(NSString *)verity success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock{
++(void)signUpWithAccount:(NSString *_Nonnull)account username:(NSString *_Nonnull)username passward:(NSString *_Nullable)password key:(NSString *)key success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock{
     NSDictionary *parameters = @{@"username":username,
                                  @"account":account,
                                  @"password":password
@@ -90,15 +102,13 @@
     NSString *deviceId = [[UIDevice currentDevice].identifierForVendor UUIDString];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager.requestSerializer setValue:verity forHTTPHeaderField:@"validateCode"];
+    [manager.requestSerializer setValue:key forHTTPHeaderField:@"key"];
     [manager.requestSerializer setValue:deviceId forHTTPHeaderField:@"deviceId"];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     [manager POST:urlString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         successBlock(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//        NSString *string = [[NSString alloc] initWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] encoding:NSUTF8StringEncoding];
-//        NSLog(@"注册:%@",string);
         failBlock(error);
     }];
 }
@@ -146,7 +156,7 @@
     }];
 }
 
--(void)getVeritysuccess:(successBlock)successBlock failure:(failBlock)failBlock{
+-(void)getImageVeritysuccess:(successBlock)successBlock failure:(failBlock)failBlock{
     NSString *url = @"http://47.95.207.40/branch/code/image";
     NSString *identifierForVendor = [[UIDevice currentDevice].identifierForVendor UUIDString];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];

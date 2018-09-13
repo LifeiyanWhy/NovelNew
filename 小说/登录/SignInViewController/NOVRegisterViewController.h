@@ -10,6 +10,4 @@
 @class NOVRegisterView;
 @interface NOVRegisterViewController : UIViewController
 @property(nonatomic,strong) NOVRegisterView *registerView;
-//@property(nonatomic,copy) NSString *userName;
-//@property(nonatomic,copy) NSString *password;
 @end

@@ -60,7 +60,11 @@
     [_actionController addAction:albumAction];
     [_actionController addAction:cancelAction];
     
+    [self getUserMessage];
     
+}
+
+-(void)getUserMessage{
     //获取用户信息
     [NOVEditUserMessageManager getUserMessageSuccess:^(id  _Nullable responseObject) {
         NSLog(@"%@",responseObject);
@@ -204,7 +208,7 @@
         myCollectionViewController.showChapterType = NOVShowChapterTypeCollection;
         myCollectionViewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:myCollectionViewController animated:NO];
-    }else if (indexPath.section == 0 && indexPath.row == 2){
+    }else if (indexPath.section == 0 && indexPath.row == 2){//我赞过的
         NOVMyCollectionViewController *myCollectionViewController = [[NOVMyCollectionViewController alloc] init];
         myCollectionViewController.showChapterType = NOVShowChapterTypeLike;
         myCollectionViewController.hidesBottomBarWhenPushed = YES;
@@ -213,6 +217,8 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self getUserMessage];
     self.navigationController.navigationBar.hidden = YES;
 }
 

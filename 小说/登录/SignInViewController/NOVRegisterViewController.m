@@ -70,8 +70,9 @@
         _registerView.verifyeButton.userInteractionEnabled = NO;
         [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(verityTime:) userInfo:nil repeats:YES];
     } failure:^(NSError * _Nonnull error) {
-        [self showAlertActionWithTitle:@"发送失败，请检查手机号"];
-        NSLog(@"注册:%@",error);
+        NSLog(@"%@",error);
+        [self showAlertActionWithTitle:@"该手机号已经注册过"];
+//        [self showAlertActionWithTitle:@"手机号不存在"];
     }];
 }
 
@@ -88,9 +89,8 @@
         accountText = _registerView.accountTextField.text;
         verity = text;
     }
-    NSLog(@"%@",accountText);
-    NSLog(@"%@",verity);
-    if (verity.length > 0 && [pred evaluateWithObject:accountText] && accountText.length == 11) {
+    
+    if (verity.length == 6 && [pred evaluateWithObject:accountText] && accountText.length == 11) {
         _registerView.nextStepButton.backgroundColor = SystemColor;
         _registerView.nextStepButton.userInteractionEnabled = YES;
     }else{
@@ -111,14 +111,17 @@
 }
 
 -(void)nextStep{
-//    if () {
-        //检测验证码
+    //检测验证码是否正确
+    [NOVSignModel validateVerityWithPhoneNumber:_registerView.accountTextField.text validateCode:_registerView.verifyTextfield.text success:^(id  _Nullable responseObject) {
+        NSLog(@"%@",responseObject[@"message"]);
         NOVRegisterNextStepViewController *registerViewController = [[NOVRegisterNextStepViewController alloc] init];
         registerViewController.verityCode = _registerView.verifyTextfield.text;
         registerViewController.account = _registerView.accountTextField.text;
+        registerViewController.key = responseObject[@"message"];
         [self.navigationController pushViewController:registerViewController animated:NO];
-//    }
-
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+    }];
 }
 
 -(void)quit{

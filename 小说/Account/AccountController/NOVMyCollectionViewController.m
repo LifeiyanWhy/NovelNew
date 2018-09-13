@@ -22,8 +22,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    if (_showChapterType == NOVShowChapterTypeCollection) {
+        self.navigationItem.title = @"我的收藏";
+    } else {
+        self.navigationItem.title = @"我赞过的";
+    }
     
-    self.navigationItem.title = @"我的收藏";
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:16],
        NSForegroundColorAttributeName:[UIColor whiteColor]}];
@@ -37,7 +41,7 @@
     if (self.showChapterType == NOVShowChapterTypeCollection) {
         [self getMyCollection];
     }else{
-        
+        [self getMYLikeChapter];
     }
 }
 
@@ -55,6 +59,10 @@
     } failure:^(NSError * _Nonnull error) {
         NSLog(@"%@",error);
     }];
+}
+
+-(void)getMYLikeChapter{
+    
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

@@ -36,15 +36,10 @@
 
 //显示设置view
 - (void)setupView;
-
 //点击view
 - (void)responseWhenTouchView;
-
 //设置背景颜色
 - (void)setViewColorWithColor:(UIColor *)color;
-
 - (void)keyboardShowWithFrame:(CGRect)keyboardFrame;
-
 - (void)keyBoardHidden;
-
 @end

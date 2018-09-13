@@ -30,7 +30,7 @@
         make.width.equalTo(_myImageView.mas_height);
     }];
     _myImageView.layer.masksToBounds = YES;
-    _myImageView.layer.cornerRadius = 25;
+    _myImageView.layer.cornerRadius = (self.contentView.frame.size.height-20)*0.5;
     
     [_nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_myImageView.mas_right).offset(20);
@@ -38,7 +38,7 @@
         make.height.equalTo(self.contentView).multipliedBy(0.8);
         make.centerY.equalTo(self.contentView);
     }];
-    _nameLabel.font = [UIFont systemFontOfSize:17 weight:0.01];
+    _nameLabel.font = [UIFont systemFontOfSize:16];
 }
 
 -(void)drawRect:(CGRect)rect{

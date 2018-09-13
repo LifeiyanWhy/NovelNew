@@ -24,31 +24,32 @@
     // Do any additional setup after loading the view, typically from a nib.
     self.navigationController.navigationBar.hidden = YES;
     [self.view addSubview:self.signView];
- /*
+    
     NOVUserLoginMessageModel *model = [NOVDataModel getLastUserMessage];
     if (model) {
-        if (model.isLogin) {//当前用户是登录状态
+        if (model.isLogin) {//当前用户是登录状态（最近一次登录的用户）
             [NOVSignModel token];
             //开始更新token
             [NOVSignModel updateToken];
             [self loginSucceed];
             return;
         }else{
+            //不是登录状态，重新登录
             _signView.accountTextField.text = model.account;
             if (model.password) {
                 _signView.passwardTextField.text = model.password;
             }
         }
     }
-  */
     [self getVerity];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardHidden:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 -(void)getVerity{
     NOVSignModel *model = [[NOVSignModel alloc] init];
-    [model getVeritysuccess:^(id  _Nullable responseObject) {
+    [model getImageVeritysuccess:^(id  _Nullable responseObject) {
         [_signView.verityButton setImage:[UIImage imageWithData:responseObject] forState:UIControlStateNormal];
     } failure:^(NSError * _Nonnull error) {
         NSLog(@"%@",error);
@@ -68,7 +69,7 @@
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
             //status为1代表登录失败，账号或密码错误。
         if ([[NSString stringWithFormat:@"%@",dict[@"status"]] isEqualToString:@"1"]) {
-            [self showAlertActionWithTitle:[NSString stringWithFormat:@"%@!!!",dict[@"message"]]];
+            [self showAlertActionWithTitle:[NSString stringWithFormat:@"%@",dict[@"message"]]];
         }
         [self getVerity];
     }];
@@ -96,6 +97,12 @@
         [_signView.signinButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
         [_signView.signupButton addTarget:self action:@selector(signUp) forControlEvents:UIControlEventTouchUpInside];
         [_signView.verityButton addTarget:self action:@selector(getVerity) forControlEvents:UIControlEventTouchUpInside];
+        NSLog(@"%@",_account);
+        NSLog(@"%@",_passward);
+        if (_account && _passward) {
+            _signView.accountTextField.text = _account;
+            _signView.passwardTextField.text = _passward;
+        }
     }
     return _signView;
 }

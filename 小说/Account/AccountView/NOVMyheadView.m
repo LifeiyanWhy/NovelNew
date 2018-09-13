@@ -44,12 +44,12 @@
 -(void)layoutSubviews{
     self.backgroundColor = [UIColor redColor];
     [_myImageButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(selfSize.height*0.08);
+        make.top.equalTo(self).offset(selfSize.height*0.07);
         make.height.mas_equalTo(selfSize.height*0.08);
         make.width.equalTo(self).multipliedBy(0.15);
         make.centerX.equalTo(self);
     }];
-    _myImageButton.layer.cornerRadius = 25;
+    _myImageButton.layer.cornerRadius = selfSize.height*0.08*0.5;
     _myImageButton.layer.masksToBounds = YES;
     
     [_nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -75,9 +75,9 @@
     [_profileButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
     
     [_myworkButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(selfSize.height*0.35);
-        make.height.mas_equalTo(selfSize.height*0.08);
-        make.left.equalTo(self).offset(selfSize.width*0.12);
+        make.top.equalTo(self).offset(selfSize.height*0.28 + 30);
+        make.bottom.equalTo(self).offset(-5);
+        make.left.equalTo(self).offset(selfSize.width*0.1);
         make.width.equalTo(self).multipliedBy(0.25);
     }];
     [_myworkButton setImage:[UIImage imageNamed:@"作品.png"] forState:UIControlStateNormal];
@@ -85,7 +85,7 @@
     
     [_myfollowButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.and.height.and.width.equalTo(_myworkButton);
-        make.left.equalTo(_myworkButton.mas_right).offset(selfSize.width*0.05);
+        make.centerX.equalTo(self);
     }];
     [_myfollowButton setImage:[UIImage imageNamed:@"关注.png"] forState:UIControlStateNormal];
     [self setButton:_myfollowButton withTitle:@"我的关注"];
@@ -96,31 +96,32 @@
     }];
     [_myfansButton setImage:[UIImage imageNamed:@"粉丝.png"] forState:UIControlStateNormal];
     [self setButton:_myfansButton withTitle:@"我的粉丝"];
-
 }
 
 - (void)setButton:(UIButton *)button withTitle:(NSString *)title{
+    button.imageView.contentMode = UIViewContentModeScaleToFill;
     [button setTitle:title forState:UIControlStateNormal];
     [button.titleLabel setFont:[UIFont systemFontOfSize:12]];
     [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    CGFloat labelWidth = button.titleLabel.intrinsicContentSize.width;
+    CGFloat imageWidth = button.imageView.intrinsicContentSize.width;
     CGFloat labelHeight = button.titleLabel.intrinsicContentSize.height;
     CGFloat imageHeight = button.imageView.intrinsicContentSize.height;
-    CGFloat labelWidth = button.imageView.intrinsicContentSize.width;
-    [button setImageEdgeInsets:UIEdgeInsetsMake(labelHeight*-1, 0,labelHeight, 0)];
-    [button setTitleEdgeInsets:UIEdgeInsetsMake(imageHeight/2, labelWidth*-1-10, -1*imageHeight/2, labelWidth+10)];
+    button.imageEdgeInsets = UIEdgeInsetsMake(-1*labelHeight, 0, 0, -1*labelWidth);
+    button.titleEdgeInsets = UIEdgeInsetsMake(imageHeight+2, -imageWidth, 0, 0);
 }
 
 - (void)drawRect:(CGRect)rect{
     CGFloat width = self.frame.size.width;
     CGFloat height = selfSize.height;
-    UIColor *color = [UIColor colorWithRed:0.15 green:0.65 blue:0.6 alpha:1.00];
+    UIColor *color = SystemColor;
     [color set];
     UIBezierPath *path = [UIBezierPath bezierPath];
     path.lineWidth = 5.0;
     path.lineCapStyle = kCGLineCapRound;
     path.lineJoinStyle = kCGLineCapButt;
-    [path moveToPoint:CGPointMake(0, height*0.3)];
-    [path addQuadCurveToPoint:CGPointMake(width, height*0.3) controlPoint:CGPointMake(width*0.5, height*0.3 + 30)];
+    [path moveToPoint:CGPointMake(0, height*0.28)];
+    [path addQuadCurveToPoint:CGPointMake(width, height*0.28) controlPoint:CGPointMake(width*0.5, height*0.28 + 30)];
     [path addLineToPoint:CGPointMake(width, 0)];
     [path addLineToPoint:CGPointMake(0, 0)];
     [path closePath];
@@ -132,8 +133,8 @@
     path1.lineWidth = 2;
     path1.lineCapStyle = kCGLineCapRound;
     path1.lineJoinStyle = kCGLineCapButt;
-    [path1 moveToPoint:CGPointMake(0, height*0.3)];
-    [path1 addQuadCurveToPoint:CGPointMake(width, height*0.3) controlPoint:CGPointMake(width*0.5, height*0.3 + 30)];
+    [path1 moveToPoint:CGPointMake(0, height*0.28)];
+    [path1 addQuadCurveToPoint:CGPointMake(width, height*0.28) controlPoint:CGPointMake(width*0.5, height*0.28 + 30)];
     [path1 addLineToPoint:CGPointMake(width, height*0.43)];
     [path1 addLineToPoint:CGPointMake(0, height*0.43)];
     [path1 closePath];

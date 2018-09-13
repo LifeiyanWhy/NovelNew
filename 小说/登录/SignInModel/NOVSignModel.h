@@ -15,13 +15,13 @@ typedef void(^failBlock)(NSError * _Nonnull error);
 +(void)updateToken;
 +(void)token;
 //账号密码注册
--(void)signUpWithAccount:(NSString *_Nonnull)account username:(NSString *_Nonnull)username passward:(NSString *_Nullable)password verity:(NSString *)verity success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
++(void)signUpWithAccount:(NSString *_Nonnull)account username:(NSString *_Nonnull)username passward:(NSString *_Nullable)password key:(NSString *)key success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
 //获取图形验证码
--(void)getVeritysuccess:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
+-(void)getImageVeritysuccess:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
 //获取短信验证码
 -(void)getPhoneVerityWithPhoneNum:(NSString *_Nonnull)phoneNum success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
 //验证验证码
-//-(void)validateVerityWithPhoneNum vali
++(void)validateVerityWithPhoneNumber:(NSString *_Nonnull)phoneNumber validateCode:(NSString *_Nonnull)validateCode success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
 //获取关注列表
 +(void)obtainFollowList;
 +(void)obtainCollectionList;

@@ -32,7 +32,7 @@
     
     textPlacehoderArray = [NSArray arrayWithObjects:@"请输入章节名称",@"请输入正文", nil];
     
-    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height*0.9)];
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height - 64)];
     [self addSubview:_scrollView];
     _scrollView.directionalLockEnabled = YES;
     _scrollView.showsVerticalScrollIndicator = NO;
@@ -109,7 +109,7 @@
     [self addSubview:_deleteButton];
     [_deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.mas_bottom);
-        make.height.equalTo(self.mas_height).multipliedBy(0.1);
+        make.height.mas_equalTo(64);
         make.left.equalTo(self.mas_left).offset(self.frame.size.width*0.05);
         make.width.equalTo(self.mas_width).multipliedBy(0.15);
     }];
@@ -155,15 +155,6 @@
         make.left.and.right.equalTo(_contentTextView);
     }];
     imageview.backgroundColor = [UIColor grayColor];
-    
-    UIImageView *bottomImageView = [[UIImageView alloc] init];
-    [self addSubview:bottomImageView];
-    [bottomImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_deleteButton);
-        make.height.mas_equalTo(1);
-        make.left.and.right.equalTo(self);
-    }];
-    bottomImageView.backgroundColor = [UIColor grayColor];
     
     _setUpView = [[NOVSetUpView alloc] init];
     [self addSubview:_setUpView];
@@ -263,6 +254,16 @@
         make.top.and.left.and.right.equalTo(self);
         make.bottom.equalTo(_deleteButton.mas_top);
     }];
+}
+
+-(void)drawRect:(CGRect)rect{
+    UIColor *color = [UIColor grayColor];
+    [color set];
+    UIBezierPath *bezierPath = [UIBezierPath bezierPath];
+    bezierPath.lineWidth = 0.7;
+    [bezierPath moveToPoint:CGPointMake(0, self.frame.size.height - 64)];
+    [bezierPath addLineToPoint:CGPointMake(self.frame.size.width, self.frame.size.height - 64)];
+    [bezierPath stroke];
 }
 
 /*

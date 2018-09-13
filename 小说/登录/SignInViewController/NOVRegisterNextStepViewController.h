@@ -12,4 +12,5 @@
 @property(nonatomic,strong) NOVRegisterNextStepView *registerNextView;
 @property(nonatomic,copy) NSString *account;
 @property(nonatomic,copy) NSString *verityCode;
+@property(nonatomic,copy) NSString *key;
 @end

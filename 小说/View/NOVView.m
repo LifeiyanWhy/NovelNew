@@ -33,9 +33,7 @@
     //记录当前(选中)button
     currentButton = [[UIButton alloc] init];
     
-    
     buttonArray = [[NSMutableArray alloc] init];
-    
     for (int i = 0; i < _titleArray.count; i++) {
         UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(i * buttonWidth, 0, buttonWidth , Height)];
         [self addSubview:button];
@@ -48,13 +46,12 @@
         [button setTitle:_titleArray[i] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.00] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
-        [button.titleLabel setFont:[UIFont systemFontOfSize:14 weight:UIFontWeightMedium]];
+        [button.titleLabel setFont:[UIFont systemFontOfSize:14]];
         [button setContentEdgeInsets:UIEdgeInsetsMake(20, 0, 0, 0)];
         [buttonArray addObject:button];
         //给button添加点击事件，点击时状态切换
         [button addTarget:self action:@selector(buttonResponse:) forControlEvents:UIControlEventTouchUpInside];
     }
-
     
     slideView = [[UIView alloc] init];
     slideView.backgroundColor = [UIColor whiteColor];
