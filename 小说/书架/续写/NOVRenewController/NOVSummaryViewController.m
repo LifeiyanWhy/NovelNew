@@ -81,6 +81,10 @@
     if (!_summaryView) {
         _summaryView = [[NOVSummaryView alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
         _summaryView.textView.delegate = self;
+        if (![_summary isEqualToString:@""]) {
+            _summaryView.textView.text = _summary;
+            _summaryView.textView.textColor = [UIColor blackColor];
+        }
     }
     return _summaryView;
 }

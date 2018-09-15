@@ -11,6 +11,7 @@
 #import "NOVSetUpView.h"
 #import "NOVKeyboardView.h"
 #import "NOVSummaryViewController.h"
+#import "NOVStartBookModel.h"
 
 @interface NOVWriteViewController ()<NOVWriteViewDelegate,UIScrollViewDelegate,NOVSetUpViewDelegate>
 @property(nonatomic,strong) NOVWriteView *writeView;
@@ -44,24 +45,37 @@
     tempBar.width = -10;
     self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:tempBar,leftBar,nil];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发布" style:UIBarButtonItemStylePlain target:self action:@selector(toPublish)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(save)];
     [self.navigationItem.rightBarButtonItem setTintColor:[UIColor blackColor]];
     self.navigationController.navigationBar.layer.shadowColor = [UIColor lightGrayColor].CGColor;
     self.navigationController.navigationBar.layer.shadowOpacity = 0.8f;
     self.navigationController.navigationBar.layer.shadowOffset = CGSizeMake(-2, 2);
     self.navigationController.navigationBar.layer.masksToBounds = NO;
-    
-    _writeView = [[NOVWriteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - self.navigationController.navigationBar.bounds.size.height)];
-    [self.view addSubview:_writeView];
-    [_writeView.setupButton addTarget:self action:@selector(setupView) forControlEvents:UIControlEventTouchUpInside];
-    _writeView.scrollView.delegate = self;
-    _writeView.delagate = self;
-    _writeView.setUpView.delegate = self;
-    [_writeView.keyboardView.hiddenKeyboard addTarget:self action:@selector(cancelKeyboard) forControlEvents:UIControlEventTouchUpInside];
-    [_writeView.summaryButton addTarget:self action:@selector(editSummary) forControlEvents:UIControlEventTouchUpInside];
+
+    [self.view addSubview:self.writeView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardHidden:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+-(NOVWriteView *)writeView{
+    if (!_writeView) {
+        _writeView = [[NOVWriteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - self.navigationController.navigationBar.bounds.size.height)];
+        [_writeView.setupButton addTarget:self action:@selector(setupView) forControlEvents:UIControlEventTouchUpInside];
+        _writeView.scrollView.delegate = self;
+        _writeView.delagate = self;
+        _writeView.setUpView.delegate = self;
+        [_writeView.keyboardView.hiddenKeyboard addTarget:self action:@selector(cancelKeyboard) forControlEvents:UIControlEventTouchUpInside];
+        [_writeView.summaryButton addTarget:self action:@selector(editSummary) forControlEvents:UIControlEventTouchUpInside];
+        if (_bookModel.bookId != -1) {
+            _writeView.titleTextView.text = _bookModel.firstTitle;
+            _writeView.titleTextView.textColor = [UIColor blackColor];
+            _writeView.contentTextView.text = _bookModel.firstContent;
+            _writeView.contentTextView.textColor = [UIColor blackColor];
+            [_writeView.summaryButton setTitle:@"章节简介" forState:UIControlStateNormal];
+        }
+    }
+    return _writeView;
 }
 
 - (void)keyboardShow:(NSNotification *)notification{
@@ -108,7 +122,7 @@
 
 
 //点击rightBarButtonItem（发布）button执行
-- (void)toPublish{
+- (void)save{
     NSLog(@"%@",_summaryString);
     if ([_writeView.contentTextView.text isEqualToString:@""] || [_writeView.contentTextView.text isEqualToString:@"请输入正文"]) {
         [self showAlertActionWithTitle:@"内容不能为空!"];
@@ -121,14 +135,31 @@
         [self showAlertActionWithTitle:@"请添加章节简介!"];
         return;
     }
-    self.publishNovelBlock(_writeView.titleTextView.text, _summaryString,_writeView.contentTextView.text);
-    [self.navigationController popViewControllerAnimated:NO];
+    [self showAlertPublishOrSave];
+}
+
+-(void)showAlertPublishOrSave{
+    UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:@"是否直接发布" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *alertSave = [UIAlertAction actionWithTitle:@"存为草稿" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        self.publishNovelBlock(_writeView.titleTextView.text, _summaryString, _writeView.contentTextView.text, NO);
+        [self.navigationController popViewControllerAnimated:NO];
+    }];
+    [alertControl addAction:alertSave];
+    UIAlertAction *alertPublish = [UIAlertAction actionWithTitle:@"直接发布" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        self.publishNovelBlock(_writeView.titleTextView.text, _summaryString,_writeView.contentTextView.text,YES);
+        [self.navigationController popViewControllerAnimated:NO];
+    }];
+    [alertControl addAction:alertPublish];
+    [self presentViewController:alertControl animated:YES completion:nil];
 }
 
 -(void)editSummary{
     NOVSummaryViewController *summaryController = [[NOVSummaryViewController alloc] init];
     __block NOVWriteViewController *weakSelf = self;
     summaryController.summaryEdit = NOVSummaryEditSummary;
+    if (_bookModel.bookId != -1) {
+        summaryController.summary = _bookModel.firstSummary;
+    }
     summaryController.summaryblock = ^(NSString *summaryString) {
         NSLog(@"%@",summaryString);
         weakSelf.summaryString = summaryString;

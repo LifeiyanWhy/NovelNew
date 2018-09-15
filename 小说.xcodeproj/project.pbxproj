@@ -19,6 +19,8 @@
 		C426096E211DBDB6007F7DD5 /* NOVChapterListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C426096D211DBDB6007F7DD5 /* NOVChapterListModel.m */; };
 		C437C5E3213D684100F34308 /* NOVMyCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C437C5E2213D684100F34308 /* NOVMyCollectionViewController.m */; };
 		C442C99A20A1BE7D00F742E6 /* NOVMyheadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C442C99920A1BE7D00F742E6 /* NOVMyheadView.m */; };
+		C452AA36214CF40500911567 /* NOVNoContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = C452AA35214CF40500911567 /* NOVNoContentView.m */; };
+		C452AA38214CF60F00911567 /* simple_ic_drafts_none.png in Resources */ = {isa = PBXBuildFile; fileRef = C452AA37214CF60F00911567 /* simple_ic_drafts_none.png */; };
 		C45A4FD820A493A40084D8D4 /* NOVEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C45A4FD720A493A40084D8D4 /* NOVEditViewController.m */; };
 		C45AB13F21156E8F00A28869 /* 笔组合.png in Resources */ = {isa = PBXBuildFile; fileRef = C45AB13E21156E8F00A28869 /* 笔组合.png */; };
 		C45AB14C211570EA00A28869 /* 发现.png in Resources */ = {isa = PBXBuildFile; fileRef = C45AB144211570E900A28869 /* 发现.png */; };
@@ -218,6 +220,9 @@
 		C437C5E4213D6D6100F34308 /* NOVAccountHeadFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVAccountHeadFile.h; sourceTree = "<group>"; };
 		C442C99820A1BE7D00F742E6 /* NOVMyheadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVMyheadView.h; sourceTree = "<group>"; };
 		C442C99920A1BE7D00F742E6 /* NOVMyheadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVMyheadView.m; sourceTree = "<group>"; };
+		C452AA34214CF40500911567 /* NOVNoContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVNoContentView.h; sourceTree = "<group>"; };
+		C452AA35214CF40500911567 /* NOVNoContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVNoContentView.m; sourceTree = "<group>"; };
+		C452AA37214CF60F00911567 /* simple_ic_drafts_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = simple_ic_drafts_none.png; sourceTree = "<group>"; };
 		C45A4FD620A493A40084D8D4 /* NOVEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVEditViewController.h; sourceTree = "<group>"; };
 		C45A4FD720A493A40084D8D4 /* NOVEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVEditViewController.m; sourceTree = "<group>"; };
 		C45AB13E21156E8F00A28869 /* 笔组合.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "笔组合.png"; sourceTree = "<group>"; };
@@ -721,6 +726,8 @@
 				C4AB81E620B4285700213AD1 /* NOVBookSetView.m */,
 				C4E5EC8920B6B7FF00EDD6D2 /* NOVSetbackView.h */,
 				C4E5EC8A20B6B7FF00EDD6D2 /* NOVSetbackView.m */,
+				C452AA34214CF40500911567 /* NOVNoContentView.h */,
+				C452AA35214CF40500911567 /* NOVNoContentView.m */,
 			);
 			path = MyBookView;
 			sourceTree = "<group>";
@@ -890,6 +897,7 @@
 		C45AB13A21156B1F00A28869 /* 图片 */ = {
 			isa = PBXGroup;
 			children = (
+				C452AA37214CF60F00911567 /* simple_ic_drafts_none.png */,
 				C400445621465A0700B56505 /* Unfold.png */,
 				C4960D822119D95C00132C43 /* 添加账号.png */,
 				C483B816211832BF009E48E4 /* 退出.png */,
@@ -1501,6 +1509,7 @@
 				C45AB14D211570EA00A28869 /* 书架-2.png in Resources */,
 				C400445721465A0700B56505 /* Unfold.png in Resources */,
 				C45AB1792115B1A500A28869 /* 圈.png in Resources */,
+				C452AA38214CF60F00911567 /* simple_ic_drafts_none.png in Resources */,
 				C45AB16D2115A74B00A28869 /* 关注.png in Resources */,
 				C45AB15D2115A45F00A28869 /* 收藏.png in Resources */,
 				C483B80F2117E70A009E48E4 /* 关注read.png in Resources */,
@@ -1605,6 +1614,7 @@
 				C4D81DB8208C7ED60014431A /* NOVWriteView.m in Sources */,
 				C4AB81E120B41B6900213AD1 /* NOVMystartViewController.m in Sources */,
 				C4960D612119256400132C43 /* NOVUserSetViewController.m in Sources */,
+				C452AA36214CF40500911567 /* NOVNoContentView.m in Sources */,
 				C4C8C60E21259492003A1B95 /* NOVMyRenewCellHeightModel.m in Sources */,
 				C4C8903E206BF5CD00BED312 /* ViewController.m in Sources */,
 				C4C55B6F210200D7001F71F4 /* NOVReadEditVIew.m in Sources */,

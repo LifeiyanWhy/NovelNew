@@ -42,25 +42,15 @@ typedef NS_OPTIONS(NSInteger, NOVType) {
 };
 
 @interface NOVStartBookModel : NSObject
-//作品名称
-@property(nonatomic,strong) NSString *name;
-//作品类型
-@property(nonatomic,assign) NOVType bookType;
-//作品简介
-@property(nonatomic,strong) NSString *introduction;
-//图片
-@property(nonatomic,strong) UIImage *bookImage;
-//第一段的标题
-@property(nonatomic,strong) NSString *firstTitle;
-//第一段内容
-@property(nonatomic,copy) NSString *firstContent;
-//第一段的摘要
-@property(nonatomic,copy) NSString *firstSummary;
-//发起形式
-@property(nonatomic,assign) NOVStartType startType;
-//续写人员
-@property(nonatomic,assign) NOVJurisdiction renewPeople;
-//可观看人群
-@property(nonatomic,assign) NOVJurisdiction viewerType;
 @property(nonatomic,assign) NSInteger bookId;
+@property(nonatomic,strong) NSString *name;//作品名称
+@property(nonatomic,assign) NOVType bookType;//作品类型
+@property(nonatomic,strong) NSString *introduction;//作品简介
+@property(nonatomic,strong) UIImage *bookImage;//图片
+@property(nonatomic,strong) NSString *firstTitle;//第一段的标题
+@property(nonatomic,copy) NSString *firstContent;//第一段内容
+@property(nonatomic,copy) NSString *firstSummary;//第一段的摘要
+@property(nonatomic,assign) NOVStartType startType;//发起形式
+@property(nonatomic,assign) NOVJurisdiction renewPeople;//续写人员
+@property(nonatomic,assign) NOVJurisdiction viewerType;//可观看人群
 @end

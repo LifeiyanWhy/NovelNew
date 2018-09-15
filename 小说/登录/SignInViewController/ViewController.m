@@ -28,8 +28,8 @@
     NOVUserLoginMessageModel *model = [NOVDataModel getLastUserMessage];
     if (model) {
         if (model.isLogin) {//当前用户是登录状态（最近一次登录的用户）
-            [NOVSignModel token];
-            //开始更新token
+            [NOVSignModel updateTokenAndObtainFollowList];
+            //开始更新token，两小时重新获取一次
             [NOVSignModel updateToken];
             [self loginSucceed];
             return;
@@ -66,11 +66,12 @@
         if (error.code == -1009 || error.code == 1005 || error.code == 1001) {
             [self showAlertActionWithTitle:@"网络不可用,请重试！"];
         }
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
-            //status为1代表登录失败，账号或密码错误。
-        if ([[NSString stringWithFormat:@"%@",dict[@"status"]] isEqualToString:@"1"]) {
-            [self showAlertActionWithTitle:[NSString stringWithFormat:@"%@",dict[@"message"]]];
-        }
+        [self showAlertActionWithTitle:@"账号或密码错误"];
+//        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
+//            //status为1代表登录失败，账号或密码错误。
+//        if ([[NSString stringWithFormat:@"%@",dict[@"status"]] isEqualToString:@"1"]) {
+//            [self showAlertActionWithTitle:[NSString stringWithFormat:@"%@",dict[@"message"]]];
+//        }
         [self getVerity];
     }];
 }
@@ -78,8 +79,6 @@
 -(void)loginSucceed{
     //登录成功
     [[NSNotificationCenter defaultCenter] postNotificationName:@"signinSucceed" object:nil];
-    [NOVSignModel obtainFollowList];//获取关注列表
-    [NOVSignModel obtainCollectionList];
 }
 
 //点击注册button后进入注册页面（在登录界面点击注册时执行）
@@ -97,8 +96,8 @@
         [_signView.signinButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
         [_signView.signupButton addTarget:self action:@selector(signUp) forControlEvents:UIControlEventTouchUpInside];
         [_signView.verityButton addTarget:self action:@selector(getVerity) forControlEvents:UIControlEventTouchUpInside];
-        NSLog(@"%@",_account);
-        NSLog(@"%@",_passward);
+        NSLog(@"account:%@",_account);
+        NSLog(@"passward:%@",_passward);
         if (_account && _passward) {
             _signView.accountTextField.text = _account;
             _signView.passwardTextField.text = _passward;

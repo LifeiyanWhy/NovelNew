@@ -122,7 +122,7 @@
 -(void)drawRect:(CGRect)rect{
     UIColor *color = [UIColor whiteColor];
     [color set];
-    
+
     UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) cornerRadius:20];
     [path fill];
 }

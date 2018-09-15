@@ -243,29 +243,26 @@
 -(void)touchCollectionButton:(UIButton *)button{
     if (!button.selected) {//收藏
         [NOVObatinBookContent collectionChapterWithBranchId:self.recordModel.chapterModel.branchId succeed:^(id responseObject) {
-            NSMutableArray *array = [NSMutableArray arrayWithArray:responseObject[@"data"]];
-            NSMutableArray *collectionArray = [NSMutableArray array];
-            for (int i = 0; i < array.count; i++) {
-                [collectionArray addObject:array[i][@"branchId"]];
-            }
+            NSArray *array = [NOVDataModel getCollectionList];
+            NSMutableArray *collectionArray = [NSMutableArray arrayWithArray:array];
+            [collectionArray addObject:[NSNumber numberWithInteger:self.recordModel.chapterModel.branchId]];
             [NOVDataModel updateCollectionListWithArray:collectionArray];
             [_readEditView collectionButtonChange:button];
         } fail:^(NSError *error) {
-            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
-            NSLog(@"collection：%@",dict[@"message"]);
+//            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
+            NSLog(@"collection：%@",error);
         }];
-    } else {
+    } else {//取消收藏
         [NOVObatinBookContent cancelCollectionChapterWithBranchId:self.recordModel.chapterModel.branchId succeed:^(id responseObject) {
-            NSMutableArray *array = [NSMutableArray arrayWithArray:responseObject[@"data"]];
-            NSMutableArray *collectionArray = [NSMutableArray array];
-            for (int i = 0; i < array.count; i++) {
-                [collectionArray addObject:array[i][@"branchId"]];
-            }
+            NSArray *array = [NOVDataModel getCollectionList];
+            NSMutableArray *collectionArray = [NSMutableArray arrayWithArray:array];
+            [collectionArray removeObject:[NSNumber numberWithInteger:self.recordModel.chapterModel.branchId]];
             [NOVDataModel updateCollectionListWithArray:collectionArray];
             [_readEditView collectionButtonChange:button];
         } fail:^(NSError *error) {
-            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
-            NSLog(@"collection：%@",dict);
+//            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] options:NSJSONReadingMutableContainers error:&error];
+//            NSLog(@"collection：%@",dict);
+            NSLog(@"%@",error);
         }];
     }
 }
@@ -275,13 +272,11 @@
     if (!button.selected) { //关注
         [model followBookWithBookId:self.bookMessage.bookId succeed:^(id responseObject) {
             NSLog(@"%@",responseObject[@"message"]);
-            //更新本地存储的关注列表
-            NOVDataModel *datamodel = [NOVDataModel shareInstance];
+            NOVDataModel *datamodel = [NOVDataModel shareInstance]; //更新本地存储的关注列表
             NSArray *followArray = [datamodel getFollowBookList];
             NSMutableArray *array = [NSMutableArray arrayWithArray:followArray];
             [array addObject:[NSNumber numberWithInteger:self.bookMessage.bookId]];
             [datamodel updateFollowBookListWithArray:array];
-            
             [_readEditView followButtonChange:button];
         } fail:^(NSError *error) {
             NSLog(@"%@",error);
@@ -289,8 +284,7 @@
     }else{  //取消关注
         [model cancelFollowBookId:self.bookMessage.bookId succeed:^(id responseObject) {
             NSLog(@"%@",responseObject[@"message"]);
-            //更新本地存储的关注列表
-            NOVDataModel *datamodel = [NOVDataModel shareInstance];
+            NOVDataModel *datamodel = [NOVDataModel shareInstance]; //更新本地存储的关注列表
             NSArray *followArray = [datamodel getFollowBookList];
             NSMutableArray *array = [NSMutableArray arrayWithArray:followArray];
             [array removeObject:[NSNumber numberWithInteger:self.bookMessage.bookId]];
@@ -378,7 +372,7 @@
     NOVWriteViewController *writeViewController = [[NOVWriteViewController alloc] init];
     writeViewController.hidesBottomBarWhenPushed = YES;
     __block NOVReadNovelViewController *weakSelf = self;
-    writeViewController.publishNovelBlock = ^(NSString *title, NSString *summary,NSString *content) {
+    writeViewController.publishNovelBlock = ^(NSString *title, NSString *summary,NSString *content,Boolean isPublish) {
         NOVRenewModel *renewModel = [[NOVRenewModel alloc] init];
         renewModel.bookId = _bookMessage.bookId;
         renewModel.parentId = _recordModel.chapterModel.branchId;

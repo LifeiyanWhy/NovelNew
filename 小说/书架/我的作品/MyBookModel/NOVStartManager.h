@@ -18,7 +18,7 @@ typedef void(^failBlock)(NSError *_Nonnull error);
 //获取我的发起
 -(void)getMyStartSuccess:(successBlock _Nullable)successBlock fail:(failBlock _Nullable)failBlock;
 //发起一本小说
--(void)startNovelWithModel:(NOVStartBookModel *_Nonnull)model success:(successBlock _Nullable)successBlock fail:(failBlock _Nonnull)failBlock;
+-(void)startNovelWithModel:(NOVStartBookModel *_Nonnull)model isPublish:(Boolean)isPublish success:(successBlock _Nullable)successBlock fail:(failBlock _Nonnull)failBlock;
 //发布续写
 -(void)publishRenewWithRenewModel:(NOVRenewModel *_Nonnull)renewModel success:(successBlock _Nullable)successBlock fail:(failBlock _Nonnull)failBlock;
 //上传书的封面

@@ -14,6 +14,7 @@ typedef void(^failBlock)(NSError * _Nonnull error);
 -(void)loginWithAccount:(NSString *_Nonnull)account password:(NSString *_Nonnull)password verity:(NSString *)verity success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
 +(void)updateToken;
 +(void)token;
++(void)updateTokenAndObtainFollowList;
 //账号密码注册
 +(void)signUpWithAccount:(NSString *_Nonnull)account username:(NSString *_Nonnull)username passward:(NSString *_Nullable)password key:(NSString *)key success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
 //获取图形验证码
@@ -24,5 +25,6 @@ typedef void(^failBlock)(NSError * _Nonnull error);
 +(void)validateVerityWithPhoneNumber:(NSString *_Nonnull)phoneNumber validateCode:(NSString *_Nonnull)validateCode success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock;
 //获取关注列表
 +(void)obtainFollowList;
+//获取收藏列表
 +(void)obtainCollectionList;
 @end

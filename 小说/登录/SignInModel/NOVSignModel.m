@@ -93,6 +93,33 @@
     }];
 }
 
++(void)updateTokenAndObtainFollowList{
+    NOVDataModel *datamodel = [NOVDataModel shareInstance];
+    NSString *refresh_token = [datamodel getRefreshToken];
+    NSData *refreshData = [refresh_token dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *url = @"http://47.95.207.40/branch/oauth/token";
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"Basic YnJhbmNoOnhpeW91M2c=" forHTTPHeaderField:@"Authorization"];
+    [manager POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        [formData appendPartWithFormData:[@"refresh_token" dataUsingEncoding:NSUTF8StringEncoding] name:@"grant_type"];
+        [formData appendPartWithFormData:refreshData name:@"refresh_token"];
+    } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        NSLog(@"%@",dict);
+        NOVDataModel *datamodel = [NOVDataModel shareInstance];
+        //获取到token后更新沙盒中的数据
+        [datamodel updateToken:dict[@"access_token"] refreshToken:dict[@"refresh_token"]];
+        //获取关注列表
+        [NOVSignModel obtainFollowList];//获取关注列表
+        [NOVSignModel obtainCollectionList];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"%@",[[NSString alloc] initWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] encoding:NSUTF8StringEncoding]);
+        NSLog(@"%@",error);
+    }];
+}
+
 +(void)signUpWithAccount:(NSString *_Nonnull)account username:(NSString *_Nonnull)username passward:(NSString *_Nullable)password key:(NSString *)key success:(successBlock _Nullable )successBlock failure:(failBlock _Nullable )failBlock{
     NSDictionary *parameters = @{@"username":username,
                                  @"account":account,

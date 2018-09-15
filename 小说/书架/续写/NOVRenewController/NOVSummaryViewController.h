@@ -17,4 +17,5 @@ typedef void(^summaryBlock)(NSString *summaryString);
 @interface NOVSummaryViewController : UIViewController
 @property(nonatomic,copy) summaryBlock summaryblock;
 @property(nonatomic,assign) NOVSummaryEdit summaryEdit;
+@property(nonatomic,copy) NSString *summary;
 @end

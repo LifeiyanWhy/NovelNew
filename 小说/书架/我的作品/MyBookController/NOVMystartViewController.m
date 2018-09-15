@@ -14,9 +14,11 @@
 #import "NOVGetMyStartModel.h"
 #import "NOVStartBookModel.h"
 #import "NOVWriteViewController.h"
+#import "NOVNoContentView.h"
 
 @interface NOVMystartViewController ()<NOVMystartViewDategate>
 @property(nonatomic,strong) NOVMystartView *mystartView;
+@property(nonatomic,strong) NOVNoContentView *noContentView;
 @end
 
 @implementation NOVMystartViewController
@@ -28,33 +30,40 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    UIView *leftview = [[UIView alloc] initWithFrame:CGRectMake(0, 20, 130, 30)];
-    UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    [leftButton setImage:[UIImage imageNamed:@"返回white.png"] forState:UIControlStateNormal];
-    [leftview addSubview:leftButton];
-    [leftButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(35, 0, 100, 30)];
-    label.text = @"我的发起";
-    label.font = [UIFont systemFontOfSize:15];
-    label.textColor = [UIColor whiteColor];
-    [leftview addSubview:label];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftview];
+//    UIView *leftview = [[UIView alloc] initWithFrame:CGRectMake(0, 20, 100, 30)];
+//    UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+//    [leftButton setImage:[UIImage imageNamed:@"返回white.png"] forState:UIControlStateNormal];
+//    [leftview addSubview:leftButton];
+//    [leftButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, 70, 30)];
+//    label.text = @"我的发起";
+//    label.font = [UIFont systemFontOfSize:14];
+//    label.textColor = [UIColor whiteColor];
+//    [leftview addSubview:label];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftview];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"返回white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(creatStart)];
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]} forState:UIControlStateNormal];
     
     _novelArray = [NSMutableArray array];
     //获取当前用户的所有作品
     NOVStartManager *startManager = [[NOVStartManager alloc] init];
     [startManager getMyStartSuccess:^(id  _Nonnull responseObject) {
         NSArray *array = responseObject[@"data"];
-        for (int i = 0 ; i < array.count; i++) {
-            [_novelArray addObject:[[NOVGetMyStartModel alloc] initWithDictionary:array[i] error:nil]];
+        if (array.count == 0) {
+            [self.view addSubview:self.noContentView];
+        } else {
+            for (int i = 0 ; i < array.count; i++) {
+                [_novelArray addObject:[[NOVGetMyStartModel alloc] initWithDictionary:array[i] error:nil]];
+            }
+            _mystartView = [[NOVMystartView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) withViewNumber:_novelArray.count];
+            _mystartView.delegate = self;
+            [self.view addSubview:_mystartView];
+            _mystartView.delegate = self;
         }
-        _mystartView = [[NOVMystartView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) withViewNumber:_novelArray.count];
-        _mystartView.delegate = self;
-        [self.view addSubview:_mystartView];
-        _mystartView.delegate = self;
     } fail:^(NSError * _Nonnull error) {
+        
         NSLog(@"%@",error);
     }];
 }
@@ -68,19 +77,26 @@
 -(void)touchEditButtonInSetView:(NOVBookSetView *)setView{
     NOVStartBookModel *model = self.novelArray[setView.tag-1];
     NOVWriteViewController *writeViewController = [[NOVWriteViewController alloc] init];
-    writeViewController.publishNovelBlock = ^(NSString *title, NSString *summary, NSString *content) {
-        model.firstTitle = title;
+    writeViewController.bookModel = model;
+    
+    writeViewController.publishNovelBlock = ^(NSString *title, NSString *summary, NSString *content,Boolean isPublish) {
+        //isPublish标记发布还是存为草稿
+        model.firstTitle = title;   //更新model
         model.firstContent = content;
         model.firstSummary = summary;
         NOVStartManager *startManager = [[NOVStartManager alloc] init];
-        [startManager startNovelWithModel:model success:^(id  _Nonnull responseObject) {
+        [startManager startNovelWithModel:model isPublish:isPublish success:^(id  _Nonnull responseObject) {
+            NSLog(@"%@",responseObject);
             //发布成功
-            //改变编辑button状态
-            [setView.editButton setTitle:@"查看作品(已发布)" forState:UIControlStateNormal];
-            setView.editButton.userInteractionEnabled = NO;
-            //标记为已发布
-            setView.novelState = NovelStatePublished;
-            NSLog(@"发布成功%@",responseObject);
+            if (isPublish) {
+                //改变编辑button状态
+                [setView.editButton setTitle:@"查看作品(已发布)" forState:UIControlStateNormal];
+                setView.editButton.userInteractionEnabled = NO;
+                //标记为已发布
+                setView.novelState = NovelStatePublished;
+            }
+            model.bookId = [responseObject[@"data"][@"bookId"] integerValue];
+            /*
             if (model.bookImage) {
                 //根据bookId上传图片
                 model.bookId = (NSInteger)responseObject[@"data"][@"bookId"];
@@ -88,8 +104,9 @@
                 } fail:^(NSError * _Nonnull error) {
                 }];
             }
+             */
         } fail:^(NSError * _Nonnull error) {
-            NSLog(@"发布失败%@",error);
+            NSLog(@"%@",error);
         }];
     };
     [self.navigationController pushViewController:writeViewController animated:NO];
@@ -102,6 +119,13 @@
     [self.navigationController popViewControllerAnimated:NO];
 }
 
+-(NOVNoContentView *)noContentView{
+    if (!_noContentView) {
+        _noContentView = [[NOVNoContentView alloc] initWithFrame:CGRectMake(0, self.view.frame.origin.y - 64, self.view.frame.size.width, self.view.frame.size.height - 64)];
+    }
+    return _noContentView;
+}
+
 -(void)creatStart{
     if (!_mystartView) {
         _mystartView = [[NOVMystartView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
@@ -112,6 +136,7 @@
     NOVEditViewController *editViewController = [[NOVEditViewController alloc] init];
     editViewController.novelTitleBlock = ^(NOVStartBookModel *model) {
         NSLog(@"%@",model.introduction);
+        model.bookId = -1;  //将bookID初始化为-1
         //在我的发起界面根据回调的数据添加作品（未发布）
         [weakSelf.mystartView addViewWithModel:model];
         //更新数据源

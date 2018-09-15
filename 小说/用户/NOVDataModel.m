@@ -113,7 +113,7 @@ static NOVDataModel *datamodel = nil;
 }
 
 +(void)updateCollectionListWithArray:(NSMutableArray *)collectionList{
-    NSLog(@"%lu",(unsigned long)collectionList.count);
+    NSLog(@"collection%lu",(unsigned long)collectionList.count);
     NSArray *array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *libraryPath = [array objectAtIndex:0];
     NSString *collectionPath = [libraryPath stringByAppendingPathComponent:@"collectionList.txt"];
@@ -125,7 +125,7 @@ static NOVDataModel *datamodel = nil;
     NSString *documentPath = [array objectAtIndex:0];
     NSString *filePath = [documentPath stringByAppendingPathComponent:@"collectionList.txt"];
     NSArray *dataArray = [[NSArray alloc] initWithContentsOfFile:filePath];
-    NSLog(@"%lu",(unsigned long)dataArray.count);
+    NSLog(@"collection%lu",(unsigned long)dataArray.count);
     return dataArray;
 }
 
