@@ -11,10 +11,10 @@
 #import "NOVRenewModel.h"
 
 @implementation NOVStartManager
--(void)getMyStartSuccess:(successBlock _Nullable)successBlock fail:(failBlock _Nullable)failBlock{
+-(void)getMyStartWithType:(NSString *)type Success:(successBlock _Nullable)successBlock fail:(failBlock _Nullable)failBlock{
     NOVDataModel *dataModel = [NOVDataModel shareInstance];
     NSString *token = [NSString stringWithFormat:@"Bearer %@",[dataModel getToken]];
-    NSString *url = [NSString stringWithFormat:@"http://47.95.207.40/branch/user/book?status=%@",@"PUBLISH"];
+    NSString *url = [NSString stringWithFormat:@"http://47.95.207.40/branch/user/book?status=%@",type];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     [manager.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];

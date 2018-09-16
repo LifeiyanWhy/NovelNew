@@ -16,7 +16,7 @@ typedef void(^failBlock)(NSError *_Nonnull error);
 
 @interface NOVStartManager : NSObject
 //获取我的发起
--(void)getMyStartSuccess:(successBlock _Nullable)successBlock fail:(failBlock _Nullable)failBlock;
+-(void)getMyStartWithType:(NSString *)type Success:(successBlock _Nullable)successBlock fail:(failBlock _Nullable)failBlock;
 //发起一本小说
 -(void)startNovelWithModel:(NOVStartBookModel *_Nonnull)model isPublish:(Boolean)isPublish success:(successBlock _Nullable)successBlock fail:(failBlock _Nonnull)failBlock;
 //发布续写

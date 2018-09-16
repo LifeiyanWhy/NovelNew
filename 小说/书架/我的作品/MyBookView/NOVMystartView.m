@@ -19,44 +19,41 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.00];
-        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 64, frame.size.width, frame.size.height - 64)];
+        _scrollView = [[UIScrollView alloc] initWithFrame:frame];
         [self addSubview:_scrollView];
+        _scrollView.showsVerticalScrollIndicator = NO;
+        _scrollView.showsHorizontalScrollIndicator = NO;
+        _scrollView.pagingEnabled = YES;
+        _scrollView.bounces = NO;
         _viewNumber = 0;
     }
     return self;
 }
 
--(instancetype)initWithFrame:(CGRect)frame withViewNumber:(NSInteger)viewNumber{
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.00];
-        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 64, frame.size.width, frame.size.height - 64)];
-        [self addSubview:_scrollView];
-        _viewNumber = viewNumber;
-    }
-    return self;
-}
-
--(void)layoutSubviews{
-    _scrollView.contentSize = CGSizeMake(self.frame.size.width*_viewNumber, self.frame.size.height - 64);
-    _scrollView.showsVerticalScrollIndicator = NO;
-    _scrollView.showsHorizontalScrollIndicator = NO;
-    scrollviewHeight = self.frame.size.height - 64;
-    _scrollView.pagingEnabled = YES;
+-(void)setSubViewsWithViewNumber:(NSInteger)viewNumber isPublish:(BOOL)isPublish{
+    _viewNumber = viewNumber;
+    NSLog(@"%ld",(long)_viewNumber);
+    _scrollView.contentSize = CGSizeMake(self.frame.size.width*viewNumber, self.frame.size.height);
+    scrollviewHeight = self.frame.size.height;
     
-    for (int i = 0; i < _viewNumber; i++) {
+    for (int i = 0; i < viewNumber; i++) {
         NOVBookSetView *bookSetView;
-        if ([_delegate respondsToSelector:@selector(viewForPape:WithWidth:Height:)]) {
-            bookSetView = [self.delegate viewForPape:i WithWidth:self.frame.size.width Height:scrollviewHeight];
+        if ([_delegate respondsToSelector:@selector(mystartView:viewForPape:WithWidth:Height:)]) {
+            bookSetView = [self.delegate mystartView:self viewForPape:i WithWidth:self.frame.size.width Height:scrollviewHeight];
         }else{
             bookSetView = [[NOVBookSetView alloc] initWithFrame:CGRectMake(self.frame.size.width*(0.15+i), scrollviewHeight*0.07, self.frame.size.width*0.7, scrollviewHeight*0.83)];
         }
         bookSetView.tag = i + 1;
         [bookSetView.changeImageGesture addTarget:self action:@selector(changeCurrentBookImage:)];
         bookSetView.detailButton.tag = i + 1;
-        [bookSetView.editButton setTitle:@"查看作品(已发布)" forState:UIControlStateNormal];
-        bookSetView.editButton.userInteractionEnabled = NO;
         [_scrollView addSubview:bookSetView];
+        if (isPublish) {
+            [bookSetView.editButton setTitle:@"查看作品(已发布)" forState:UIControlStateNormal];
+            bookSetView.editButton.userInteractionEnabled = NO;
+        }else{
+            [bookSetView.editButton setTitle:@"编辑作品(未发布)" forState:UIControlStateNormal];
+            bookSetView.editButton.userInteractionEnabled = YES;
+        }
     }
 }
 
@@ -104,6 +101,43 @@
     }
 }
 
+
+
+
+
+//-(instancetype)initWithFrame:(CGRect)frame withViewNumber:(NSInteger)viewNumber{
+//    self = [super initWithFrame:frame];
+//    if (self) {
+//        self.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.00];
+//        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 64, frame.size.width, frame.size.height - 64)];
+//        [self addSubview:_scrollView];
+//        _viewNumber = viewNumber;
+//    }
+//    return self;
+//}
+
+//-(void)layoutSubviews{
+//    _scrollView.contentSize = CGSizeMake(self.frame.size.width*_viewNumber, self.frame.size.height - 64);
+//    _scrollView.showsVerticalScrollIndicator = NO;
+//    _scrollView.showsHorizontalScrollIndicator = NO;
+//    scrollviewHeight = self.frame.size.height - 64;
+//    _scrollView.pagingEnabled = YES;
+
+//    for (int i = 0; i < _viewNumber; i++) {
+//        NOVBookSetView *bookSetView;
+//        if ([_delegate respondsToSelector:@selector(viewForPape:WithWidth:Height:)]) {
+//            bookSetView = [self.delegate viewForPape:i WithWidth:self.frame.size.width Height:scrollviewHeight];
+//        }else{
+//            bookSetView = [[NOVBookSetView alloc] initWithFrame:CGRectMake(self.frame.size.width*(0.15+i), scrollviewHeight*0.07, self.frame.size.width*0.7, scrollviewHeight*0.83)];
+//        }
+//        bookSetView.tag = i + 1;
+//        [bookSetView.changeImageGesture addTarget:self action:@selector(changeCurrentBookImage:)];
+//        bookSetView.detailButton.tag = i + 1;
+//        [bookSetView.editButton setTitle:@"查看作品(已发布)" forState:UIControlStateNormal];
+//        bookSetView.editButton.userInteractionEnabled = NO;
+//        [_scrollView addSubview:bookSetView];
+//    }
+//}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

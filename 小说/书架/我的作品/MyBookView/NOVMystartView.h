@@ -11,9 +11,11 @@
 @class NOVBookSetView;
 @class NOVStartBookModel;
 @class NOVGetMyStartModel;
+@class NOVMystartView;
+
 @protocol NOVMystartViewDategate <NSObject>
 @required
--(NOVBookSetView *)viewForPape:(NSInteger)page WithWidth:(CGFloat)width Height:(CGFloat)height;
+-(NOVBookSetView *)mystartView:(NOVMystartView *)myStartView viewForPape:(NSInteger)page WithWidth:(CGFloat)width Height:(CGFloat)height;
 @optional
 //点击编辑button时执行
 -(void)touchEditButtonInSetView:(NOVBookSetView *)setView;
@@ -25,6 +27,6 @@
 @property(nonatomic,readonly,assign) NSInteger viewNumber;
 @property(nonatomic,weak) id <NOVMystartViewDategate>delegate;
 -(instancetype)initWithFrame:(CGRect)frame;
--(instancetype)initWithFrame:(CGRect)frame withViewNumber:(NSInteger)viewNumber;
+-(void)setSubViewsWithViewNumber:(NSInteger)viewNumber isPublish:(BOOL)isPublish;
 -(void)addViewWithModel:(NOVStartBookModel *)model;
 @end

@@ -7,16 +7,10 @@
 //
 
 #import "NOVMystartViewController.h"
-#import "NOVMystartView.h"
-#import "NOVBookSetView.h"
-#import "NOVEditViewController.h"
-#import "NOVStartManager.h"
-#import "NOVGetMyStartModel.h"
-#import "NOVStartBookModel.h"
-#import "NOVWriteViewController.h"
-#import "NOVNoContentView.h"
+#import "NOVMystartHeadFile.h"
 
-@interface NOVMystartViewController ()<NOVMystartViewDategate>
+@interface NOVMystartViewController ()<NOVMystartViewDategate,NOVViewDelegate>
+@property(nonatomic,strong) NOVAllMyStartView *allMyStartView;
 @property(nonatomic,strong) NOVMystartView *mystartView;
 @property(nonatomic,strong) NOVNoContentView *noContentView;
 @end
@@ -26,52 +20,69 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithDisplayP3Red:0.15 green:0.65 blue:0.6 alpha:1.00];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.view.backgroundColor = [UIColor whiteColor];
-    
-//    UIView *leftview = [[UIView alloc] initWithFrame:CGRectMake(0, 20, 100, 30)];
-//    UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-//    [leftButton setImage:[UIImage imageNamed:@"返回white.png"] forState:UIControlStateNormal];
-//    [leftview addSubview:leftButton];
-//    [leftButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, 70, 30)];
-//    label.text = @"我的发起";
-//    label.font = [UIFont systemFontOfSize:14];
-//    label.textColor = [UIColor whiteColor];
-//    [leftview addSubview:label];
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftview];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"返回white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(creatStart)];
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]} forState:UIControlStateNormal];
+    [self.view addSubview:self.allMyStartView];
     
     _novelArray = [NSMutableArray array];
+    _draftsArray = [NSMutableArray array];
+    
     //获取当前用户的所有作品
     NOVStartManager *startManager = [[NOVStartManager alloc] init];
-    [startManager getMyStartSuccess:^(id  _Nonnull responseObject) {
+//    [startManager getMyStartWithType:@"PUBLISH" Success:^(id  _Nonnull responseObject) {
+//        NSArray *array = responseObject[@"data"];
+//        if (array.count == 0) {
+//            [self.view addSubview:self.noContentView];
+//        } else {
+//            for (int i = 0 ; i < array.count; i++) {
+//                [_novelArray addObject:[[NOVGetMyStartModel alloc] initWithDictionary:array[i] error:nil]];
+//            }
+//            [_allMyStartView.publishedView setSubViewsWithViewNumber:_novelArray.count isPublish:YES];
+//        }
+//    } fail:^(NSError * _Nonnull error) {
+//        NSLog(@"%@",error);
+//    }];
+    
+    [startManager getMyStartWithType:@"UNPUBLISHED" Success:^(id  _Nonnull responseObject) {
         NSArray *array = responseObject[@"data"];
         if (array.count == 0) {
             [self.view addSubview:self.noContentView];
         } else {
             for (int i = 0 ; i < array.count; i++) {
-                [_novelArray addObject:[[NOVGetMyStartModel alloc] initWithDictionary:array[i] error:nil]];
+                [_draftsArray addObject:[[NOVGetMyStartModel alloc] initWithDictionary:array[i] error:nil]];
             }
-            _mystartView = [[NOVMystartView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) withViewNumber:_novelArray.count];
-            _mystartView.delegate = self;
-            [self.view addSubview:_mystartView];
-            _mystartView.delegate = self;
+            [_allMyStartView.draftsView setSubViewsWithViewNumber:_draftsArray.count isPublish:NO];
         }
     } fail:^(NSError * _Nonnull error) {
-        
         NSLog(@"%@",error);
     }];
 }
 
--(NOVBookSetView *)viewForPape:(NSInteger)page WithWidth:(CGFloat)width Height:(CGFloat)height{
+-(NOVBookSetView *)mystartView:(NOVMystartView *)myStartView viewForPape:(NSInteger)page WithWidth:(CGFloat)width Height:(CGFloat)height{
     NOVBookSetView *bookSetView = [[NOVBookSetView alloc] initWithFrame:CGRectMake(width*(0.15+page), height*0.07, width*0.7, height*0.83)];
-    [bookSetView updateWithModel:_novelArray[page]];
+    if ([myStartView isEqual:_allMyStartView.publishedView]) {
+        [bookSetView updateWithModel:_novelArray[page]];
+    } else {
+        [bookSetView updateWithModel:_draftsArray[page]];
+    }
     return bookSetView;
+}
+
+-(void)touchRespone:(UIButton *)touchButton{
+    [_allMyStartView.scrollView setContentOffset:CGPointMake(ScreenWidth*touchButton.tag, 0) animated:NO];
+}
+
+-(NOVAllMyStartView *)allMyStartView{
+    if (!_allMyStartView) {
+        _allMyStartView = [[NOVAllMyStartView alloc] initWithFrame:self.view.frame];
+        [_allMyStartView.leftButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        [_allMyStartView.rightButton addTarget:self action:@selector(creatStart) forControlEvents:UIControlEventTouchUpInside];
+        _allMyStartView.headView.delegate = self;
+        _allMyStartView.publishedView.delegate = self;
+        _allMyStartView.draftsView.delegate = self;
+    }
+    return _allMyStartView;
+}
+
+-(void)changeBookImageWithView:(UIImageView *)imageView{
 }
 
 -(void)touchEditButtonInSetView:(NOVBookSetView *)setView{
@@ -89,41 +100,16 @@
             NSLog(@"%@",responseObject);
             //发布成功
             if (isPublish) {
-                //改变编辑button状态
-                [setView.editButton setTitle:@"查看作品(已发布)" forState:UIControlStateNormal];
+                [setView.editButton setTitle:@"查看作品(已发布)" forState:UIControlStateNormal];   //改变编辑button状态
                 setView.editButton.userInteractionEnabled = NO;
-                //标记为已发布
-                setView.novelState = NovelStatePublished;
+                setView.novelState = NovelStatePublished;   //标记为已发布
             }
             model.bookId = [responseObject[@"data"][@"bookId"] integerValue];
-            /*
-            if (model.bookImage) {
-                //根据bookId上传图片
-                model.bookId = (NSInteger)responseObject[@"data"][@"bookId"];
-                [startManager uploadBookImage:model.bookImage bookId:model.bookId success:^(id  _Nonnull responseObject) {
-                } fail:^(NSError * _Nonnull error) {
-                }];
-            }
-             */
         } fail:^(NSError * _Nonnull error) {
             NSLog(@"%@",error);
         }];
     };
     [self.navigationController pushViewController:writeViewController animated:NO];
-}
-
--(void)changeBookImageWithView:(UIImageView *)imageView{
-}
-
--(void)back{
-    [self.navigationController popViewControllerAnimated:NO];
-}
-
--(NOVNoContentView *)noContentView{
-    if (!_noContentView) {
-        _noContentView = [[NOVNoContentView alloc] initWithFrame:CGRectMake(0, self.view.frame.origin.y - 64, self.view.frame.size.width, self.view.frame.size.height - 64)];
-    }
-    return _noContentView;
 }
 
 -(void)creatStart{
@@ -145,13 +131,18 @@
     [self.navigationController pushViewController:editViewController animated:NO];
 }
 
--(void)viewWillAppear:(BOOL)animated{
-    self.navigationController.navigationBar.hidden = NO;
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithDisplayP3Red:0.15 green:0.65 blue:0.6 alpha:1.00];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+-(void)back{
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
--(void)viewWillDisappear:(BOOL)animated{
+-(NOVNoContentView *)noContentView{
+    if (!_noContentView) {
+        _noContentView = [[NOVNoContentView alloc] initWithFrame:CGRectMake(0, self.view.frame.origin.y - 64, self.view.frame.size.width, self.view.frame.size.height - 64)];
+    }
+    return _noContentView;
+}
+
+-(void)viewWillAppear:(BOOL)animated{
     self.navigationController.navigationBar.hidden = YES;
 }
 

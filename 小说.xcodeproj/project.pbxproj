@@ -107,6 +107,7 @@
 		C4B7CFE52103272C00C2F9BE /* NOVNetworkAnomalyView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4B7CFE42103272C00C2F9BE /* NOVNetworkAnomalyView.m */; };
 		C4B7CFE821036C6D00C2F9BE /* NOVReadConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = C4B7CFE721036C6D00C2F9BE /* NOVReadConfig.m */; };
 		C4BEB6FC20C6CCB0002B1AA4 /* NOVStartManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BEB6FB20C6CCB0002B1AA4 /* NOVStartManager.m */; };
+		C4BF072E214E00480033E53B /* NOVAllMyStartView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BF072D214E00470033E53B /* NOVAllMyStartView.m */; };
 		C4C343AB211A9A9900C4C8ED /* NOVReadEndView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C343AA211A9A9900C4C8ED /* NOVReadEndView.m */; };
 		C4C343AE211ADB2300C4C8ED /* NOVNextChapterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C343AD211ADB2300C4C8ED /* NOVNextChapterViewController.m */; };
 		C4C343B2211ADB6500C4C8ED /* NOVNextChapterView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C343B1211ADB6500C4C8ED /* NOVNextChapterView.m */; };
@@ -363,6 +364,9 @@
 		C4B7CFE721036C6D00C2F9BE /* NOVReadConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVReadConfig.m; sourceTree = "<group>"; };
 		C4BEB6FA20C6CCB0002B1AA4 /* NOVStartManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVStartManager.h; sourceTree = "<group>"; };
 		C4BEB6FB20C6CCB0002B1AA4 /* NOVStartManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVStartManager.m; sourceTree = "<group>"; };
+		C4BF072B214DF85A0033E53B /* NOVMystartHeadFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVMystartHeadFile.h; sourceTree = "<group>"; };
+		C4BF072C214E00470033E53B /* NOVAllMyStartView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVAllMyStartView.h; sourceTree = "<group>"; };
+		C4BF072D214E00470033E53B /* NOVAllMyStartView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVAllMyStartView.m; sourceTree = "<group>"; };
 		C4C1F130210754AB0007728A /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		C4C343A9211A9A9900C4C8ED /* NOVReadEndView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NOVReadEndView.h; sourceTree = "<group>"; };
 		C4C343AA211A9A9900C4C8ED /* NOVReadEndView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NOVReadEndView.m; sourceTree = "<group>"; };
@@ -720,14 +724,14 @@
 		C45AB12B211568B500A28869 /* MyBookView */ = {
 			isa = PBXGroup;
 			children = (
+				C4BF072C214E00470033E53B /* NOVAllMyStartView.h */,
+				C4BF072D214E00470033E53B /* NOVAllMyStartView.m */,
 				C4AB81E220B41C3B00213AD1 /* NOVMystartView.h */,
 				C4AB81E320B41C3B00213AD1 /* NOVMystartView.m */,
 				C4AB81E520B4285700213AD1 /* NOVBookSetView.h */,
 				C4AB81E620B4285700213AD1 /* NOVBookSetView.m */,
 				C4E5EC8920B6B7FF00EDD6D2 /* NOVSetbackView.h */,
 				C4E5EC8A20B6B7FF00EDD6D2 /* NOVSetbackView.m */,
-				C452AA34214CF40500911567 /* NOVNoContentView.h */,
-				C452AA35214CF40500911567 /* NOVNoContentView.m */,
 			);
 			path = MyBookView;
 			sourceTree = "<group>";
@@ -737,6 +741,7 @@
 			children = (
 				C4AB81DF20B41B6900213AD1 /* NOVMystartViewController.h */,
 				C4AB81E020B41B6900213AD1 /* NOVMystartViewController.m */,
+				C4BF072B214DF85A0033E53B /* NOVMystartHeadFile.h */,
 			);
 			path = MyBookController;
 			sourceTree = "<group>";
@@ -1229,6 +1234,8 @@
 		C4E627242115644C008EB105 /* 用户 */ = {
 			isa = PBXGroup;
 			children = (
+				C452AA34214CF40500911567 /* NOVNoContentView.h */,
+				C452AA35214CF40500911567 /* NOVNoContentView.m */,
 				C479FDC420CC2BC600F17CBC /* NOVDataModel.h */,
 				C479FDC520CC2BC600F17CBC /* NOVDataModel.m */,
 				C492AC74210AA2F5003E0CA3 /* NOVDataBase.h */,
@@ -1634,6 +1641,7 @@
 				C4E9C5C6209A084B004E7EFF /* NOVChatroomTableViewCell.m in Sources */,
 				C4C343B2211ADB6500C4C8ED /* NOVNextChapterView.m in Sources */,
 				C4D679DF208A318D00246CF8 /* NOVReadNovelViewController.m in Sources */,
+				C4BF072E214E00480033E53B /* NOVAllMyStartView.m in Sources */,
 				C496037A209ADE7100ACBD28 /* NOVChatroomView.m in Sources */,
 				C4BEB6FC20C6CCB0002B1AA4 /* NOVStartManager.m in Sources */,
 				C4221E4D207EC0CB008E7D4E /* NOVFindView.m in Sources */,

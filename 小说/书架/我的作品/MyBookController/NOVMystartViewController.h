@@ -10,4 +10,5 @@
 
 @interface NOVMystartViewController : UIViewController
 @property(nonatomic,strong) NSMutableArray *novelArray;
+@property(nonatomic,strong) NSMutableArray *draftsArray;
 @end
