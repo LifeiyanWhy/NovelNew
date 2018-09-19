@@ -78,6 +78,9 @@ static NOVDataModel *datamodel = nil;
     NSString *documentPath = [array objectAtIndex:0];
     NSString *tokenPath = [documentPath stringByAppendingPathComponent:@"token.txt"];
     NSArray *dataArray = [[NSArray alloc] initWithContentsOfFile:tokenPath];
+//    if (dataArray.count < 2) {
+//        return nil;
+//    }
     return dataArray[1];
 }
 

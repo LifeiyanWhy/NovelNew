@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+@class NOVAllMyStartView;
 
 @interface NOVMystartViewController : UIViewController
+@property(nonatomic,strong) NOVAllMyStartView *allMyStartView;
 @property(nonatomic,strong) NSMutableArray *novelArray;
 @property(nonatomic,strong) NSMutableArray *draftsArray;
+@property(nonatomic,assign) bool touchTopButton;
 @end

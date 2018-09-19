@@ -165,6 +165,7 @@
 		C4DF0EFF209EF90C00457C86 /* NOVSigninView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DF0EFE209EF90C00457C86 /* NOVSigninView.m */; };
 		C4E1A9A2208891500070EF61 /* NOVMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E1A9A1208891500070EF61 /* NOVMessageViewController.m */; };
 		C4E1A9AA208895790070EF61 /* NOVMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E1A9A9208895790070EF61 /* NOVMessageView.m */; };
+		C4E5119B215271A900EAEAA0 /* NOVMystartViewController+viewMove.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E5119A215271A900EAEAA0 /* NOVMystartViewController+viewMove.m */; };
 		C4E5EC8B20B6B7FF00EDD6D2 /* NOVSetbackView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E5EC8A20B6B7FF00EDD6D2 /* NOVSetbackView.m */; };
 		C4E724AD20A9B69D00D22CB1 /* NOVEditViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E724AC20A9B69D00D22CB1 /* NOVEditViewTableViewCell.m */; };
 		C4E724B220A9CC4D00D22CB1 /* NOVDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E724B120A9CC4D00D22CB1 /* NOVDetailViewController.m */; };
@@ -473,6 +474,8 @@
 		C4E1A9A1208891500070EF61 /* NOVMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVMessageViewController.m; sourceTree = "<group>"; };
 		C4E1A9A8208895790070EF61 /* NOVMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVMessageView.h; sourceTree = "<group>"; };
 		C4E1A9A9208895790070EF61 /* NOVMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVMessageView.m; sourceTree = "<group>"; };
+		C4E51199215271A900EAEAA0 /* NOVMystartViewController+viewMove.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NOVMystartViewController+viewMove.h"; sourceTree = "<group>"; };
+		C4E5119A215271A900EAEAA0 /* NOVMystartViewController+viewMove.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NOVMystartViewController+viewMove.m"; sourceTree = "<group>"; };
 		C4E5EC8920B6B7FF00EDD6D2 /* NOVSetbackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVSetbackView.h; sourceTree = "<group>"; };
 		C4E5EC8A20B6B7FF00EDD6D2 /* NOVSetbackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NOVSetbackView.m; sourceTree = "<group>"; };
 		C4E724AB20A9B69D00D22CB1 /* NOVEditViewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NOVEditViewTableViewCell.h; sourceTree = "<group>"; };
@@ -741,6 +744,8 @@
 			children = (
 				C4AB81DF20B41B6900213AD1 /* NOVMystartViewController.h */,
 				C4AB81E020B41B6900213AD1 /* NOVMystartViewController.m */,
+				C4E51199215271A900EAEAA0 /* NOVMystartViewController+viewMove.h */,
+				C4E5119A215271A900EAEAA0 /* NOVMystartViewController+viewMove.m */,
 				C4BF072B214DF85A0033E53B /* NOVMystartHeadFile.h */,
 			);
 			path = MyBookController;
@@ -1614,6 +1619,7 @@
 				C4EC833E212113BF007DF270 /* NOVNextChapterCellHeightModel.m in Sources */,
 				C4C89071206BF61E00BED312 /* MYViewController.m in Sources */,
 				C4B09CBE2089AE3B00756467 /* NOVMessageTableViewCell.m in Sources */,
+				C4E5119B215271A900EAEAA0 /* NOVMystartViewController+viewMove.m in Sources */,
 				C4C4732520AD7F4700E3E508 /* NOVLongpressCellView.m in Sources */,
 				C4B0DB77209DA30B006E1998 /* NOVChatroomReceiveTableViewCell.m in Sources */,
 				C4ADC1E8211563D10085BA78 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,

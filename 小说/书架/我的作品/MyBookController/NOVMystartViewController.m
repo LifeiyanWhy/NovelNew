@@ -9,9 +9,7 @@
 #import "NOVMystartViewController.h"
 #import "NOVMystartHeadFile.h"
 
-@interface NOVMystartViewController ()<NOVMystartViewDategate,NOVViewDelegate>
-@property(nonatomic,strong) NOVAllMyStartView *allMyStartView;
-@property(nonatomic,strong) NOVMystartView *mystartView;
+@interface NOVMystartViewController ()<NOVMystartViewDategate,NOVViewDelegate,UIScrollViewDelegate>
 @property(nonatomic,strong) NOVNoContentView *noContentView;
 @end
 
@@ -21,25 +19,26 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.view addSubview:self.allMyStartView];
+    _touchTopButton = NO;
     
     _novelArray = [NSMutableArray array];
     _draftsArray = [NSMutableArray array];
     
     //获取当前用户的所有作品
     NOVStartManager *startManager = [[NOVStartManager alloc] init];
-//    [startManager getMyStartWithType:@"PUBLISH" Success:^(id  _Nonnull responseObject) {
-//        NSArray *array = responseObject[@"data"];
-//        if (array.count == 0) {
-//            [self.view addSubview:self.noContentView];
-//        } else {
-//            for (int i = 0 ; i < array.count; i++) {
-//                [_novelArray addObject:[[NOVGetMyStartModel alloc] initWithDictionary:array[i] error:nil]];
-//            }
-//            [_allMyStartView.publishedView setSubViewsWithViewNumber:_novelArray.count isPublish:YES];
-//        }
-//    } fail:^(NSError * _Nonnull error) {
-//        NSLog(@"%@",error);
-//    }];
+    [startManager getMyStartWithType:@"PUBLISH" Success:^(id  _Nonnull responseObject) {
+        NSArray *array = responseObject[@"data"];
+        if (array.count == 0) {
+            [self.view addSubview:self.noContentView];
+        } else {
+            for (int i = 0 ; i < array.count; i++) {
+                [_novelArray addObject:[[NOVGetMyStartModel alloc] initWithDictionary:array[i] error:nil]];
+            }
+            [_allMyStartView.publishedView setSubViewsWithViewNumber:_novelArray.count isPublish:YES];
+        }
+    } fail:^(NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+    }];
     
     [startManager getMyStartWithType:@"UNPUBLISHED" Success:^(id  _Nonnull responseObject) {
         NSArray *array = responseObject[@"data"];
@@ -60,14 +59,16 @@
     NOVBookSetView *bookSetView = [[NOVBookSetView alloc] initWithFrame:CGRectMake(width*(0.15+page), height*0.07, width*0.7, height*0.83)];
     if ([myStartView isEqual:_allMyStartView.publishedView]) {
         [bookSetView updateWithModel:_novelArray[page]];
-    } else {
+    } else {//草稿箱
         [bookSetView updateWithModel:_draftsArray[page]];
     }
+    [bookSetView.editButton addTarget:self action:@selector(readBook:) forControlEvents:UIControlEventTouchUpInside];
     return bookSetView;
 }
 
--(void)touchRespone:(UIButton *)touchButton{
-    [_allMyStartView.scrollView setContentOffset:CGPointMake(ScreenWidth*touchButton.tag, 0) animated:NO];
+//进入阅读界面
+-(void)readBook:(UIButton *)button{
+    
 }
 
 -(NOVAllMyStartView *)allMyStartView{
@@ -75,9 +76,12 @@
         _allMyStartView = [[NOVAllMyStartView alloc] initWithFrame:self.view.frame];
         [_allMyStartView.leftButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
         [_allMyStartView.rightButton addTarget:self action:@selector(creatStart) forControlEvents:UIControlEventTouchUpInside];
+        _allMyStartView.scrollView.delegate = self;
         _allMyStartView.headView.delegate = self;
         _allMyStartView.publishedView.delegate = self;
+        _allMyStartView.publishedView.scrollView.delegate = self;
         _allMyStartView.draftsView.delegate = self;
+        _allMyStartView.draftsView.scrollView.delegate = self;
     }
     return _allMyStartView;
 }
@@ -86,7 +90,7 @@
 }
 
 -(void)touchEditButtonInSetView:(NOVBookSetView *)setView{
-    NOVStartBookModel *model = self.novelArray[setView.tag-1];
+    NOVStartBookModel *model = self.novelArray[setView.tag];
     NOVWriteViewController *writeViewController = [[NOVWriteViewController alloc] init];
     writeViewController.bookModel = model;
     
@@ -113,18 +117,13 @@
 }
 
 -(void)creatStart{
-    if (!_mystartView) {
-        _mystartView = [[NOVMystartView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        _mystartView.delegate = self;
-        [self.view addSubview:_mystartView];
-    }
     __block NOVMystartViewController *weakSelf = self;
     NOVEditViewController *editViewController = [[NOVEditViewController alloc] init];
     editViewController.novelTitleBlock = ^(NOVStartBookModel *model) {
         NSLog(@"%@",model.introduction);
         model.bookId = -1;  //将bookID初始化为-1
         //在我的发起界面根据回调的数据添加作品（未发布）
-        [weakSelf.mystartView addViewWithModel:model];
+        [_allMyStartView.draftsView addViewWithModel:model];
         //更新数据源
         [weakSelf.novelArray addObject:model];
     };

@@ -18,6 +18,7 @@
 #import "NOVWriteViewController.h"
 #import "NOVNoContentView.h"
 #import "NOVAllMyStartView.h"
+#import "NOVMystartViewController+viewMove.h"
 #import "NOVView.h"
 
 #endif /* NOVMystartHeadFile_h */

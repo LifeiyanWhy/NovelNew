@@ -16,7 +16,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
-        _headView = [[NOVView alloc] initWithFrame:CGRectMake(ScreenWidth * 0.25, 0, ScreenWidth * 0.5, 64) titleArray:@[@"已发布",@"草稿箱"]];
+        _headView = [[NOVView alloc] initWithFrame:CGRectMake(ScreenWidth * 0.25, 0, ScreenWidth * 0.5, 64) titleArray:@[@"已发布",@"未发布"]];
         _headView.backgroundColor = SystemColor;
         [self addSubview:_headView];
         
@@ -28,23 +28,18 @@
         
         _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 64, ScreenWidth, ScreenHeight - 64)];
         [self addSubview:_scrollView];
-        [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_headView.mas_bottom);
-            make.bottom.and.left.and.right.equalTo(self);
-        }];
         _scrollView.contentSize = CGSizeMake(ScreenWidth * 2, ScreenHeight - 64);
         _scrollView.showsVerticalScrollIndicator = NO;
         _scrollView.showsHorizontalScrollIndicator = NO;
         _scrollView.pagingEnabled = YES;
         _scrollView.bounces = NO;
+        _scrollView.backgroundColor = [UIColor redColor];
         
         _publishedView = [[NOVMystartView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64)];
         [_scrollView addSubview:_publishedView];
-        _publishedView.scrollView.backgroundColor = [UIColor redColor];
         
         _draftsView = [[NOVMystartView alloc] initWithFrame:CGRectMake(ScreenWidth, 0, ScreenWidth, ScreenHeight - 64)];
         [_scrollView addSubview:_draftsView];
-        _draftsView.backgroundColor = [UIColor yellowColor];
     }
     return self;
 }
