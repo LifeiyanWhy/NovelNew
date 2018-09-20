@@ -41,6 +41,10 @@ static NOVDataModel *datamodel = nil;
     if (!account) {
         return NULL;
     }
+    NOVDataModel *model = [NOVDataModel shareInstance];
+    if (nil == [model getToken]) {
+        return NULL;
+    }
     NSString *password = [userDefault objectForKey:@"password"];
     BOOL isLogin = [userDefault boolForKey:@"isLogin"];
     return [[NOVUserLoginMessageModel alloc] initWithAccount:account password:password isLogin:isLogin];
@@ -70,6 +74,9 @@ static NOVDataModel *datamodel = nil;
     NSString *documentPath = [array objectAtIndex:0];
     NSString *tokenPath = [documentPath stringByAppendingPathComponent:@"token.txt"];
     NSArray *dataArray = [[NSArray alloc] initWithContentsOfFile:tokenPath];
+    if (dataArray.count != 2) {
+        return nil;
+    }
     return dataArray[0];
 }
 

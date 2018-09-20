@@ -13,7 +13,6 @@
 
 @implementation NOVMystartViewController (viewMove)
 
-
 -(void)touchRespone:(UIButton *)touchButton{
     self.touchTopButton = YES;
     [self.allMyStartView.scrollView setContentOffset:CGPointMake(ScreenWidth*touchButton.tag + 1, 0) animated:YES];
@@ -31,9 +30,10 @@
     CGPoint point = scrollView.contentOffset;
     if ([scrollView isEqual:self.allMyStartView.scrollView]) {
         NSLog(@"%f",point.x);
-        
-        [self.allMyStartView.headView setButtonPostion:point width:ScreenWidth];
+    }else{
+        return;
     }
+    [self.allMyStartView.headView setButtonPostion:point width:ScreenWidth*2];
 }
 
 @end

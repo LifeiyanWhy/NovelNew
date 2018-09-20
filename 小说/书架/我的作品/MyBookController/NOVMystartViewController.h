@@ -14,4 +14,5 @@
 @property(nonatomic,strong) NSMutableArray *novelArray;
 @property(nonatomic,strong) NSMutableArray *draftsArray;
 @property(nonatomic,assign) bool touchTopButton;
+@property(nonatomic,assign) CGFloat lastX;
 @end
