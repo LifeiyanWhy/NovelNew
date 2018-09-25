@@ -47,12 +47,14 @@
         [bookSetView.changeImageGesture addTarget:self action:@selector(changeCurrentBookImage:)];
         bookSetView.editButton.tag = i;
         [_scrollView addSubview:bookSetView];
+        [bookSetView.editButton addTarget:self
+                                   action:@selector(touchEditButton:) forControlEvents:UIControlEventTouchUpInside];
         if (isPublish) {
             [bookSetView.editButton setTitle:@"查看作品(已发布)" forState:UIControlStateNormal];
-            bookSetView.editButton.userInteractionEnabled = NO;
+            bookSetView.novelState = NovelStatePublished;
         }else{
             [bookSetView.editButton setTitle:@"编辑作品(未发布)" forState:UIControlStateNormal];
-            bookSetView.editButton.userInteractionEnabled = YES;
+            bookSetView.novelState = NovelStateUnpublish;
         }
     }
 }
@@ -71,6 +73,7 @@
     //标记作品
     setview.tag = _viewNumber - 1;
     setview.editButton.tag = _viewNumber - 1;
+    setview.novelState = NovelStateUnpublish;
     [setview.editButton setTitle:@"编辑作品(未发布)" forState:UIControlStateNormal];
     [setview.editButton addTarget:self action:@selector(touchEditButton:) forControlEvents:UIControlEventTouchUpInside];
     [setview.changeImageGesture addTarget:self action:@selector(changeCurrentBookImage:)];

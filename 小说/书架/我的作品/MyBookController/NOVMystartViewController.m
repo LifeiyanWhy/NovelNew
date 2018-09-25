@@ -57,18 +57,12 @@
 
 -(NOVBookSetView *)mystartView:(NOVMystartView *)myStartView viewForPape:(NSInteger)page WithWidth:(CGFloat)width Height:(CGFloat)height{
     NOVBookSetView *bookSetView = [[NOVBookSetView alloc] initWithFrame:CGRectMake(width*(0.15+page), height*0.07, width*0.7, height*0.83)];
-    if ([myStartView isEqual:_allMyStartView.publishedView]) {
+    if ([myStartView isEqual:_allMyStartView.publishedView]) {//已发布
         [bookSetView updateWithModel:_novelArray[page]];
-    } else {//草稿箱
+    } else {//未发布
         [bookSetView updateWithModel:_draftsArray[page]];
     }
-    [bookSetView.editButton addTarget:self action:@selector(readBook:) forControlEvents:UIControlEventTouchUpInside];
     return bookSetView;
-}
-
-//进入阅读界面
--(void)readBook:(UIButton *)button{
-    
 }
 
 -(NOVAllMyStartView *)allMyStartView{
@@ -90,30 +84,13 @@
 }
 
 -(void)touchEditButtonInSetView:(NOVBookSetView *)setView{
-    NOVStartBookModel *model = self.novelArray[setView.tag];
-    NOVWriteViewController *writeViewController = [[NOVWriteViewController alloc] init];
-    writeViewController.bookModel = model;
-    
-    writeViewController.publishNovelBlock = ^(NSString *title, NSString *summary, NSString *content,Boolean isPublish) {
-        //isPublish标记发布还是存为草稿
-        model.firstTitle = title;   //更新model
-        model.firstContent = content;
-        model.firstSummary = summary;
-        NOVStartManager *startManager = [[NOVStartManager alloc] init];
-        [startManager startNovelWithModel:model isPublish:isPublish success:^(id  _Nonnull responseObject) {
-            NSLog(@"%@",responseObject);
-            //发布成功
-            if (isPublish) {
-                [setView.editButton setTitle:@"查看作品(已发布)" forState:UIControlStateNormal];   //改变编辑button状态
-                setView.editButton.userInteractionEnabled = NO;
-                setView.novelState = NovelStatePublished;   //标记为已发布
-            }
-            model.bookId = [responseObject[@"data"][@"bookId"] integerValue];
-        } fail:^(NSError * _Nonnull error) {
-            NSLog(@"%@",error);
-        }];
-    };
-    [self.navigationController pushViewController:writeViewController animated:NO];
+    if (setView.novelState) {
+        NSLog(@"publish");
+        [self readBookWithModel:_novelArray[setView.editButton.tag]];
+    }else{
+        NSLog(@"unpublish");
+        [self editBookWithView:setView model:_draftsArray[setView.editButton.tag]];
+    }
 }
 
 -(void)creatStart{
@@ -125,7 +102,7 @@
         //在我的发起界面根据回调的数据添加作品（未发布）
         [_allMyStartView.draftsView addViewWithModel:model];
         //更新数据源
-        [weakSelf.novelArray addObject:model];
+        [weakSelf.draftsArray addObject:model];
     };
     [self.navigationController pushViewController:editViewController animated:NO];
 }

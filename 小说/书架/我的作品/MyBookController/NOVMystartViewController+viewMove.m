@@ -10,6 +10,13 @@
 #import "NOVAllMyStartView.h"
 #import "NOVMystartView.h"
 #import "NOVView.h"
+#import "NOVReadNovelViewController.h"
+#import "NOVGetMyStartModel.h"
+#import "NOVbookMessage.h"
+#import "NOVWriteViewController.h"
+#import "NOVBookSetView.h"
+#import "NOVStartBookModel.h"
+#import "NOVStartManager.h"
 
 @implementation NOVMystartViewController (viewMove)
 
@@ -34,6 +41,37 @@
         return;
     }
     [self.allMyStartView.headView setButtonPostion:point width:ScreenWidth*2];
+}
+
+//进入阅读界面
+-(void)readBookWithModel:(NOVGetMyStartModel *)myStartModel{
+    NOVReadNovelViewController *readNovelViewController = [[NOVReadNovelViewController alloc] init];
+    readNovelViewController.bookMessage.bookId = myStartModel.bookId;
+    [self.navigationController pushViewController:readNovelViewController animated:NO];
+}
+
+-(void)editBookWithView:(NOVBookSetView *)setView model:(NOVStartBookModel *)startBookModel{
+    NOVWriteViewController *writeViewController = [[NOVWriteViewController alloc] init];
+    writeViewController.bookModel = startBookModel;
+    
+    writeViewController.publishNovelBlock = ^(NSString *title, NSString *summary, NSString *content,Boolean isPublish) {
+        //isPublish标记发布还是存为草稿
+        startBookModel.firstTitle = title;   //更新model
+        startBookModel.firstContent = content;
+        startBookModel.firstSummary = summary;
+        NOVStartManager *startManager = [[NOVStartManager alloc] init];
+        [startManager startNovelWithModel:startBookModel isPublish:isPublish success:^(id  _Nonnull responseObject) {
+            NSLog(@"%@",responseObject);
+            //发布成功
+            if (isPublish) {
+                setView.novelState = NovelStatePublished;   //标记为已发布
+            }
+            startBookModel.bookId = [responseObject[@"data"][@"bookId"] integerValue];
+        } fail:^(NSError * _Nonnull error) {
+            NSLog(@"%@",error);
+        }];
+    };
+    [self.navigationController pushViewController:writeViewController animated:NO];
 }
 
 @end

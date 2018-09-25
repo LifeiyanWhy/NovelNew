@@ -7,6 +7,10 @@
 //
 
 #import "NOVMystartViewController.h"
-
+@class NOVGetMyStartModel;
+@class NOVStartBookModel;
+@class NOVBookSetView;
 @interface NOVMystartViewController (viewMove)
+-(void)readBookWithModel:(NOVGetMyStartModel *)myStartModel;
+-(void)editBookWithView:(NOVBookSetView *)setView model:(NOVStartBookModel *)startBookModel;
 @end
