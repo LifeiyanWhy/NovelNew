@@ -12,5 +12,5 @@
 @class NOVBookSetView;
 @interface NOVMystartViewController (viewMove)
 -(void)readBookWithModel:(NOVGetMyStartModel *)myStartModel;
--(void)editBookWithView:(NOVBookSetView *)setView model:(NOVStartBookModel *)startBookModel;
+-(void)editBookWithView:(NOVBookSetView *)setView getModel:(NOVGetMyStartModel *_Nullable)draftBookModel model:(NOVStartBookModel *_Nullable)startBookModel;
 @end

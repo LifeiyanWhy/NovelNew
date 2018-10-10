@@ -43,6 +43,12 @@
     }
     self.automaticallyAdjustsScrollViewInsets = false;
     [self.view addSubview:self.summaryView];
+    
+    if (![_summary isEqualToString:@""]) {
+        NSLog(@"%@",_summary);
+        _summaryView.textView.text = _summary;
+        _summaryView.textView.textColor = [UIColor blackColor];
+    }
 }
 
 -(void)textViewDidBeginEditing:(UITextView *)textView{
@@ -81,10 +87,8 @@
     if (!_summaryView) {
         _summaryView = [[NOVSummaryView alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
         _summaryView.textView.delegate = self;
-        if (![_summary isEqualToString:@""]) {
-            _summaryView.textView.text = _summary;
-            _summaryView.textView.textColor = [UIColor blackColor];
-        }
+        _summaryView.textView.text = _summaryView.placeholder;
+        _summaryView.textView.textColor = [UIColor grayColor];
     }
     return _summaryView;
 }

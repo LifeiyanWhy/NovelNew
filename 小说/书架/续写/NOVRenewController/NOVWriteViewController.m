@@ -67,15 +67,24 @@
         _writeView.setUpView.delegate = self;
         [_writeView.keyboardView.hiddenKeyboard addTarget:self action:@selector(cancelKeyboard) forControlEvents:UIControlEventTouchUpInside];
         [_writeView.summaryButton addTarget:self action:@selector(editSummary) forControlEvents:UIControlEventTouchUpInside];
-        if (_bookModel.bookId != -1) {
+        if (self.bookModel.bookId != -1) {
+            NSLog(@"%@",_bookModel.firstTitle);
             _writeView.titleTextView.text = _bookModel.firstTitle;
             _writeView.titleTextView.textColor = [UIColor blackColor];
             _writeView.contentTextView.text = _bookModel.firstContent;
             _writeView.contentTextView.textColor = [UIColor blackColor];
             [_writeView.summaryButton setTitle:@"章节简介" forState:UIControlStateNormal];
+            label.text = [NSString stringWithFormat:@"%lu字",(unsigned long)_writeView.contentTextView.text.length];
         }
     }
     return _writeView;
+}
+
+-(NOVStartBookModel *)bookModel{
+    if (!_bookModel) {
+        _bookModel = [[NOVStartBookModel alloc] init];
+    }
+    return _bookModel;
 }
 
 - (void)keyboardShow:(NSNotification *)notification{
@@ -158,6 +167,7 @@
     __block NOVWriteViewController *weakSelf = self;
     summaryController.summaryEdit = NOVSummaryEditSummary;
     if (_bookModel.bookId != -1) {
+        NSLog(@"===%@",_bookModel.firstSummary);
         summaryController.summary = _bookModel.firstSummary;
     }
     summaryController.summaryblock = ^(NSString *summaryString) {

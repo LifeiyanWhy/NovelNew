@@ -8,7 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <UIImage+AFNetworking.h>
+@class NOVGetMyStartModel;
 
+typedef void(^succeedBlock)(id responseObject);
+typedef void(^failureBlock)(NSError *error);
 
 //发起类型
 typedef NS_OPTIONS(NSInteger, NOVStartType){
@@ -53,4 +56,7 @@ typedef NS_OPTIONS(NSInteger, NOVType) {
 @property(nonatomic,assign) NOVStartType startType;//发起形式
 @property(nonatomic,assign) NOVJurisdiction renewPeople;//续写人员
 @property(nonatomic,assign) NOVJurisdiction viewerType;//可观看人群
+//@property(nonatomic,assign) BOOL isSave;//是否有保存记录
+-(instancetype)initWithDraft:(NOVGetMyStartModel *)draftBookModel;
+-(void)obtainDraftContentWithBookId:(NSInteger)bookId succeed:(succeedBlock _Nullable)success  fail:(failureBlock _Nullable)fail;
 @end

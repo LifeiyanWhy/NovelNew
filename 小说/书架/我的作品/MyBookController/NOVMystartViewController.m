@@ -89,7 +89,12 @@
         [self readBookWithModel:_novelArray[setView.editButton.tag]];
     }else{
         NSLog(@"unpublish");
-        [self editBookWithView:setView model:_draftsArray[setView.editButton.tag]];
+        NSLog(@"%@ %@",[_draftsArray[setView.editButton.tag] class],[NOVGetMyStartModel class]);
+        if ([_draftsArray[setView.editButton.tag] isMemberOfClass:[NOVGetMyStartModel class]]) {
+            [self editBookWithView:setView getModel:_draftsArray[setView.editButton.tag] model:nil];
+        } else {
+            [self editBookWithView:setView getModel:nil model:_draftsArray[setView.editButton.tag]];
+        }
     }
 }
 
@@ -98,7 +103,7 @@
     NOVEditViewController *editViewController = [[NOVEditViewController alloc] init];
     editViewController.novelTitleBlock = ^(NOVStartBookModel *model) {
         NSLog(@"%@",model.introduction);
-        model.bookId = -1;  //将bookID初始化为-1
+        model.bookId = -1;
         //在我的发起界面根据回调的数据添加作品（未发布）
         [_allMyStartView.draftsView addViewWithModel:model];
         //更新数据源

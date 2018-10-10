@@ -14,6 +14,7 @@
 @property(nonatomic,strong) UIButton *close;
 @property(nonatomic,strong) UIImageView *coverImage;
 @property(nonatomic,strong) UITableView *tableview;
+//@property(nonatomic,strong) UIButton *deleteButton;
 -(instancetype)initWithFrame:(CGRect)frame;
 -(void)updateWithModel:(NOVGetMyStartModel *)model;
 -(void)setBookWithModel:(NOVStartBookModel *)model;

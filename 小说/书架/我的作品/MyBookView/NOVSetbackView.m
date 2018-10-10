@@ -32,6 +32,9 @@
         _tableview.dataSource = self;
         _tableview.delegate = self;
         
+//        _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [self addSubview:_deteleButton];
+        
         contentArray = @[@[@"作品名称",@"作品简介",@"作品类型",@"发布时间"],@[@"已参与人数",@"续写数量",@"浏览次数",@"获得赞"]];
     }
     return self;
@@ -47,6 +50,16 @@
     [_close setTitle:@"关闭" forState:UIControlStateNormal];
     [_close setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     _close.titleLabel.font = [UIFont systemFontOfSize:13];
+    
+//    [_deleteButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.right.equalTo(self).offset(-15);
+//        make.width.equalTo(self).multipliedBy(0.13);
+//        make.top.equalTo(self).offset(15);
+//        make.height.equalTo(self).multipliedBy(0.04);
+//    }];
+//    [_deleteButton setTitle:@"删除" forState:UIControlStateNormal];
+//    [_deleteButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    _deleteButton.titleLabel.font = [UIFont systemFontOfSize:13];
     
     [_tableview mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.and.right.equalTo(self);

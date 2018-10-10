@@ -36,7 +36,7 @@
     }
     CGPoint point = scrollView.contentOffset;
     if ([scrollView isEqual:self.allMyStartView.scrollView]) {
-        NSLog(@"%f",point.x);
+//        NSLog(@"%f",point.x);
     }else{
         return;
     }
@@ -47,13 +47,35 @@
 -(void)readBookWithModel:(NOVGetMyStartModel *)myStartModel{
     NOVReadNovelViewController *readNovelViewController = [[NOVReadNovelViewController alloc] init];
     readNovelViewController.bookMessage.bookId = myStartModel.bookId;
+    readNovelViewController.bookMessage.bookName = myStartModel.bookName;
     [self.navigationController pushViewController:readNovelViewController animated:NO];
 }
 
--(void)editBookWithView:(NOVBookSetView *)setView model:(NOVStartBookModel *)startBookModel{
+//getMyStartModel编辑草稿   startBookModel重新发起一本书
+-(void)editBookWithView:(NOVBookSetView *)setView getModel:(NOVGetMyStartModel *)draftBookModel model:(NOVStartBookModel *)startBookModel{
     NOVWriteViewController *writeViewController = [[NOVWriteViewController alloc] init];
-    writeViewController.bookModel = startBookModel;
+    if (nil != draftBookModel) {   //getMyStartModel编辑草稿
+        writeViewController.bookModel = [[NOVStartBookModel alloc] initWithDraft:draftBookModel];
+        if (!startBookModel) {
+            startBookModel = [[NOVStartBookModel alloc] init];
+        }
+        //根据草稿ID获取草稿
+        [startBookModel obtainDraftContentWithBookId:writeViewController.bookModel.bookId succeed:^(id responseObject) {
+            NSLog(@"%@",responseObject);
+            NSDictionary *dict = responseObject[@"data"];
+            writeViewController.bookModel.firstTitle = dict[@"firstTitle"];
+            writeViewController.bookModel.firstSummary = dict[@"firstSummary"];
+            writeViewController.bookModel.firstContent = dict[@"firstContent"];
+            [self.navigationController pushViewController:writeViewController animated:NO];
+        } fail:^(NSError *error) {
+            NSLog(@"draftError===%@",error);
+        }];
+    } else {    //startBookModel重新发起一本书
+        writeViewController.bookModel = startBookModel;
+        [self.navigationController pushViewController:writeViewController animated:NO];
+    }
     
+    //保存修改结果（发布编辑后的内容）
     writeViewController.publishNovelBlock = ^(NSString *title, NSString *summary, NSString *content,Boolean isPublish) {
         //isPublish标记发布还是存为草稿
         startBookModel.firstTitle = title;   //更新model
@@ -67,11 +89,13 @@
                 setView.novelState = NovelStatePublished;   //标记为已发布
             }
             startBookModel.bookId = [responseObject[@"data"][@"bookId"] integerValue];
+            //发布后更新数据
+            NOVGetMyStartModel *model = [[NOVGetMyStartModel alloc] initWithDictionary:responseObject[@"data"] error:nil];
+            [self.draftsArray replaceObjectAtIndex:setView.tag withObject:model];
         } fail:^(NSError * _Nonnull error) {
             NSLog(@"%@",error);
         }];
     };
-    [self.navigationController pushViewController:writeViewController animated:NO];
 }
 
 @end

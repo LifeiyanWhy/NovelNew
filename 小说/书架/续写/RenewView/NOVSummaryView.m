@@ -42,8 +42,6 @@
     [paragraphStyle setLineSpacing:3];
     [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [_textView.text length])];
     _textView.attributedText = attributedString;
-    _textView.text = self.placeholder;
-    _textView.textColor = [UIColor grayColor];
     
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_textView.mas_bottom).offset(5);

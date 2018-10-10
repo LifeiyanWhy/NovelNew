@@ -464,6 +464,13 @@
     [self presentViewController:alertControl animated:YES completion:nil];
 }
 
+- (NOVbookMessage *)bookMessage{
+    if (!_bookMessage) {
+        _bookMessage = [[NOVbookMessage alloc] init];
+    }
+    return _bookMessage;
+}
+
 - (void)viewWillAppear:(BOOL)animated{
     self.navigationController.navigationBar.hidden = YES;
 }
