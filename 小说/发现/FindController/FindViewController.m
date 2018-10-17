@@ -25,7 +25,9 @@
 
 @implementation FindViewController{
     NSIndexPath *selectIndex;
-    NSMutableArray *judge ;
+    NSMutableArray *todayPromotionJudge ;
+    NSMutableArray *rankingListJudge;
+    NSMutableArray *allWorksJudge;
     BOOL touchTopButton;
     NSInteger currentPage;//当前页
     NSMutableArray *isLoadArray;//标记tableView是否加载过
@@ -35,7 +37,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.navigationController.navigationBar.hidden = YES;
-    judge = [NSMutableArray array];
+    todayPromotionJudge = [NSMutableArray array];
+    rankingListJudge = [NSMutableArray array];
+    allWorksJudge = [NSMutableArray array];
     _findView = [[NOVFindView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - tabBarHeight)];
     [self.view addSubview:_findView];
     _findView.scrollView.delegate = self;
@@ -68,6 +72,7 @@
 -(void)obtainBookListWithType:(NOVObtainListType)listType tableView:(UITableView *)tableView modelArray:(NSMutableArray *)modelArray{  //根据类型获取图书列表
     NSLog(@"obtainBookList");
     [modelArray removeAllObjects];
+    NSMutableArray *judge = [self getCurrentJudgeArray];
     NOVObtainBookList *obtainBookList = [[NOVObtainBookList alloc] init];
     [obtainBookList obtainBookListWithType:listType succeed:^(id responseObject) {
         NOVAllBookMesssage *allFindModel = [[NOVAllBookMesssage alloc] initWithDictionary:responseObject[@"data"] error:nil];
@@ -112,6 +117,7 @@
     [cell updateCellWithModel:[self getCurrentPageWithPage:tableView.tag][indexPath.section]];
     cell.readButton.tag = indexPath.section;
     [cell.readButton addTarget:self action:@selector(readNovel:) forControlEvents:UIControlEventTouchUpInside];
+    NSMutableArray *judge = [self getCurrentJudgeArray];
     if ([judge[indexPath.section] isEqual:@YES]) {
         cell.isOpen = YES;
         [cell cellOpen];
@@ -138,6 +144,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSMutableArray *judge = [self getCurrentJudgeArray];
     if ([judge[indexPath.section] isEqual:@YES]) {
         return self.view.frame.size.height*0.33;
     }
@@ -145,6 +152,7 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSMutableArray *judge = [self getCurrentJudgeArray];
     if([[judge objectAtIndex:indexPath.section] isEqual:@YES]) {
         judge[indexPath.section]=@NO;
         [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -226,6 +234,17 @@
             return _allWorksModelArray;
         default:
             return nil;
+    }
+}
+
+-(NSMutableArray *)getCurrentJudgeArray{
+    switch (currentPage) {
+        case 0:
+            return todayPromotionJudge;
+        case 1:
+            return rankingListJudge;
+        default:
+            return allWorksJudge;
     }
 }
 
