@@ -66,9 +66,10 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
-
-*.swp
-小说.xcodeproj/xcuserdata/*
-小说.xcworkspace/xcuserdata/*
+*.xcuserstate
+project.xcworkspace
+xcuserdata
 UserInterfaceState.xcuserstate
-Breakpoints_v2.xcbkptlist
+project.xcworkspace/
+xcuserdata/
+UserInterface.xcuserstate
