@@ -70,3 +70,5 @@ iOSInjectionProject/
 *.swp
 小说.xcodeproj/xcuserdata/*
 小说.xcworkspace/xcuserdata/*
+UserInterfaceState.xcuserstate
+Breakpoints_v2.xcbkptlist
